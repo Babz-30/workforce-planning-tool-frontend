@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# AI Agent Instructions for Workforce Planning Tool Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-## Available Scripts
+This is a React-based frontend application for workforce planning, built with Create React App. The project uses modern React (v19) and follows standard React application patterns.
 
-In the project directory, you can run:
+## Project Structure
 
-### `npm start`
+- `/src`: Main source code directory
+  - `App.js`: Main application component
+  - Components should be placed in `/src/components` (create as needed)
+  - Styles in `/src/styles` or co-located with components
+  - Tests co-located with components using `.test.js` suffix
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Development Workflow
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Development server: `npm start` (runs on http://localhost:3000)
+2. Testing: `npm test` (Jest + React Testing Library)
+3. Production build: `npm run build`
 
-### `npm test`
+## Key Technologies & Versions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React: ^19.2.0
+- Testing Libraries:
+  - @testing-library/react: ^16.3.0
+  - @testing-library/jest-dom: ^6.9.1
+  - @testing-library/dom: ^10.4.1
 
-### `npm run build`
+## Testing Conventions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Use React Testing Library for component testing
+- Co-locate test files with components
+- Follow Testing Library's user-centric testing philosophy
+- Example test pattern:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+import { render, screen } from "@testing-library/react";
+import Component from "./Component";
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+test("renders component", () => {
+  render(<Component />);
+  expect(screen.getByText(/expected text/i)).toBeInTheDocument();
+});
+```
 
-### `npm run eject`
+## Project-Specific Guidelines
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Keep components focused and single-responsibility
+2. Use functional components with hooks
+3. Follow React 19 best practices and patterns
+4. Maintain responsive design considerations
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Build & Deployment
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Production builds are generated in the `/build` directory
+- Assets are automatically optimized and hashed
+- Static files should be placed in `/public`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Key Integration Points
 
-## Learn More
+1. Add backend API endpoints and services in `/src/services`
+2. Environment variables should be prefixed with `REACT_APP_`
+3. Define API interfaces before implementation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Please request feedback or clarification on any unclear sections of these instructions.
