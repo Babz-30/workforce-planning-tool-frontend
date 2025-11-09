@@ -1,4 +1,4 @@
-# AI Agent Instructions for Workforce Planning Tool Frontend
+Workforce Planning Tool Frontend
 
 ## Project Overview
 
