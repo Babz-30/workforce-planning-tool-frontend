@@ -1,0 +1,30 @@
+.app-button {
+  background-color: var(--primary-color, #0078d4);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 15px;
+}
+
+.app-button:hover:not(:disabled) {
+  background-color: var(--primary-hover, #005fa3);
+}
+
+.app-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+/* optional variants for reusability */
+.app-button.secondary {
+  background-color: var(--secondary-color, #6c757d);
+}
+
+.app-button.danger {
+  background-color: var(--danger-color, #dc3545);
+}
