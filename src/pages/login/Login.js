@@ -37,12 +37,12 @@ const Login = () => {
         });
 
         // Save for session
-        localStorage.setItem("response", JSON.stringify(response)); 
+        localStorage.setItem("response", JSON.stringify(response));
 
         // Redirect based on role
-        if (response.data.role === "manager") navigate("/home");
-        else if (response.role === "employee") navigate("/home");
-        else if (response.role === "admin") navigate("/home");
+        if (response.data.role === "manager") navigate("/project_manager");
+        else if (response.data.role === "employee") navigate("/home");
+        else if (response.data.role === "admin") navigate("/home");
         else navigate("/");
       }
     } catch (err) {

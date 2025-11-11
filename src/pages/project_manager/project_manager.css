@@ -1,0 +1,13 @@
+/* CompetencyChips.css */
+
+.violet-chip {
+  background-color: #ede9fe !important; /* light violet (bg-purple-100) */
+  color: #6b21a8 !important; /* dark violet (text-purple-800) */
+  font-size: 0.75rem !important; /* matches Tailwind text-xs */
+  font-weight: 500 !important;
+  border-radius: 9999px !important; /* fully rounded pill shape */
+}
+
+.violet-chip:hover {
+  background-color: #ddd6fe !important; /* hover color (slightly darker violet) */
+}
