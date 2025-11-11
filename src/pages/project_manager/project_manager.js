@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./project_manager.css";
+import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function ProjectTable() {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
+  const navigate = useNavigate();
   const projects = [
     {
       id: 1,
@@ -395,14 +397,20 @@ export default function ProjectTable() {
                   <td>
                     <div className="location-container">
                       <div className="location">📍 {project.location}</div>
-                      <a
-                        href="/home"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link"
+                      <button
+                        type="button"
+                        className="btn btn-warning"
+                        onClick={() => navigate("/home")}
                       >
-                        🔗 View Project
-                      </a>
+                        Edit/Delete
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-success"
+                        onClick={() => navigate("/home")}
+                      >
+                        Publish
+                      </button>
                     </div>
                   </td>
                 </tr>
