@@ -1,10 +1,10 @@
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
+import { useState } from "react";
 import "./project_manager.css";
-import React, { useState } from "react";
 
 export default function ProjectTable() {
-  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const projects = [
     {
@@ -87,162 +87,319 @@ export default function ProjectTable() {
       location: "Remote / London Office",
       links: "https://confluence.example.com/ai-dashboard",
     },
+    {
+      id: 4,
+      description: "Blockchain Integration Platform",
+      startDate: "2024-04-01",
+      endDate: "2024-10-15",
+      taskDescription:
+        "Develop a secure blockchain-based platform for supply chain tracking, smart contract management, and cryptocurrency payment processing with full audit trail capabilities.",
+      requiredEmployees: 7,
+      roles: [
+        "Blockchain Developer",
+        "Smart Contract Engineer",
+        "Security Specialist",
+        "Backend Developer",
+      ],
+      competencies: [
+        "Solidity",
+        "Ethereum",
+        "Web3.js",
+        "Node.js",
+        "Cryptography",
+      ],
+      capacity: "Blockchain: 40h/week, Backend: 35h/week, Security: 30h/week",
+      location: "Remote / Singapore Office",
+      links: "https://gitlab.example.com/blockchain-platform",
+    },
+    {
+      id: 5,
+      description: "Cloud Migration & Optimization",
+      startDate: "2024-05-01",
+      endDate: "2024-11-30",
+      taskDescription:
+        "Migrate legacy systems to cloud infrastructure, implement auto-scaling, disaster recovery, cost optimization, and infrastructure as code practices.",
+      requiredEmployees: 5,
+      roles: [
+        "DevOps Engineer",
+        "Cloud Architect",
+        "Backend Developer",
+        "QA Engineer",
+      ],
+      competencies: [
+        "AWS",
+        "Kubernetes",
+        "Terraform",
+        "Docker",
+        "Jenkins",
+        "Monitoring",
+      ],
+      capacity: "DevOps: 40h/week, Cloud Arch: 30h/week, Backend: 35h/week",
+      location: "Remote / Seattle Office",
+      links: "https://jira.example.com/cloud-migration",
+    },
+    {
+      id: 6,
+      description: "IoT Smart Home Platform",
+      startDate: "2024-06-15",
+      endDate: "2024-12-31",
+      taskDescription:
+        "Create an IoT platform for smart home device integration, real-time monitoring, automation rules, voice assistant integration, and mobile app controls.",
+      requiredEmployees: 9,
+      roles: [
+        "IoT Developer",
+        "Embedded Systems Engineer",
+        "Mobile Developer",
+        "Backend Developer",
+      ],
+      competencies: [
+        "MQTT",
+        "Python",
+        "React Native",
+        "AWS IoT",
+        "Embedded C",
+        "Bluetooth",
+      ],
+      capacity:
+        "IoT: 40h/week, Mobile: 35h/week, Backend: 35h/week, Embedded: 30h/week",
+      location: "Hybrid - Austin Office",
+      links: "https://project-hub.example.com/iot-platform",
+    },
+    {
+      id: 7,
+      description: "Customer Data Platform (CDP)",
+      startDate: "2024-07-01",
+      endDate: "2025-01-31",
+      taskDescription:
+        "Build a unified customer data platform that aggregates data from multiple sources, provides real-time segmentation, predictive analytics, and personalization capabilities.",
+      requiredEmployees: 12,
+      roles: [
+        "Data Engineer",
+        "Backend Developer",
+        "Data Scientist",
+        "Frontend Developer",
+      ],
+      competencies: [
+        "Apache Kafka",
+        "Elasticsearch",
+        "Python",
+        "React",
+        "SQL",
+        "Machine Learning",
+      ],
+      capacity:
+        "Data Eng: 40h/week, Backend: 40h/week, Data Sci: 35h/week, Frontend: 30h/week",
+      location: "Remote / Boston Office",
+      links: "https://confluence.example.com/cdp-project",
+    },
+    {
+      id: 8,
+      description: "Video Streaming Platform",
+      startDate: "2024-08-01",
+      endDate: "2025-02-28",
+      taskDescription:
+        "Develop a scalable video streaming platform with live streaming capabilities, content delivery network integration, adaptive bitrate streaming, and social features.",
+      requiredEmployees: 11,
+      roles: [
+        "Video Engineer",
+        "Backend Developer",
+        "Frontend Developer",
+        "DevOps Engineer",
+      ],
+      competencies: [
+        "FFmpeg",
+        "WebRTC",
+        "CDN",
+        "React",
+        "Node.js",
+        "AWS Media Services",
+      ],
+      capacity:
+        "Video Eng: 40h/week, Backend: 40h/week, Frontend: 35h/week, DevOps: 25h/week",
+      location: "Hybrid - Los Angeles Office",
+      links: "https://github.example.com/video-streaming",
+    },
   ];
 
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedProjects(projects.map((p) => p.id));
-    } else {
-      setSelectedProjects([]);
+  const sortData = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
+    setSortConfig({ key, direction });
+    setCurrentPage(1); // Reset to first page when sorting
   };
 
-  const handleSelectProject = (id) => {
-    setSelectedProjects((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+  const getSortedProjects = () => {
+    if (!sortConfig.key) return projects;
+
+    const sorted = [...projects].sort((a, b) => {
+      let aValue = a[sortConfig.key];
+      let bValue = b[sortConfig.key];
+
+      if (sortConfig.key === "startDate" || sortConfig.key === "endDate") {
+        aValue = new Date(aValue);
+        bValue = new Date(bValue);
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return sorted;
+  };
+
+  const SortIcon = ({ columnKey }) => {
+    if (sortConfig.key !== columnKey) {
+      return <span className="sort-icon">⇅</span>;
+    }
+    return (
+      <span className="sort-icon-active">
+        {sortConfig.direction === "asc" ? "↑" : "↓"}
+      </span>
     );
   };
 
+  const sortedProjects = getSortedProjects();
+  const totalPages = Math.ceil(sortedProjects.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProjects = sortedProjects.slice(startIndex, endIndex);
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push("...");
+        pages.push(currentPage - 1);
+        pages.push(currentPage);
+        pages.push(currentPage + 1);
+        pages.push("...");
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Project Management</h1>
-        <p className="text-gray-600 mt-1">
-          Manage and track all active projects
-        </p>
+    <div className="container">
+      <div className="header">
+        <h1 className="title">Project Management</h1>
+        <p className="subtitle">Manage and track all active projects</p>
       </div>
 
-      {selectedProjects.length > 0 && (
-        <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 flex items-center justify-between">
-          <span className="text-blue-800 font-medium">
-            {selectedProjects.length} project(s) selected
-          </span>
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-            Bulk Actions
-          </button>
-        </div>
-      )}
-
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+      <div className="table-card">
+        <div className="table-wrapper">
+          <table className="table">
+            <thead>
               <tr>
-                <th className="px-6 py-3 text-left">
-                  <input
-                    type="checkbox"
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    checked={selectedProjects.length === projects.length}
-                    onChange={handleSelectAll}
-                  />
+                <th onClick={() => sortData("description")}>
+                  <div className="th-content">
+                    Project Details
+                    <SortIcon columnKey="description" />
+                  </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Project Details
+                <th onClick={() => sortData("startDate")}>
+                  <div className="th-content">
+                    Timeline
+                    <SortIcon columnKey="startDate" />
+                  </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Timeline
+                <th onClick={() => sortData("requiredEmployees")}>
+                  <div className="th-content">
+                    Team Requirements
+                    <SortIcon columnKey="requiredEmployees" />
+                  </div>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Team Requirements
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Location & Links
+                <th onClick={() => sortData("location")}>
+                  <div className="th-content">
+                    Location & Links
+                    <SortIcon columnKey="location" />
+                  </div>
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {projects.map((project) => (
-                <tr
-                  key={project.id}
-                  className={`hover:bg-gray-50 transition-colors ${
-                    selectedProjects.includes(project.id) ? "bg-blue-50" : ""
-                  }`}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      checked={selectedProjects.includes(project.id)}
-                      onChange={() => handleSelectProject(project.id)}
-                    />
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-semibold text-gray-900">
-                        {project.description}
-                      </h3>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {project.taskDescription}
-                      </p>
-                      <div className="mt-2">
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          flexWrap="wrap"
-                          useFlexGap
-                        >
-                          {project.competencies.map((comp, idx) => (
-                            <Chip
-                              key={idx}
-                              label={comp}
-                              className="violet-chip"
-                            />
-                          ))}
-                        </Stack>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="space-y-2">
-                      <div className="flex items-center text-sm text-gray-700">
-                        <span className="font-medium">Start:</span>
-                        <span className="ml-1">{project.startDate}</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-700">
-                        <span className="font-medium">End:</span>
-                        <span className="ml-1">{project.endDate}</span>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm">
-                        <span className="font-medium text-gray-700">
-                          👥 {project.requiredEmployees} employees
-                        </span>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-500 uppercase">
-                          Roles:
-                        </p>
-                        {project.roles.map((role, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-block mr-1 mb-1 px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800"
-                          >
-                            {role}
+            <tbody>
+              {currentProjects.map((project) => (
+                <tr key={project.id}>
+                  <td>
+                    <div className="project-details">
+                      <h3 className="project-title">{project.description}</h3>
+                      <p className="project-desc">{project.taskDescription}</p>
+                      <div className="chips-container">
+                        {project.competencies.map((comp, idx) => (
+                          <span key={idx} className="chip">
+                            {comp}
                           </span>
                         ))}
                       </div>
-                      <div className="flex items-start text-sm text-gray-600">
-                        <span className="text-xs">⏱️ {project.capacity}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="timeline-container">
+                      <div className="date-row">
+                        <span className="date-label">Start:</span>
+                        <span className="date-value">{project.startDate}</span>
+                      </div>
+                      <div className="date-row">
+                        <span className="date-label">End:</span>
+                        <span className="date-value">{project.endDate}</span>
                       </div>
                     </div>
                   </td>
-
-                  <td className="px-6 py-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center text-sm text-gray-700">
-                        <span>📍 {project.location}</span>
+                  <td>
+                    <div className="team-container">
+                      <div className="employee-count">
+                        👥 {project.requiredEmployees} employees
                       </div>
+                      <div className="roles-section">
+                        <p className="roles-label">Roles:</p>
+                        <div className="roles-container">
+                          {project.roles.map((role, idx) => (
+                            <span key={idx} className="role-badge">
+                              {role}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="capacity">⏱️ {project.capacity}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="location-container">
+                      <div className="location">📍 {project.location}</div>
                       <a
-                        href={project.links}
+                        href="/home"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                        className="link"
                       >
                         🔗 View Project
                       </a>
@@ -255,13 +412,43 @@ export default function ProjectTable() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
-        <span>Showing {projects.length} projects</span>
-        <div className="flex gap-2">
-          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">
+      <div className="footer">
+        <span className="footer-text">
+          Showing {startIndex + 1}-{Math.min(endIndex, sortedProjects.length)}{" "}
+          of {sortedProjects.length} projects
+        </span>
+        <div className="pagination">
+          <button
+            className="pagination-button"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
             Previous
           </button>
-          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">
+
+          {getPageNumbers().map((page, index) =>
+            page === "..." ? (
+              <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+                ...
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`pagination-number ${
+                  currentPage === page ? "active" : ""
+                }`}
+                onClick={() => goToPage(page)}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            className="pagination-button"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
             Next
           </button>
         </div>

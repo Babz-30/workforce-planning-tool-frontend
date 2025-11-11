@@ -91,6 +91,8 @@ const Login = () => {
         {loading && <div className="spinner"></div>}
         {error && <p className="error">{error}</p>}
       </form>
+      <p className="note">Demo users: user1/pass@123</p>
+      <p className="note">version: 0.2</p>
     </div>
   );
 };
