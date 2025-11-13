@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+// CreateProject.js
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import InputField from "../../components/inputfield/InputField";
 import Button from "../../components/button/Button";
 import "./CreateProject.css";
@@ -57,12 +58,25 @@ const CreateProject = () => {
   const roleDropdownRefs = useRef([]);
   const competencyDropdownRefs = useRef([]);
 
+  // Stable role change handler (useCallback so effect deps are safe)
+  const handleRoleChange = useCallback((index, field, value) => {
+    setFormData(prev => {
+      const updatedRoles = prev.roles.map((role, i) =>
+        i === index ? { ...role, [field]: value } : role
+      );
+      return {
+        ...prev,
+        roles: updatedRoles,
+      };
+    });
+  }, []);
+
   // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Prevent closing if clicking on input field itself
       const isInput = event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA';
-      
+
       // Close skill dropdown
       if (skillDropdownRef.current && !skillDropdownRef.current.contains(event.target)) {
         setShowSkillDropdown(false);
@@ -73,7 +87,7 @@ const CreateProject = () => {
         setShowLocationDropdown(false);
       }
 
-      // Close role dropdowns
+      // Close role & competency dropdowns
       if (!isInput) {
         roleDropdownRefs.current.forEach((ref, index) => {
           if (ref && !ref.contains(event.target)) {
@@ -81,7 +95,6 @@ const CreateProject = () => {
           }
         });
 
-        // Close competency dropdowns
         competencyDropdownRefs.current.forEach((ref, index) => {
           if (ref && !ref.contains(event.target)) {
             handleRoleChange(index, "showCompetencyDropdown", false);
@@ -94,29 +107,36 @@ const CreateProject = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [formData.roles]);
+  }, [handleRoleChange]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Handle skill selection
   const handleSkillSelect = (skill) => {
-    if (!formData.selectedSkills.includes(skill)) {
-      setFormData({
-        ...formData,
-        selectedSkills: [...formData.selectedSkills, skill],
-      });
-      // Add to options if new
-      if (!skillOptions.includes(skill)) {
-        setSkillOptions([...skillOptions, skill]);
+    setFormData(prev => {
+      if (!prev.selectedSkills.includes(skill)) {
+        // Add to selected
+        const updated = {
+          ...prev,
+          selectedSkills: [...prev.selectedSkills, skill],
+        };
+        // Add to options if new
+        if (!skillOptions.includes(skill)) {
+          setSkillOptions(prevOpts => [...prevOpts, skill]);
+        }
+        return updated;
       }
-    }
+      return prev;
+    });
+
     setSkillInput("");
-    // Keep dropdown open for multiple selections
+    // Keep dropdown open for multiple selections and refocus
     setTimeout(() => {
       const input = document.querySelector('.skills-section .autocomplete-input');
       if (input) input.focus();
@@ -126,17 +146,18 @@ const CreateProject = () => {
   // Add custom skill
   const handleAddCustomSkill = () => {
     const trimmedSkill = skillInput.trim();
-    if (trimmedSkill && !formData.selectedSkills.includes(trimmedSkill)) {
+    if (trimmedSkill) {
+      // handleSkillSelect already guards duplicates
       handleSkillSelect(trimmedSkill);
     }
   };
 
   // Remove skill
   const handleRemoveSkill = (skillToRemove) => {
-    setFormData({
-      ...formData,
-      selectedSkills: formData.selectedSkills.filter(skill => skill !== skillToRemove),
-    });
+    setFormData(prev => ({
+      ...prev,
+      selectedSkills: prev.selectedSkills.filter(skill => skill !== skillToRemove),
+    }));
   };
 
   // Filter skills based on input
@@ -149,40 +170,42 @@ const CreateProject = () => {
 
   // Handle location selection
   const handleLocationSelect = (location) => {
-    if (formData.selectedLocations.length < 3 && !formData.selectedLocations.includes(location)) {
-      setFormData({
-        ...formData,
-        selectedLocations: [...formData.selectedLocations, location],
-      });
-      // Add to options if new
-      if (!locationOptions.includes(location)) {
-        setLocationOptions([...locationOptions, location]);
+    setFormData(prev => {
+      if (prev.selectedLocations.length < 3 && !prev.selectedLocations.includes(location)) {
+        // Add to options if new
+        if (!locationOptions.includes(location)) {
+          setLocationOptions(prevOpts => [...prevOpts, location]);
+        }
+        return {
+          ...prev,
+          selectedLocations: [...prev.selectedLocations, location],
+        };
       }
-    }
+      return prev;
+    });
+
     setLocationInput("");
     // Keep dropdown open for multiple selections
-    if (formData.selectedLocations.length < 2) {
-      setTimeout(() => {
-        const input = document.querySelector('.location-section .autocomplete-input');
-        if (input) input.focus();
-      }, 0);
-    }
+    setTimeout(() => {
+      const input = document.querySelector('.location-section .autocomplete-input');
+      if (input) input.focus();
+    }, 0);
   };
 
   // Add custom location
   const handleAddCustomLocation = () => {
     const trimmedLocation = locationInput.trim();
-    if (trimmedLocation && formData.selectedLocations.length < 3 && !formData.selectedLocations.includes(trimmedLocation)) {
+    if (trimmedLocation) {
       handleLocationSelect(trimmedLocation);
     }
   };
 
   // Remove location
   const handleRemoveLocation = (locationToRemove) => {
-    setFormData({
-      ...formData,
-      selectedLocations: formData.selectedLocations.filter(loc => loc !== locationToRemove),
-    });
+    setFormData(prev => ({
+      ...prev,
+      selectedLocations: prev.selectedLocations.filter(loc => loc !== locationToRemove),
+    }));
   };
 
   // Filter locations based on input
@@ -193,77 +216,75 @@ const CreateProject = () => {
     );
   };
 
-  // Handle role field changes
-  const handleRoleChange = (index, field, value) => {
-    const updatedRoles = formData.roles.map((role, i) =>
-      i === index ? { ...role, [field]: value } : role
-    );
-    setFormData({
-      ...formData,
-      roles: updatedRoles,
-    });
-  };
-
   // Handle role selection
   const handleRoleSelect = (index, selectedRole) => {
-    const updatedRoles = formData.roles.map((role, i) =>
-      i === index ? { ...role, requiredRole: selectedRole, roleInput: "", showRoleDropdown: false } : role
-    );
-    setFormData({
-      ...formData,
-      roles: updatedRoles,
+    setFormData(prev => {
+      const updatedRoles = prev.roles.map((role, i) =>
+        i === index ? { ...role, requiredRole: selectedRole, roleInput: "", showRoleDropdown: false } : role
+      );
+      return {
+        ...prev,
+        roles: updatedRoles,
+      };
     });
+
     // Add to options if new
     if (!roleOptions.includes(selectedRole)) {
-      setRoleOptions([...roleOptions, selectedRole]);
+      setRoleOptions(prev => [...prev, selectedRole]);
     }
   };
 
   // Handle competency selection for a role
   const handleCompetencySelect = (index, competency) => {
-    const role = formData.roles[index];
-    if (!role.requiredCompetencies.includes(competency)) {
-      const updatedRoles = formData.roles.map((r, i) =>
-        i === index ? {
-          ...r,
-          requiredCompetencies: [...r.requiredCompetencies, competency],
-          competencyInput: ""
-        } : r
-      );
-      setFormData({
-        ...formData,
-        roles: updatedRoles,
-      });
-      // Add to options if new
-      if (!competencyOptions.includes(competency)) {
-        setCompetencyOptions([...competencyOptions, competency]);
+    setFormData(prev => {
+      const role = prev.roles[index];
+      if (!role.requiredCompetencies.includes(competency)) {
+        const updatedRoles = prev.roles.map((r, i) =>
+          i === index ? {
+            ...r,
+            requiredCompetencies: [...r.requiredCompetencies, competency],
+            competencyInput: ""
+          } : r
+        );
+        return {
+          ...prev,
+          roles: updatedRoles,
+        };
       }
-      // Keep dropdown open and refocus for multiple selections
-      setTimeout(() => {
-        const inputs = document.querySelectorAll('.role-card .autocomplete-input');
-        if (inputs[index * 2 + 1]) inputs[index * 2 + 1].focus();
-      }, 0);
+      return prev;
+    });
+
+    // Add to options if new
+    if (!competencyOptions.includes(competency)) {
+      setCompetencyOptions(prev => [...prev, competency]);
     }
+    // Keep dropdown open and refocus for multiple selections
+    setTimeout(() => {
+      const inputs = document.querySelectorAll('.role-card .autocomplete-input');
+      if (inputs[index * 2 + 1]) inputs[index * 2 + 1].focus();
+    }, 0);
   };
 
   // Remove competency from role
   const handleRemoveCompetency = (roleIndex, competency) => {
-    const updatedRoles = formData.roles.map((role, i) =>
-      i === roleIndex ? {
-        ...role,
-        requiredCompetencies: role.requiredCompetencies.filter(c => c !== competency)
-      } : role
-    );
-    setFormData({
-      ...formData,
-      roles: updatedRoles,
+    setFormData(prev => {
+      const updatedRoles = prev.roles.map((role, i) =>
+        i === roleIndex ? {
+          ...role,
+          requiredCompetencies: role.requiredCompetencies.filter(c => c !== competency)
+        } : role
+      );
+      return {
+        ...prev,
+        roles: updatedRoles,
+      };
     });
   };
 
   // Add custom role
   const handleAddCustomRole = (index) => {
     const role = formData.roles[index];
-    const trimmedRole = role.roleInput.trim();
+    const trimmedRole = role?.roleInput?.trim();
     if (trimmedRole) {
       handleRoleSelect(index, trimmedRole);
     }
@@ -272,18 +293,18 @@ const CreateProject = () => {
   // Add custom competency
   const handleAddCustomCompetency = (index) => {
     const role = formData.roles[index];
-    const trimmedComp = role.competencyInput.trim();
-    if (trimmedComp && !role.requiredCompetencies.includes(trimmedComp)) {
+    const trimmedComp = role?.competencyInput?.trim();
+    if (trimmedComp) {
       handleCompetencySelect(index, trimmedComp);
     }
   };
 
   // Add a new role manually
   const addRole = () => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       roles: [
-        ...formData.roles,
+        ...prev.roles,
         {
           requiredRole: "",
           requiredCompetencies: [],
@@ -295,15 +316,17 @@ const CreateProject = () => {
           showCompetencyDropdown: false,
         },
       ],
-    });
+    }));
   };
 
   // Remove a specific role
   const removeRole = (index) => {
-    const updatedRoles = formData.roles.filter((_, i) => i !== index);
-    setFormData({
-      ...formData,
-      roles: updatedRoles,
+    setFormData(prev => {
+      const updatedRoles = prev.roles.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        roles: updatedRoles,
+      };
     });
   };
 
@@ -406,7 +429,7 @@ const CreateProject = () => {
                 setShowSkillDropdown(true);
               }}
               onFocus={() => setShowSkillDropdown(true)}
-              onBlur={(e) => {
+              onBlur={() => {
                 // Only close if not clicking inside dropdown
                 setTimeout(() => {
                   if (!skillDropdownRef.current?.contains(document.activeElement)) {
@@ -484,7 +507,7 @@ const CreateProject = () => {
                 setShowLocationDropdown(true);
               }}
               onFocus={() => setShowLocationDropdown(true)}
-              onBlur={(e) => {
+              onBlur={() => {
                 setTimeout(() => {
                   if (!locationDropdownRef.current?.contains(document.activeElement)) {
                     setShowLocationDropdown(false);
@@ -616,8 +639,8 @@ const CreateProject = () => {
                           </button>
                         </div>
                       ) : (
-                        <div 
-                          className="autocomplete-container" 
+                        <div
+                          className="autocomplete-container"
                           ref={el => roleDropdownRefs.current[index] = el}
                         >
                           <input
@@ -678,7 +701,7 @@ const CreateProject = () => {
                   {/* Competencies Selection */}
                   <div className="form-field">
                     <label>Required Competencies</label>
-                    <div 
+                    <div
                       className="autocomplete-container"
                       ref={el => competencyDropdownRefs.current[index] = el}
                     >
@@ -688,7 +711,7 @@ const CreateProject = () => {
                         value={role.competencyInput}
                         onChange={(e) => handleRoleChange(index, "competencyInput", e.target.value)}
                         onFocus={() => handleRoleChange(index, "showCompetencyDropdown", true)}
-                        onBlur={(e) => {
+                        onBlur={() => {
                           setTimeout(() => {
                             const ref = competencyDropdownRefs.current[index];
                             if (ref && !ref.contains(document.activeElement)) {
