@@ -193,36 +193,6 @@ const CreateProject = () => {
     );
   };
 
-  // Handle the number of required employees
-  const handleRequiredEmployeesChange = (e) => {
-    const count = parseInt(e.target.value) || 0;
-    const currentRoles = formData.roles;
-
-    let newRoles;
-    if (count > currentRoles.length) {
-      newRoles = [
-        ...currentRoles,
-        ...Array(count - currentRoles.length).fill(null).map(() => ({
-          requiredRole: "",
-          requiredCompetencies: [],
-          capacity: "",
-          roleInput: "",
-          competencyInput: "",
-          showRoleDropdown: false,
-          showCompetencyDropdown: false,
-        })),
-      ];
-    } else {
-      newRoles = currentRoles.slice(0, count);
-    }
-
-    setFormData({
-      ...formData,
-      requiredEmployees: e.target.value,
-      roles: newRoles,
-    });
-  };
-
   // Handle role field changes
   const handleRoleChange = (index, field, value) => {
     const updatedRoles = formData.roles.map((role, i) =>
@@ -312,13 +282,13 @@ const CreateProject = () => {
   const addRole = () => {
     setFormData({
       ...formData,
-      requiredEmployees: String(formData.roles.length + 1),
       roles: [
         ...formData.roles,
         {
           requiredRole: "",
           requiredCompetencies: [],
           capacity: "",
+          numberOfEmployees: "",
           roleInput: "",
           competencyInput: "",
           showRoleDropdown: false,
@@ -333,9 +303,16 @@ const CreateProject = () => {
     const updatedRoles = formData.roles.filter((_, i) => i !== index);
     setFormData({
       ...formData,
-      requiredEmployees: String(updatedRoles.length),
       roles: updatedRoles,
     });
+  };
+
+  // Calculate total employees from roles
+  const getTotalEmployeesFromRoles = () => {
+    return formData.roles.reduce((total, role) => {
+      const num = parseInt(role.numberOfEmployees) || 0;
+      return total + num;
+    }, 0);
   };
 
   const handleSubmit = async (e) => {
@@ -597,14 +574,15 @@ const CreateProject = () => {
             </button>
           </div>
 
-          <InputField
-            label="Number of Required Roles"
-            type="number"
-            name="requiredEmployees"
-            value={formData.requiredEmployees}
-            onChange={handleRequiredEmployeesChange}
-            placeholder="e.g. 3"
-          />
+          {formData.roles.length > 0 && getTotalEmployeesFromRoles() > 0 && (
+            <div className="employee-summary">
+              <span className="summary-label">Employees allocated:</span>
+              <span className="summary-count">{getTotalEmployeesFromRoles()}</span>
+              {formData.requiredEmployees && (
+                <span className="summary-total">/ {formData.requiredEmployees} total</span>
+              )}
+            </div>
+          )}
 
           {formData.roles.length > 0 && (
             <div className="roles-list">
@@ -622,58 +600,79 @@ const CreateProject = () => {
                     </button>
                   </div>
 
-                  {/* Role Selection */}
-                  <div className="form-field">
-                    <label>Required Role</label>
-                    {role.requiredRole ? (
-                      <div className="selected-value">
-                        <span>{role.requiredRole}</span>
-                        <button
-                          type="button"
-                          className="clear-selection"
-                          onClick={() => handleRoleChange(index, "requiredRole", "")}
+                  <div className="role-fields-grid">
+                    {/* Role Selection */}
+                    <div className="form-field">
+                      <label>Required Role</label>
+                      {role.requiredRole ? (
+                        <div className="selected-value">
+                          <span>{role.requiredRole}</span>
+                          <button
+                            type="button"
+                            className="clear-selection"
+                            onClick={() => handleRoleChange(index, "requiredRole", "")}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ) : (
+                        <div 
+                          className="autocomplete-container" 
+                          ref={el => roleDropdownRefs.current[index] = el}
                         >
-                          ×
-                        </button>
-                      </div>
-                    ) : (
-                      <div 
-                        className="autocomplete-container" 
-                        ref={el => roleDropdownRefs.current[index] = el}
-                      >
-                        <input
-                          type="text"
-                          className="autocomplete-input"
-                          value={role.roleInput}
-                          onChange={(e) => handleRoleChange(index, "roleInput", e.target.value)}
-                          onFocus={() => handleRoleChange(index, "showRoleDropdown", true)}
-                          placeholder="Select or type role"
-                        />
-                        {role.showRoleDropdown && (
-                          <div className="autocomplete-dropdown">
-                            {roleOptions
-                              .filter(r => r.toLowerCase().includes(role.roleInput.toLowerCase()))
-                              .map((r, idx) => (
+                          <input
+                            type="text"
+                            className="autocomplete-input"
+                            value={role.roleInput}
+                            onChange={(e) => handleRoleChange(index, "roleInput", e.target.value)}
+                            onFocus={() => handleRoleChange(index, "showRoleDropdown", true)}
+                            placeholder="Select or type role"
+                          />
+                          {role.showRoleDropdown && (
+                            <div className="autocomplete-dropdown">
+                              {roleOptions
+                                .filter(r => r.toLowerCase().includes(role.roleInput.toLowerCase()))
+                                .map((r, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="autocomplete-item"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      handleRoleSelect(index, r);
+                                    }}
+                                  >
+                                    {r}
+                                  </div>
+                                ))}
+                              {role.roleInput.trim() && (
                                 <div
-                                  key={idx}
-                                  className="autocomplete-item"
-                                  onClick={() => handleRoleSelect(index, r)}
+                                  className="autocomplete-item add-new"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    handleAddCustomRole(index);
+                                  }}
                                 >
-                                  {r}
+                                  + Add "{role.roleInput.trim()}"
                                 </div>
-                              ))}
-                            {role.roleInput.trim() && (
-                              <div
-                                className="autocomplete-item add-new"
-                                onClick={() => handleAddCustomRole(index)}
-                              >
-                                + Add "{role.roleInput.trim()}"
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Number of Employees for this Role */}
+                    <div className="form-field">
+                      <label>Number of Employees</label>
+                      <input
+                        type="number"
+                        className="autocomplete-input"
+                        value={role.numberOfEmployees}
+                        onChange={(e) => handleRoleChange(index, "numberOfEmployees", e.target.value)}
+                        placeholder="e.g. 2"
+                        min="1"
+                      />
+                    </div>
                   </div>
 
                   {/* Competencies Selection */}
@@ -775,7 +774,7 @@ const CreateProject = () => {
 
           {formData.roles.length === 0 && (
             <div className="empty-roles-message">
-              <p>No roles added yet. Enter a number above or click "Add Role".</p>
+              <p>No roles added yet. Click "Add Role" to get started.</p>
             </div>
           )}
         </div>
