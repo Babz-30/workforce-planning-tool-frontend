@@ -4,6 +4,7 @@ import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
 import ProjectTable from "./pages/project_manager/project_manager";
 
+import CreateProject from "./pages/project/CreateProject"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/project_manager" element={<ProjectTable />} />
+        <Route path="/create-project" element={<CreateProject />} />
       </Routes>
 
       <ToastContainer
