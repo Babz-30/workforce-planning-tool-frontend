@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
 import ProjectTable from "./pages/project_manager/project_manager";
-
 import CreateProject from "./pages/project/CreateProject";
+import EditProject from "./pages/edit_project/editproject";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,6 +19,10 @@ function App() {
         <Route
           path="/project_manager/create-project"
           element={<CreateProject />}
+        />
+        <Route
+          path="/project_manager/edit-project/:projectId"
+          element={<EditProject />}
         />
       </Routes>
 
