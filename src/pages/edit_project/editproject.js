@@ -3,7 +3,7 @@ import "./EditProject.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import getProjectById from "../../services/temp_project";
-
+import Button from "../../components/button/Button";
 // Mock InputField component
 const InputField = ({
   label,
@@ -28,17 +28,17 @@ const InputField = ({
   </div>
 );
 
-// Mock Button component
-const Button = ({ type, label, onClick, disabled, loading, variant }) => (
-  <button
-    type={type}
-    onClick={onClick}
-    disabled={disabled || loading}
-    className={`button ${variant || "primary"} ${loading ? "loading" : ""}`}
-  >
-    {label}
-  </button>
-);
+// // Mock Button component
+// const Button = ({ type, label, onClick, disabled, loading, variant }) => (
+//   <button
+//     type={type}
+//     onClick={onClick}
+//     disabled={disabled || loading}
+//     className={`button ${variant || "primary"} ${loading ? "loading" : ""}`}
+//   >
+//     {label}
+//   </button>
+// );
 
 // Mock toast
 const toast = {
@@ -569,7 +569,6 @@ const EditProject = () => {
           onChange={handleChange}
           placeholder="Enter project description"
         />
-
         <div className="date-fields-row">
           <div className="date-field">
             <label>Project Start</label>
@@ -593,7 +592,6 @@ const EditProject = () => {
             />
           </div>
         </div>
-
         <div className="textarea-field">
           <label>Task Description (Detailed)</label>
           <textarea
@@ -603,7 +601,6 @@ const EditProject = () => {
             placeholder="Describe the main tasks in detail"
           ></textarea>
         </div>
-
         {/* Skills Section */}
         <div className="skills-section">
           <label>Skills Needed for Project</label>
@@ -683,7 +680,6 @@ const EditProject = () => {
             </div>
           )}
         </div>
-
         {/* Location Section */}
         <div className="location-section">
           <label>Location (Select up to 3 convenient locations)</label>
@@ -768,7 +764,6 @@ const EditProject = () => {
             <p className="info-text">Maximum 3 locations selected</p>
           )}
         </div>
-
         <InputField
           label="Links / URL"
           type="url"
@@ -777,7 +772,6 @@ const EditProject = () => {
           onChange={handleChange}
           placeholder="Add any related links"
         />
-
         {/* Dynamic Roles Section */}
         <div className="roles-section">
           <div className="roles-header">
@@ -1039,21 +1033,19 @@ const EditProject = () => {
             </div>
           )}
         </div>
-
-        <div className="form-actions">
-          <Button
-            type="submit"
-            label={loading ? "Updating..." : "Update Project"}
-            disabled={!isFormValid || loading}
-            loading={loading}
-          />
-          <Button
-            type="button"
-            label="Cancel"
-            onClick={handleCancel}
-            variant="danger"
-          />
-        </div>
+        <Button
+          type="submit"
+          label={loading ? "Updating..." : "Update Project"}
+          disabled={!isFormValid || loading}
+          loading={loading}
+          Update
+        />
+        <Button
+          type="button"
+          onClick={handleCancel}
+          variant="danger"
+          label="Cancel"
+        ></Button>
       </form>
     </div>
   );
