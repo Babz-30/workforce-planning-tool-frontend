@@ -166,15 +166,15 @@ const EditProject = () => {
       try {
         const projectData = getProjectById(tempProjectId);
 
-        // Parse locations
-        const locations = projectData.location
-          .split("/")
-          .map((loc) => loc.trim());
-
+        // // Parse locations
+        // const locations = projectData.location
+        //   .split("/")
+        //   .map((loc) => loc.trim());
+        const locations = projectData.location.map((loc) => loc.trim());
         // Transform roles data
         const transformedRoles = projectData.roles.map((role) => ({
-          requiredRole: role.role,
-          requiredCompetencies: role.competencies || [],
+          requiredRole: role.requiredRole,
+          requiredCompetencies: role.requiredCompetencies || [],
           capacity: role.capacity || "",
           numberOfEmployees: role.numberOfEmployees?.toString() || "",
           roleInput: "",
@@ -190,7 +190,7 @@ const EditProject = () => {
           taskDescription: projectData.taskDescription,
           requiredEmployees: projectData.requiredEmployees?.toString() || "",
           links: projectData.links,
-          selectedSkills: projectData.competencies || [],
+          selectedSkills: projectData.selectedSkills || [],
           selectedLocations: locations,
           roles: transformedRoles,
         });

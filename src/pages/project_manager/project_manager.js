@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import UserProfile from "../../components/profile/profile";
-import { projectsList } from "../../services/temp_project";
+import { convertProjectsList } from "../../services/temp_project";
 
 export default function ProjectTable() {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const projects = projectsList;
+  const projects = convertProjectsList();
 
   const sortData = (key) => {
     let direction = "asc";

@@ -8,14 +8,56 @@ export const projectsList = [
     endDate: "2024-06-30",
     taskDescription:
       "Complete overhaul of the customer-facing e-commerce platform including UX research, wireframing, UI design, frontend development with React, backend API integration, payment gateway setup, and comprehensive testing across devices.",
-    requiredEmployees: 8,
+    location: ["Remote", "New York Office"],
+    links: "https://project-tracker.example.com/ecommerce",
     roles: [
-      "UI/UX Designer",
-      "Frontend Developer",
-      "Backend Developer",
-      "QA Engineer",
+      {
+        requiredRole: "UI/UX Designer",
+        requiredCompetencies: ["Figma", "UI/UX Design"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Frontend Developer",
+        requiredCompetencies: ["React", "REST API"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: [
+          "Node.js",
+          "PostgreSQL",
+          "REST API",
+          "Payment Integration",
+        ],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "QA Engineer",
+        requiredCompetencies: ["Testing"],
+        capacity: "25hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "React",
       "Node.js",
       "PostgreSQL",
@@ -23,10 +65,6 @@ export const projectsList = [
       "REST API",
       "Payment Integration",
     ],
-    capacity:
-      "Frontend: 40h/week, Backend: 35h/week, Designer: 30h/week, QA: 25h/week",
-    location: "Remote / New York Office",
-    links: "https://project-tracker.example.com/ecommerce",
   },
   {
     id: 2,
@@ -35,24 +73,57 @@ export const projectsList = [
     endDate: "2024-08-15",
     taskDescription:
       "Develop a cross-platform mobile application for patient appointment scheduling, telemedicine consultations, prescription management, and health record access. Includes HIPAA compliance implementation and security audits.",
-    requiredEmployees: 6,
+    location: ["Hybrid", "San Francisco"],
+    links: "https://jira.example.com/healthcare-app",
     roles: [
-      "Mobile Developer",
-      "Backend Developer",
-      "DevOps Engineer",
-      "Security Specialist",
+      {
+        requiredRole: "Mobile Developer",
+        requiredCompetencies: ["React Native", "Mobile Security"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["AWS", "HIPAA Compliance"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "DevOps Engineer",
+        requiredCompetencies: ["AWS", "CI/CD"],
+        capacity: "20hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Security Specialist",
+        requiredCompetencies: ["HIPAA Compliance", "Mobile Security"],
+        capacity: "15hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "React Native",
       "AWS",
       "HIPAA Compliance",
       "Mobile Security",
       "CI/CD",
     ],
-    capacity:
-      "Mobile Dev: 40h/week, Backend: 35h/week, DevOps: 20h/week, Security: 15h/week",
-    location: "Hybrid - San Francisco",
-    links: "https://jira.example.com/healthcare-app",
   },
   {
     id: 3,
@@ -61,14 +132,51 @@ export const projectsList = [
     endDate: "2024-09-30",
     taskDescription:
       "Build an intelligent analytics dashboard that uses machine learning to provide predictive insights, automated reporting, data visualization, and real-time monitoring. Integration with multiple data sources and custom ML model training.",
-    requiredEmployees: 10,
+    location: ["Remote", "London Office"],
+    links: "https://confluence.example.com/ai-dashboard",
     roles: [
-      "Data Scientist",
-      "ML Engineer",
-      "Full Stack Developer",
-      "Data Engineer",
+      {
+        requiredRole: "Data Scientist",
+        requiredCompetencies: ["Python", "TensorFlow", "Machine Learning"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "ML Engineer",
+        requiredCompetencies: ["Python", "TensorFlow", "Docker"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Full Stack Developer",
+        requiredCompetencies: ["React", "D3.js", "Python"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Data Engineer",
+        requiredCompetencies: ["Python", "Apache Spark", "Docker"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "Python",
       "TensorFlow",
       "React",
@@ -76,10 +184,6 @@ export const projectsList = [
       "Apache Spark",
       "Docker",
     ],
-    capacity:
-      "ML: 40h/week, Full Stack: 40h/week, Data Eng: 35h/week, Data Sci: 30h/week",
-    location: "Remote / London Office",
-    links: "https://confluence.example.com/ai-dashboard",
   },
   {
     id: 4,
@@ -88,23 +192,57 @@ export const projectsList = [
     endDate: "2024-10-15",
     taskDescription:
       "Develop a secure blockchain-based platform for supply chain tracking, smart contract management, and cryptocurrency payment processing with full audit trail capabilities.",
-    requiredEmployees: 7,
+    location: ["Remote", "Singapore Office"],
+    links: "https://gitlab.example.com/blockchain-platform",
     roles: [
-      "Blockchain Developer",
-      "Smart Contract Engineer",
-      "Security Specialist",
-      "Backend Developer",
+      {
+        requiredRole: "Blockchain Developer",
+        requiredCompetencies: ["Solidity", "Ethereum", "Web3.js"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Smart Contract Engineer",
+        requiredCompetencies: ["Solidity", "Ethereum"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Security Specialist",
+        requiredCompetencies: ["Cryptography", "Security"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["Node.js", "Web3.js"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "Solidity",
       "Ethereum",
       "Web3.js",
       "Node.js",
       "Cryptography",
     ],
-    capacity: "Blockchain: 40h/week, Backend: 35h/week, Security: 30h/week",
-    location: "Remote / Singapore Office",
-    links: "https://gitlab.example.com/blockchain-platform",
   },
   {
     id: 5,
@@ -113,14 +251,57 @@ export const projectsList = [
     endDate: "2024-11-30",
     taskDescription:
       "Migrate legacy systems to cloud infrastructure, implement auto-scaling, disaster recovery, cost optimization, and infrastructure as code practices.",
-    requiredEmployees: 5,
+    location: ["Remote", "Seattle Office"],
+    links: "https://jira.example.com/cloud-migration",
     roles: [
-      "DevOps Engineer",
-      "Cloud Architect",
-      "Backend Developer",
-      "QA Engineer",
+      {
+        requiredRole: "DevOps Engineer",
+        requiredCompetencies: [
+          "AWS",
+          "Kubernetes",
+          "Docker",
+          "Jenkins",
+          "Monitoring",
+        ],
+        capacity: "40hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Cloud Architect",
+        requiredCompetencies: ["AWS", "Terraform", "Kubernetes"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["AWS", "Docker"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "QA Engineer",
+        requiredCompetencies: ["Testing", "Monitoring"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "1",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "AWS",
       "Kubernetes",
       "Terraform",
@@ -128,9 +309,6 @@ export const projectsList = [
       "Jenkins",
       "Monitoring",
     ],
-    capacity: "DevOps: 40h/week, Cloud Arch: 30h/week, Backend: 35h/week",
-    location: "Remote / Seattle Office",
-    links: "https://jira.example.com/cloud-migration",
   },
   {
     id: 6,
@@ -139,14 +317,51 @@ export const projectsList = [
     endDate: "2024-12-31",
     taskDescription:
       "Create an IoT platform for smart home device integration, real-time monitoring, automation rules, voice assistant integration, and mobile app controls.",
-    requiredEmployees: 9,
+    location: ["Hybrid", "Austin Office"],
+    links: "https://project-hub.example.com/iot-platform",
     roles: [
-      "IoT Developer",
-      "Embedded Systems Engineer",
-      "Mobile Developer",
-      "Backend Developer",
+      {
+        requiredRole: "IoT Developer",
+        requiredCompetencies: ["MQTT", "Python", "AWS IoT"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Embedded Systems Engineer",
+        requiredCompetencies: ["Embedded C", "Bluetooth", "MQTT"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Mobile Developer",
+        requiredCompetencies: ["React Native"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["Python", "AWS IoT"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "MQTT",
       "Python",
       "React Native",
@@ -154,10 +369,6 @@ export const projectsList = [
       "Embedded C",
       "Bluetooth",
     ],
-    capacity:
-      "IoT: 40h/week, Mobile: 35h/week, Backend: 35h/week, Embedded: 30h/week",
-    location: "Hybrid - Austin Office",
-    links: "https://project-hub.example.com/iot-platform",
   },
   {
     id: 7,
@@ -166,14 +377,56 @@ export const projectsList = [
     endDate: "2025-01-31",
     taskDescription:
       "Build a unified customer data platform that aggregates data from multiple sources, provides real-time segmentation, predictive analytics, and personalization capabilities.",
-    requiredEmployees: 12,
+    location: ["Remote", "Boston Office"],
+    links: "https://confluence.example.com/cdp-project",
     roles: [
-      "Data Engineer",
-      "Backend Developer",
-      "Data Scientist",
-      "Frontend Developer",
+      {
+        requiredRole: "Data Engineer",
+        requiredCompetencies: [
+          "Apache Kafka",
+          "Elasticsearch",
+          "Python",
+          "SQL",
+        ],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["Python", "SQL", "Apache Kafka"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Data Scientist",
+        requiredCompetencies: ["Python", "Machine Learning", "SQL"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Frontend Developer",
+        requiredCompetencies: ["React"],
+        capacity: "30hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "Apache Kafka",
       "Elasticsearch",
       "Python",
@@ -181,10 +434,6 @@ export const projectsList = [
       "SQL",
       "Machine Learning",
     ],
-    capacity:
-      "Data Eng: 40h/week, Backend: 40h/week, Data Sci: 35h/week, Frontend: 30h/week",
-    location: "Remote / Boston Office",
-    links: "https://confluence.example.com/cdp-project",
   },
   {
     id: 8,
@@ -193,14 +442,51 @@ export const projectsList = [
     endDate: "2025-02-28",
     taskDescription:
       "Develop a scalable video streaming platform with live streaming capabilities, content delivery network integration, adaptive bitrate streaming, and social features.",
-    requiredEmployees: 11,
+    location: ["Hybrid", "Los Angeles Office"],
+    links: "https://github.example.com/video-streaming",
     roles: [
-      "Video Engineer",
-      "Backend Developer",
-      "Frontend Developer",
-      "DevOps Engineer",
+      {
+        requiredRole: "Video Engineer",
+        requiredCompetencies: ["FFmpeg", "WebRTC", "CDN", "AWS Media Services"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Backend Developer",
+        requiredCompetencies: ["Node.js", "AWS Media Services"],
+        capacity: "40hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "Frontend Developer",
+        requiredCompetencies: ["React", "WebRTC"],
+        capacity: "35hrs/week",
+        numberOfEmployees: "3",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
+      {
+        requiredRole: "DevOps Engineer",
+        requiredCompetencies: ["AWS Media Services", "CDN"],
+        capacity: "25hrs/week",
+        numberOfEmployees: "2",
+        roleInput: "",
+        competencyInput: "",
+        showRoleDropdown: false,
+        showCompetencyDropdown: false,
+      },
     ],
-    competencies: [
+    selectedSkills: [
       "FFmpeg",
       "WebRTC",
       "CDN",
@@ -208,13 +494,59 @@ export const projectsList = [
       "Node.js",
       "AWS Media Services",
     ],
-    capacity:
-      "Video Eng: 40h/week, Backend: 40h/week, Frontend: 35h/week, DevOps: 25h/week",
-    location: "Hybrid - Los Angeles Office",
-    links: "https://github.example.com/video-streaming",
   },
 ];
+
 export default function getProjectById(id) {
   console.log("Fetching project with ID:", id);
   return projectsList.find((project) => project.id === id);
+}
+
+export function convertProjectsList() {
+  return projectsList.map((project) => {
+    // Calculate total required employees
+    const requiredEmployees = project.roles.reduce((total, role) => {
+      return total + parseInt(role.numberOfEmployees || 0);
+    }, 0);
+
+    // Extract unique roles (filter out undefined/null values)
+    const roles = project.roles
+      .map((role) => role.requiredRole)
+      .filter((role) => role); // Remove undefined/null
+
+    // Extract unique competencies (flatten and deduplicate)
+    const competencies = [
+      ...new Set(project.roles.flatMap((role) => project.selectedSkills || [])),
+    ];
+
+    // Build capacity string
+    const capacity = project.roles
+      .filter((role) => role.requiredRole && role.capacity) // Only include roles with both fields
+      .map((role) => {
+        // Shorten role name (take first word)
+        const shortName = role.requiredRole.split(" ")[0];
+        return `${shortName}: ${role.capacity}`;
+      })
+      .join(", ");
+
+    // Convert location array to string
+    const location = Array.isArray(project.location)
+      ? project.location.join(" / ")
+      : project.location || "";
+
+    // Return transformed project object
+    return {
+      id: project.id,
+      description: project.description,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      taskDescription: project.taskDescription,
+      requiredEmployees,
+      roles,
+      competencies,
+      capacity,
+      location,
+      links: project.links,
+    };
+  });
 }
