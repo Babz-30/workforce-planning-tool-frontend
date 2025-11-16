@@ -1,12 +1,57 @@
-// CreateProject.js
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import InputField from "../../components/inputfield/InputField";
-import Button from "../../components/button/Button";
-import "./CreateProject.css";
-import { toast } from "react-toastify";
+import "./EditProject.css";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import getProjectById from "../../services/temp_project";
+import Button from "../../components/button/Button";
+// Mock InputField component
+const InputField = ({
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  placeholder,
+  disabled,
+}) => (
+  <div className="input-field">
+    <label>{label}</label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      disabled={disabled}
+      className="input"
+    />
+  </div>
+);
 
-const CreateProject = () => {
+// // Mock Button component
+// const Button = ({ type, label, onClick, disabled, loading, variant }) => (
+//   <button
+//     type={type}
+//     onClick={onClick}
+//     disabled={disabled || loading}
+//     className={`button ${variant || "primary"} ${loading ? "loading" : ""}`}
+//   >
+//     {label}
+//   </button>
+// );
+
+// Mock toast
+const toast = {
+  success: (msg) => alert(msg),
+  error: (msg) => alert(msg),
+};
+
+const EditProject = () => {
+  const { projectId } = useParams();
+  let [tempProjectId] = useState(projectId ? parseInt(projectId) : null);
+  console.log("Editing project ID:", projectId);
+  // projectId can be passed as a prop instead of using useParams
+
   // Predefined options
   const [skillOptions, setSkillOptions] = useState([
     "Solidity",
@@ -24,6 +69,10 @@ const CreateProject = () => {
     "AWS",
     "Azure",
     "MongoDB",
+    "PostgreSQL",
+    "Figma",
+    "REST API",
+    "Payment Integration",
   ]);
 
   const [roleOptions, setRoleOptions] = useState([
@@ -51,6 +100,12 @@ const CreateProject = () => {
     "Testing",
     "Project Management",
     "UI/UX Design",
+    "React",
+    "Node.js",
+    "PostgreSQL",
+    "Figma",
+    "REST API",
+    "Payment Integration",
   ]);
 
   const [locationOptions, setLocationOptions] = useState([
@@ -65,6 +120,7 @@ const CreateProject = () => {
     "San Francisco",
     "Tokyo",
     "Hybrid",
+    "New York Office",
   ]);
 
   const [formData, setFormData] = useState({
@@ -80,6 +136,7 @@ const CreateProject = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   // Skills management
   const [skillInput, setSkillInput] = useState("");
@@ -95,7 +152,61 @@ const CreateProject = () => {
   const roleDropdownRefs = useRef([]);
   const competencyDropdownRefs = useRef([]);
 
-  // Stable role change handler (useCallback so effect deps are safe)
+  // Mock function to fetch project data
+  // const fetchProjectData = () => {
+  //   // In real implementation, this would be an API call
+
+  //   const mockProject = getProjectById(tempProjectId);
+  //   return mockProject;
+  // };
+
+  // Load project data on component mount
+  useEffect(() => {
+    const loadProjectData = () => {
+      try {
+        const projectData = getProjectById(tempProjectId);
+
+        // // Parse locations
+        // const locations = projectData.location
+        //   .split("/")
+        //   .map((loc) => loc.trim());
+        const locations = projectData.location.map((loc) => loc.trim());
+        // Transform roles data
+        const transformedRoles = projectData.roles.map((role) => ({
+          requiredRole: role.requiredRole,
+          requiredCompetencies: role.requiredCompetencies || [],
+          capacity: role.capacity || "",
+          numberOfEmployees: role.numberOfEmployees?.toString() || "",
+          roleInput: "",
+          competencyInput: "",
+          showRoleDropdown: false,
+          showCompetencyDropdown: false,
+        }));
+
+        setFormData({
+          projectDescription: projectData.description,
+          projectStart: projectData.startDate,
+          projectEnd: projectData.endDate,
+          taskDescription: projectData.taskDescription,
+          requiredEmployees: projectData.requiredEmployees?.toString() || "",
+          links: projectData.links,
+          selectedSkills: projectData.selectedSkills || [],
+          selectedLocations: locations,
+          roles: transformedRoles,
+        });
+
+        setInitialLoading(false);
+      } catch (error) {
+        console.error("Error loading project:", error);
+        toast.error("Failed to load project data");
+        setInitialLoading(false);
+      }
+    };
+
+    loadProjectData();
+  }, [projectId, tempProjectId]);
+
+  // Stable role change handler
   const handleRoleChange = useCallback((index, field, value) => {
     setFormData((prev) => {
       const updatedRoles = prev.roles.map((role, i) =>
@@ -415,22 +526,13 @@ const CreateProject = () => {
     setLoading(true);
 
     try {
-      console.log("Project created:", formData);
-      toast.success("Project created successfully!");
-      setFormData({
-        projectDescription: "",
-        projectStart: "",
-        projectEnd: "",
-        taskDescription: "",
-        requiredEmployees: "",
-        links: "",
-        selectedSkills: [],
-        selectedLocations: [],
-        roles: [],
-      });
+      console.log("Project updated:", formData);
+      toast.success("Project updated successfully!");
+      // In real app, you would navigate back or call a callback
+      // navigate(-1);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to create project.");
+      toast.error("Failed to update project.");
     } finally {
       setLoading(false);
     }
@@ -447,9 +549,17 @@ const CreateProject = () => {
     formData.projectStart.trim() &&
     formData.projectEnd.trim();
 
+  if (initialLoading) {
+    return (
+      <div className="create-project-container">
+        <div className="loading-state">Loading project data...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="create-project-container">
-      <h2>Create New Project</h2>
+      <h2>Edit Project</h2>
       <form onSubmit={handleSubmit} className="create-project-form">
         <InputField
           label="Project Description"
@@ -459,7 +569,6 @@ const CreateProject = () => {
           onChange={handleChange}
           placeholder="Enter project description"
         />
-
         <div className="date-fields-row">
           <div className="date-field">
             <label>Project Start</label>
@@ -483,7 +592,6 @@ const CreateProject = () => {
             />
           </div>
         </div>
-
         <div className="textarea-field">
           <label>Task Description (Detailed)</label>
           <textarea
@@ -493,7 +601,6 @@ const CreateProject = () => {
             placeholder="Describe the main tasks in detail"
           ></textarea>
         </div>
-
         {/* Skills Section */}
         <div className="skills-section">
           <label>Skills Needed for Project</label>
@@ -573,7 +680,6 @@ const CreateProject = () => {
             </div>
           )}
         </div>
-
         {/* Location Section */}
         <div className="location-section">
           <label>Location (Select up to 3 convenient locations)</label>
@@ -658,7 +764,6 @@ const CreateProject = () => {
             <p className="info-text">Maximum 3 locations selected</p>
           )}
         </div>
-
         <InputField
           label="Links / URL"
           type="url"
@@ -667,7 +772,6 @@ const CreateProject = () => {
           onChange={handleChange}
           placeholder="Add any related links"
         />
-
         {/* Dynamic Roles Section */}
         <div className="roles-section">
           <div className="roles-header">
@@ -929,22 +1033,22 @@ const CreateProject = () => {
             </div>
           )}
         </div>
-
         <Button
           type="submit"
-          label={loading ? "Creating..." : "Create Project"}
+          label={loading ? "Updating..." : "Update Project"}
           disabled={!isFormValid || loading}
           loading={loading}
+          Update
         />
         <Button
-          type="button" 
-          label="Cancel"
+          type="button"
           onClick={handleCancel}
-          variant="danger" 
-        />
+          variant="danger"
+          label="Cancel"
+        ></Button>
       </form>
     </div>
   );
 };
 
-export default CreateProject;
+export default EditProject;

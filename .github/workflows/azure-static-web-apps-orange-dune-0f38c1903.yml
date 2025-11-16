@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - master
+      - pmhomepage
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
+      - pmhomepage
 
 jobs:
   build_and_deploy_job:

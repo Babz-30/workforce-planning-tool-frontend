@@ -1,0 +1,48 @@
+.profile-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-btn:hover {
+  background-color: #d1d5db;
+}
+
+.profile-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #374151;
+}
+
+.dropdown-menu {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  color: #374151;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdown-item svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+.max-w-custom {
+  max-width: 1280px;
+}

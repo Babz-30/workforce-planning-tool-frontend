@@ -2,7 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
-import CreateProject from "./pages/project/CreateProject"
+import ProjectTable from "./pages/project_manager/project_manager";
+import CreateProject from "./pages/project/CreateProject";
+import EditProject from "./pages/edit_project/editproject";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,9 +15,17 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/create-project" element={<CreateProject />} />
+        <Route path="/project_manager" element={<ProjectTable />} />
+        <Route
+          path="/project_manager/create-project"
+          element={<CreateProject />}
+        />
+        <Route
+          path="/project_manager/edit-project/:projectId"
+          element={<EditProject />}
+        />
       </Routes>
-     
+
       <ToastContainer
         position="top-right"
         autoClose={2500}
@@ -26,7 +37,6 @@ function App() {
         theme="colored"
       />
     </Router>
-
   );
 }
 

@@ -4,14 +4,15 @@ import InputField from "../../components/inputfield/InputField";
 import Button from "../../components/button/Button";
 import "./Login.css";
 import { toast } from "react-toastify";
+import Roles from "../../constant/roles";
 
 console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
 
 // Automatically choose mock or real API
-const useMock = process.env.REACT_APP_USE_MOCK === "true";
+const useMock = process.env.REACT_APP_USE_MOCK === "false";
 const api = useMock
   ? require("../../services/apiMock")
-  : require("../../services/api");
+  : require("../../services/login/login_api");
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -30,19 +31,21 @@ const Login = () => {
       const response = await api.login(username, password);
       console.log("Mock API returned:", response);
 
-      if (response.status === 201) {
+      // if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Logged in as:", response.data.username);
-        toast.success(`Welcome back, ${response.data.username}! 👋`, {
+        toast.success(`Welcome back, ${response.data.firstName}! 👋`, {
           position: "top-right",
         });
 
         // Save for session
-        localStorage.setItem("response", JSON.stringify(response)); 
+        localStorage.setItem("response", JSON.stringify(response));
 
         // Redirect based on role
-        if (response.data.role === "manager") navigate("/home");
-        else if (response.role === "employee") navigate("/home");
-        else if (response.role === "admin") navigate("/home");
+        if (response.data.role === Roles.Project_Manager)
+          navigate("/project_manager");
+        else if (response.data.role === Roles.employee) navigate("/home");
+        else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
     } catch (err) {
@@ -91,6 +94,8 @@ const Login = () => {
         {loading && <div className="spinner"></div>}
         {error && <p className="error">{error}</p>}
       </form>
+      <p className="note">Demo users: pm_john/pm123</p>
+      <p className="note">version: 0.3</p>
     </div>
   );
 };
