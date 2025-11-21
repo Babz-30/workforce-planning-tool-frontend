@@ -95,7 +95,11 @@ const Login = () => {
         {error && <p className="error">{error}</p>}
       </form>
       <p className="note">Demo users: sarah_pm/SecurePass123!</p>
-      <p className="note">version: 0.3</p>
+      <p className="note">version: 0.4</p>
+      <p className="note">
+        Please ensure that the backend service is started before attempting to
+        log in. For further assistance, kindly contact our team.
+      </p>
     </div>
   );
 };
