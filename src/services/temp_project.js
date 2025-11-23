@@ -502,7 +502,7 @@ export default function getProjectById(id) {
   return projectsList.find((project) => project.id === id);
 }
 
-export function convertProjectsList() {
+export function convertProjectsList(projectsList) {
   return projectsList.map((project) => {
     // Calculate total required employees
     const requiredEmployees = project.roles.reduce((total, role) => {
@@ -530,16 +530,16 @@ export function convertProjectsList() {
       .join(", ");
 
     // Convert location array to string
-    const location = Array.isArray(project.location)
-      ? project.location.join(" / ")
-      : project.location || "";
+    const location = Array.isArray(project.selectedLocations)
+      ? project.selectedLocations.join(" / ")
+      : project.selectedLocations || "";
 
     // Return transformed project object
     return {
       id: project.id,
       description: project.description,
-      startDate: project.startDate,
-      endDate: project.endDate,
+      startDate: project.projectStart,
+      endDate: project.projectEnd,
       taskDescription: project.taskDescription,
       requiredEmployees,
       roles,
@@ -548,5 +548,19 @@ export function convertProjectsList() {
       location,
       links: project.links,
     };
+
+    // return {
+    //   id: project.projectId,
+    //   description: project.projectDescription,
+    //   startDate: project.projectStart,
+    //   endDate: project.projectEnd,
+    //   taskDescription: project.taskDescription,
+    //   requiredEmployees,
+    //   roles,
+    //   competencies,
+    //   capacity,
+    //   location,
+    //   links: project.links,
+    // };
   });
 }

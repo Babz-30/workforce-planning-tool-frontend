@@ -124,6 +124,7 @@ const EditProject = () => {
   ]);
 
   const [formData, setFormData] = useState({
+    projectName: "",
     projectDescription: "",
     projectStart: "",
     projectEnd: "",
@@ -184,6 +185,7 @@ const EditProject = () => {
         }));
 
         setFormData({
+          projectName: projectData.projectName,
           projectDescription: projectData.description,
           projectStart: projectData.startDate,
           projectEnd: projectData.endDate,
@@ -545,6 +547,7 @@ const EditProject = () => {
   };
 
   const isFormValid =
+    formData.projectName.trim() &&
     formData.projectDescription.trim() &&
     formData.projectStart.trim() &&
     formData.projectEnd.trim();
@@ -561,6 +564,15 @@ const EditProject = () => {
     <div className="create-project-container">
       <h2>Edit Project</h2>
       <form onSubmit={handleSubmit} className="create-project-form">
+        <InputField
+          label="Project Name"
+          type="text"
+          name="projectName"
+          value={formData.projectName}
+          onChange={handleChange}
+          placeholder="Enter project name "
+        />
+
         <InputField
           label="Project Description"
           type="text"

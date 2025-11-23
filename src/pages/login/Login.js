@@ -8,15 +8,10 @@ import Roles from "../../constant/roles";
 
 console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
 
-// Automatically choose mock or real API
-const useMock = process.env.REACT_APP_USE_MOCK === "false";
-const api = useMock
-  ? require("../../services/apiMock")
-  : require("../../services/login/login_api");
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [Base_URL, setBase_URL] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,18 +23,28 @@ const Login = () => {
 
     try {
       // API call to authenticate users
-      const response = await api.login(username, password);
-      console.log("Mock API returned:", response);
+      if (Base_URL.trim() !== "") {
+        localStorage.setItem("Base_URL", Base_URL);
+        localStorage.setItem("useMock", false);
+      } else {
+        localStorage.removeItem("Base_URL");
+        localStorage.setItem("useMock", true);
+      }
 
-      // if (response.status === 201) {
-      if (response.status === 200) {
+      // Automatically choose mock or real API
+      const useMock =
+        process.env.REACT_APP_USE_MOCK === localStorage.getItem("useMock");
+      const api = useMock
+        ? require("../../services/apiMock")
+        : require("../../services/login/login_api");
+
+      const response = await api.login(username, password);
+
+      if (response.status === 201 || response.status === 200) {
         console.log("Logged in as:", response.data.username);
         toast.success(`Welcome back, ${response.data.firstName}! 👋`, {
           position: "top-right",
         });
-
-        // Save for session
-        localStorage.setItem("response", JSON.stringify(response));
 
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)
@@ -83,7 +88,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
         />
-
+        <InputField
+          label="Base URL"
+          type="text"
+          name="Base_URL"
+          value={Base_URL}
+          onChange={(e) => setBase_URL(e.target.value)}
+          placeholder="Enter Base URL"
+        />
         <Button
           type="submit"
           label={loading ? "Signing in..." : "Sign In"}
@@ -95,6 +107,7 @@ const Login = () => {
         {error && <p className="error">{error}</p>}
       </form>
       <p className="note">Demo users: sarah_pm/SecurePass123!</p>
+
       <p className="note">version: 0.4</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
