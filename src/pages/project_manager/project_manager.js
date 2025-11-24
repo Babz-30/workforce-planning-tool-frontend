@@ -389,6 +389,7 @@ export default function ProjectTable() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentProjects = sortedProjects.slice(startIndex, endIndex);
+  console.log(currentProjects);
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {

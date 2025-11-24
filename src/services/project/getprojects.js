@@ -12,3 +12,15 @@ export async function GetProjectByCreator() {
   let res = convertProjectsList(response.data.data);
   return res;
 }
+
+export async function GetProjectById(ProjectId) {
+  const response = await axios.get(
+    localStorage.getItem("Base_URL") +
+      ApiEndPoints.Get_Project_by_Id +
+      ProjectId
+  );
+  console.log("Response data:", response.data.data);
+  // let res = convertProjectsList([response.data.data]);
+  // console.log("Converted project data:", res);
+  return response.data.data;
+}

@@ -499,7 +499,7 @@ export const projectsList = [
 
 export default function getProjectById(id) {
   console.log("Fetching project with ID:", id);
-  return projectsList.find((project) => project.id === id);
+  return projectsList.find((project) => project.projectId === id);
 }
 
 export function convertProjectsList(projectsList) {
@@ -536,7 +536,7 @@ export function convertProjectsList(projectsList) {
 
     // Return transformed project object
     return {
-      id: project.id,
+      id: project.projectId,
       description: project.description,
       startDate: project.projectStart,
       endDate: project.projectEnd,

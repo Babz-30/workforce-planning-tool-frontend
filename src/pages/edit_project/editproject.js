@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./EditProject.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import getProjectById from "../../services/temp_project";
+// import getProjectById from "../../services/temp_project";
 import Button from "../../components/button/Button";
+import { GetProjectById } from "../../services/project/getprojects";
+
 // Mock InputField component
 const InputField = ({
   label,
@@ -48,7 +50,7 @@ const toast = {
 
 const EditProject = () => {
   const { projectId } = useParams();
-  let [tempProjectId] = useState(projectId ? parseInt(projectId) : null);
+  let [tempProjectId] = useState(projectId ? projectId : null);
   console.log("Editing project ID:", projectId);
   // projectId can be passed as a prop instead of using useParams
 
@@ -124,7 +126,6 @@ const EditProject = () => {
   ]);
 
   const [formData, setFormData] = useState({
-    projectName: "",
     projectDescription: "",
     projectStart: "",
     projectEnd: "",
@@ -163,16 +164,18 @@ const EditProject = () => {
 
   // Load project data on component mount
   useEffect(() => {
-    const loadProjectData = () => {
+    const loadProjectData = async () => {
       try {
-        const projectData = getProjectById(tempProjectId);
+        setInitialLoading(true); // Set loading to true at start
 
-        // // Parse locations
-        // const locations = projectData.location
-        //   .split("/")
-        //   .map((loc) => loc.trim());
-        const locations = projectData.location.map((loc) => loc.trim());
-        // Transform roles data
+        // Await the API call
+        let projectData = await GetProjectById(tempProjectId);
+        console.log("Fetched project data:", projectData);
+
+        const locations = projectData.selectedLocations.map((loc) =>
+          loc.trim()
+        );
+
         const transformedRoles = projectData.roles.map((role) => ({
           requiredRole: role.requiredRole,
           requiredCompetencies: role.requiredCompetencies || [],
@@ -185,10 +188,9 @@ const EditProject = () => {
         }));
 
         setFormData({
-          projectName: projectData.projectName,
-          projectDescription: projectData.description,
-          projectStart: projectData.startDate,
-          projectEnd: projectData.endDate,
+          projectDescription: projectData.projectDescription,
+          projectStart: projectData.projectStart,
+          projectEnd: projectData.projectEnd,
           taskDescription: projectData.taskDescription,
           requiredEmployees: projectData.requiredEmployees?.toString() || "",
           links: projectData.links,
@@ -207,7 +209,6 @@ const EditProject = () => {
 
     loadProjectData();
   }, [projectId, tempProjectId]);
-
   // Stable role change handler
   const handleRoleChange = useCallback((index, field, value) => {
     setFormData((prev) => {
@@ -529,6 +530,7 @@ const EditProject = () => {
 
     try {
       console.log("Project updated:", formData);
+      console.log("Project ID:", formData);
       toast.success("Project updated successfully!");
       // In real app, you would navigate back or call a callback
       // navigate(-1);
@@ -547,7 +549,6 @@ const EditProject = () => {
   };
 
   const isFormValid =
-    formData.projectName.trim() &&
     formData.projectDescription.trim() &&
     formData.projectStart.trim() &&
     formData.projectEnd.trim();
@@ -564,15 +565,6 @@ const EditProject = () => {
     <div className="create-project-container">
       <h2>Edit Project</h2>
       <form onSubmit={handleSubmit} className="create-project-form">
-        <InputField
-          label="Project Name"
-          type="text"
-          name="projectName"
-          value={formData.projectName}
-          onChange={handleChange}
-          placeholder="Enter project name "
-        />
-
         <InputField
           label="Project Description"
           type="text"
@@ -799,11 +791,6 @@ const EditProject = () => {
               <span className="summary-count">
                 {getTotalEmployeesFromRoles()}
               </span>
-              {formData.requiredEmployees && (
-                <span className="summary-total">
-                  / {formData.requiredEmployees} total
-                </span>
-              )}
             </div>
           )}
 
