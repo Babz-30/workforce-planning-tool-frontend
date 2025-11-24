@@ -1,6 +1,6 @@
 import axios from "axios";
 import ApiEndPoints from "../../constant/ApiEndpoint";
-import { convertProjectsList } from "../temp_project";
+import { convertProjectsList } from "../../helper/apiBinder";
 
 export async function GetProjectByCreator() {
   const response = await axios.get(
@@ -19,8 +19,5 @@ export async function GetProjectById(ProjectId) {
       ApiEndPoints.Get_Project_by_Id +
       ProjectId
   );
-  console.log("Response data:", response.data.data);
-  // let res = convertProjectsList([response.data.data]);
-  // console.log("Converted project data:", res);
   return response.data.data;
 }

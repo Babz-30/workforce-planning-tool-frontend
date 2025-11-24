@@ -11,7 +11,8 @@ console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [Base_URL, setBase_URL] = useState("");
+  // const [Base_URL, setBase_URL] = useState("");
+  const Base_URL = "https://workforcemangementtool.onrender.com";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -88,14 +89,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
         />
-        <InputField
+        {/* <InputField
           label="Base URL"
           type="text"
           name="Base_URL"
           value={Base_URL}
           onChange={(e) => setBase_URL(e.target.value)}
           placeholder="Enter Base URL"
-        />
+        /> */}
         <Button
           type="submit"
           label={loading ? "Signing in..." : "Sign In"}
@@ -106,9 +107,9 @@ const Login = () => {
         {loading && <div className="spinner"></div>}
         {error && <p className="error">{error}</p>}
       </form>
-      <p className="note">Demo users: sarah_pm/SecurePass123!</p>
+      {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: 0.5</p>
+      <p className="note">version: 0.6.11.24</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.

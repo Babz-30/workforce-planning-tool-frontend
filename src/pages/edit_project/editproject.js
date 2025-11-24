@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { toast } from "react-toastify";
 import "./EditProject.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 // import getProjectById from "../../services/temp_project";
 import Button from "../../components/button/Button";
 import { GetProjectById } from "../../services/project/getprojects";
+import { EditProjectData } from "../../services/project/putproject";
+let projectData = null;
 
 // Mock InputField component
 const InputField = ({
@@ -30,31 +33,10 @@ const InputField = ({
   </div>
 );
 
-// // Mock Button component
-// const Button = ({ type, label, onClick, disabled, loading, variant }) => (
-//   <button
-//     type={type}
-//     onClick={onClick}
-//     disabled={disabled || loading}
-//     className={`button ${variant || "primary"} ${loading ? "loading" : ""}`}
-//   >
-//     {label}
-//   </button>
-// );
-
-// Mock toast
-const toast = {
-  success: (msg) => alert(msg),
-  error: (msg) => alert(msg),
-};
-
 const EditProject = () => {
   const { projectId } = useParams();
   let [tempProjectId] = useState(projectId ? projectId : null);
   console.log("Editing project ID:", projectId);
-  // projectId can be passed as a prop instead of using useParams
-
-  // Predefined options
   const [skillOptions, setSkillOptions] = useState([
     "Solidity",
     "Ethereum",
@@ -154,14 +136,6 @@ const EditProject = () => {
   const roleDropdownRefs = useRef([]);
   const competencyDropdownRefs = useRef([]);
 
-  // Mock function to fetch project data
-  // const fetchProjectData = () => {
-  //   // In real implementation, this would be an API call
-
-  //   const mockProject = getProjectById(tempProjectId);
-  //   return mockProject;
-  // };
-
   // Load project data on component mount
   useEffect(() => {
     const loadProjectData = async () => {
@@ -169,7 +143,7 @@ const EditProject = () => {
         setInitialLoading(true); // Set loading to true at start
 
         // Await the API call
-        let projectData = await GetProjectById(tempProjectId);
+        projectData = await GetProjectById(tempProjectId);
         console.log("Fetched project data:", projectData);
 
         const locations = projectData.selectedLocations.map((loc) =>
@@ -531,9 +505,13 @@ const EditProject = () => {
     try {
       console.log("Project updated:", formData);
       console.log("Project ID:", formData);
-      toast.success("Project updated successfully!");
-      // In real app, you would navigate back or call a callback
-      // navigate(-1);
+      let responseStatus = await EditProjectData(formData, projectData);
+      if (responseStatus === 200) {
+        toast.success(
+          "Project " + projectData.projectId + " updated successfully!"
+        );
+        navigate("/project_manager");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to update project.");
