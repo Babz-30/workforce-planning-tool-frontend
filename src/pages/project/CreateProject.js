@@ -5,8 +5,10 @@ import Button from "../../components/button/Button";
 import "./CreateProject.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { PostProject } from "../../services/project/postproject";
 
 const CreateProject = () => {
+  const navigate = useNavigate();
   // Predefined options
   const [skillOptions, setSkillOptions] = useState([
     "Solidity",
@@ -68,6 +70,7 @@ const CreateProject = () => {
   ]);
 
   const [formData, setFormData] = useState({
+    // projectName: "",
     projectDescription: "",
     projectStart: "",
     projectEnd: "",
@@ -416,18 +419,25 @@ const CreateProject = () => {
 
     try {
       console.log("Project created:", formData);
-      toast.success("Project created successfully!");
-      setFormData({
-        projectDescription: "",
-        projectStart: "",
-        projectEnd: "",
-        taskDescription: "",
-        requiredEmployees: "",
-        links: "",
-        selectedSkills: [],
-        selectedLocations: [],
-        roles: [],
-      });
+      let responseStatus = await PostProject(formData);
+      if (responseStatus === 200 || responseStatus === 201) {
+        toast.success("Project created successfully!");
+        setFormData({
+          // projectName: "",
+          projectDescription: "",
+          projectStart: "",
+          projectEnd: "",
+          taskDescription: "",
+          requiredEmployees: "",
+          links: "",
+          selectedSkills: [],
+          selectedLocations: [],
+          roles: [],
+        });
+        navigate("/project_manager"); // Go back to previous page
+      } else {
+        toast.error("Failed to create project.");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to create project.");
@@ -437,12 +447,13 @@ const CreateProject = () => {
   };
 
   // Navigation for Cancel button
-  const navigate = useNavigate();
+
   const handleCancel = () => {
     navigate(-1); // Goes back to previous page
   };
 
   const isFormValid =
+    // formData.projectName.trim() &&
     formData.projectDescription.trim() &&
     formData.projectStart.trim() &&
     formData.projectEnd.trim();
@@ -937,10 +948,10 @@ const CreateProject = () => {
           loading={loading}
         />
         <Button
-          type="button" 
+          type="button"
           label="Cancel"
           onClick={handleCancel}
-          variant="danger" 
+          variant="danger"
         />
       </form>
     </div>
