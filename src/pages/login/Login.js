@@ -71,7 +71,9 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login In</h2>
+      <h2>Workforce Management Tool </h2>
+      <h2>Log In</h2>
+
       <form onSubmit={handleLogin} className="login-form">
         <InputField
           label="User Name"
