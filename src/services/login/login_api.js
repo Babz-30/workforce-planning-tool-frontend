@@ -1,12 +1,17 @@
 import axios from "axios";
 
-// change once deployed
-const API_BASE_URL =
-  "https://workforcemangementtool.onrender.com/api/auth";
-
 export const login = async (username, password) => {
-  return await axios.post(`${API_BASE_URL}/login`, {
-    username: username,
-    password: password,
-  });
+  let res = await axios.post(
+    `${localStorage.getItem("Base_URL")}/api/auth/login`,
+    {
+      username: username,
+      password: password,
+    }
+  );
+  localStorage.setItem("loginResponse", JSON.stringify(res.data));
+  console.log(
+    "Login API response:",
+    JSON.parse(localStorage.getItem("loginResponse")).username
+  );
+  return res;
 };

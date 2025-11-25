@@ -15,10 +15,11 @@ import {
     normalizeEmployeeData,
 } from "../../constant/employeeConstants.js";
 
-console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
-
 // Automatically choose mock or real API
 const useMock = process.env.REACT_APP_USE_MOCK === "true";
+
+console.log("Using mock for Employee Update:", useMock);
+
 const { getEmployeeById, updateEmployeeById } = useMock
   ? require("../../services/mock/mockEmployeeApi")
   : require("../../services/employee/employeeApi");
@@ -89,7 +90,7 @@ const UpdateEmployee = () => {
     useEffect(() => {
         const loadEmployeeData = async () => {
             try {
-                const storedData = location.state || JSON.parse(localStorage.getItem("logindata") || "null");
+                const storedData = location.state || JSON.parse(localStorage.getItem("loginResponse") || "null");
 
                 console.log("StoredData:", storedData);
 

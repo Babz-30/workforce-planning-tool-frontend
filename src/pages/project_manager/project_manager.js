@@ -1,17 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./project_manager.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import UserProfile from "../../components/profile/profile";
-import { convertProjectsList } from "../../services/temp_project";
+import { GetProjectByCreator } from "../../services/project/getprojects";
+import { publishProject } from "../../services/project/patchprojects";
 
 export default function ProjectTable() {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [publishingId, setPublishingId] = useState(null); // Track which project is being published
   const itemsPerPage = 5;
   const navigate = useNavigate();
-  const projects = convertProjectsList();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        let res = await GetProjectByCreator();
+        setProjects(res);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+        setError("Failed to load projects. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Handle publish function
+  const handlePublish = async (projectId) => {
+    setPublishingId(projectId);
+
+    try {
+      const response = await publishProject(projectId);
+      if (response === 200) {
+        // Mark project as published
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project.id === projectId
+              ? { ...project, isPublished: true }
+              : project
+          )
+        );
+      } else {
+        console.error("Failed to publish project");
+        alert("Failed to publish project");
+      }
+    } catch (error) {
+      console.error("Error publishing project:", error);
+      alert("Error publishing project: " + error.message);
+      return { success: false };
+    } finally {
+      setPublishingId(null);
+    }
+  };
 
   const sortData = (key) => {
     let direction = "asc";
@@ -19,7 +69,7 @@ export default function ProjectTable() {
       direction = "desc";
     }
     setSortConfig({ key, direction });
-    setCurrentPage(1); // Reset to first page when sorting
+    setCurrentPage(1);
   };
 
   const getSortedProjects = () => {
@@ -58,10 +108,19 @@ export default function ProjectTable() {
   };
 
   const sortedProjects = getSortedProjects();
-  const totalPages = Math.ceil(sortedProjects.length / itemsPerPage);
+  const unpublishedProjects = sortedProjects;
+
+  /*This is the code to filter out published projects, but currently commented out*/
+
+  // Filter out published projects
+  // const unpublishedProjects = sortedProjects.filter(
+  //   (project) => !project.isPublished
+  // );
+
+  const totalPages = Math.ceil(unpublishedProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentProjects = sortedProjects.slice(startIndex, endIndex);
+  const currentProjects = unpublishedProjects.slice(startIndex, endIndex);
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -99,6 +158,96 @@ export default function ProjectTable() {
 
     return pages;
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="project-manager-page">
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+          <div className="container-fluid max-w-custom d-flex justify-between align-items-center">
+            <ul className="nav nav-tabs gap-4">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#home">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/home">
+                  Staffing
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/project_manager">
+                  Approvals
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link disabled" aria-disabled="true" href="/">
+                  Disabled
+                </a>
+              </li>
+            </ul>
+            <UserProfile />
+          </div>
+        </nav>
+        <div className="container">
+          <div className="text-center mt-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3">Loading projects...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="project-manager-page">
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+          <div className="container-fluid max-w-custom d-flex justify-between align-items-center">
+            <ul className="nav nav-tabs gap-4">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#home">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/home">
+                  Staffing
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/project_manager">
+                  Approvals
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link disabled" aria-disabled="true" href="/">
+                  Disabled
+                </a>
+              </li>
+            </ul>
+            <UserProfile />
+          </div>
+        </nav>
+        <div className="container">
+          <div className="alert alert-danger mt-5" role="alert">
+            <h4 className="alert-heading">Error!</h4>
+            <p>{error}</p>
+            <button
+              className="btn btn-primary"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="project-manager-page">
@@ -223,7 +372,9 @@ export default function ProjectTable() {
                             ))}
                           </div>
                         </div>
-                        <div className="capacity">⏱️ {project.capacity}</div>
+                        <div className="capacity">
+                          ⏱️ {project.capacity} Hours/Week
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -240,14 +391,37 @@ export default function ProjectTable() {
                         >
                           Edit/Delete
                         </button>
-                        <button
+                        {/* <button
                           type="button"
                           className="btn btn-success"
-                          onClick={() =>
-                            navigate("/project_manager/create-project")
+                          onClick={() => handlePublish(project.id)}
+                          disabled={
+                            project.isPublished || publishingId === project.id
                           }
                         >
-                          Publish
+                          {project.isPublished
+                            ? "Published ✓"
+                            : publishingId === project.id
+                            ? "Publishing..."
+                            : "Publish"}
+                        </button> */}
+                        <button
+                          type="button"
+                          className={`btn ${
+                            project.isPublished
+                              ? "btn-secondary"
+                              : "btn-success"
+                          }`}
+                          onClick={() => handlePublish(project.id)}
+                          disabled={
+                            project.isPublished || publishingId === project.id
+                          }
+                        >
+                          {project.isPublished
+                            ? "Published ✓"
+                            : publishingId === project.id
+                            ? "Publishing..."
+                            : "Publish"}
                         </button>
                       </div>
                     </td>
@@ -260,8 +434,9 @@ export default function ProjectTable() {
 
         <div className="footer">
           <span className="footer-text">
-            Showing {startIndex + 1}-{Math.min(endIndex, sortedProjects.length)}{" "}
-            of {sortedProjects.length} projects
+            Showing {startIndex + 1}-
+            {Math.min(endIndex, unpublishedProjects.length)} of{" "}
+            {unpublishedProjects.length} projects
           </span>
           <div className="pagination">
             <button

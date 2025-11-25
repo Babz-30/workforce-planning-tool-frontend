@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { toast } from "react-toastify";
 import "./EditProject.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import getProjectById from "../../services/temp_project";
+// import getProjectById from "../../services/temp_project";
 import Button from "../../components/button/Button";
+import { GetProjectById } from "../../services/project/getprojects";
+import { EditProjectData } from "../../services/project/putproject";
+let projectData = null;
+
 // Mock InputField component
 const InputField = ({
   label,
@@ -28,31 +33,10 @@ const InputField = ({
   </div>
 );
 
-// // Mock Button component
-// const Button = ({ type, label, onClick, disabled, loading, variant }) => (
-//   <button
-//     type={type}
-//     onClick={onClick}
-//     disabled={disabled || loading}
-//     className={`button ${variant || "primary"} ${loading ? "loading" : ""}`}
-//   >
-//     {label}
-//   </button>
-// );
-
-// Mock toast
-const toast = {
-  success: (msg) => alert(msg),
-  error: (msg) => alert(msg),
-};
-
 const EditProject = () => {
   const { projectId } = useParams();
-  let [tempProjectId] = useState(projectId ? parseInt(projectId) : null);
+  let [tempProjectId] = useState(projectId ? projectId : null);
   console.log("Editing project ID:", projectId);
-  // projectId can be passed as a prop instead of using useParams
-
-  // Predefined options
   const [skillOptions, setSkillOptions] = useState([
     "Solidity",
     "Ethereum",
@@ -152,26 +136,20 @@ const EditProject = () => {
   const roleDropdownRefs = useRef([]);
   const competencyDropdownRefs = useRef([]);
 
-  // Mock function to fetch project data
-  // const fetchProjectData = () => {
-  //   // In real implementation, this would be an API call
-
-  //   const mockProject = getProjectById(tempProjectId);
-  //   return mockProject;
-  // };
-
   // Load project data on component mount
   useEffect(() => {
-    const loadProjectData = () => {
+    const loadProjectData = async () => {
       try {
-        const projectData = getProjectById(tempProjectId);
+        setInitialLoading(true); // Set loading to true at start
 
-        // // Parse locations
-        // const locations = projectData.location
-        //   .split("/")
-        //   .map((loc) => loc.trim());
-        const locations = projectData.location.map((loc) => loc.trim());
-        // Transform roles data
+        // Await the API call
+        projectData = await GetProjectById(tempProjectId);
+        console.log("Fetched project data:", projectData);
+
+        const locations = projectData.selectedLocations.map((loc) =>
+          loc.trim()
+        );
+
         const transformedRoles = projectData.roles.map((role) => ({
           requiredRole: role.requiredRole,
           requiredCompetencies: role.requiredCompetencies || [],
@@ -184,9 +162,9 @@ const EditProject = () => {
         }));
 
         setFormData({
-          projectDescription: projectData.description,
-          projectStart: projectData.startDate,
-          projectEnd: projectData.endDate,
+          projectDescription: projectData.projectDescription,
+          projectStart: projectData.projectStart,
+          projectEnd: projectData.projectEnd,
           taskDescription: projectData.taskDescription,
           requiredEmployees: projectData.requiredEmployees?.toString() || "",
           links: projectData.links,
@@ -205,7 +183,6 @@ const EditProject = () => {
 
     loadProjectData();
   }, [projectId, tempProjectId]);
-
   // Stable role change handler
   const handleRoleChange = useCallback((index, field, value) => {
     setFormData((prev) => {
@@ -527,9 +504,14 @@ const EditProject = () => {
 
     try {
       console.log("Project updated:", formData);
-      toast.success("Project updated successfully!");
-      // In real app, you would navigate back or call a callback
-      // navigate(-1);
+      console.log("Project ID:", formData);
+      let responseStatus = await EditProjectData(formData, projectData);
+      if (responseStatus === 200) {
+        toast.success(
+          "Project " + projectData.projectId + " updated successfully!"
+        );
+        navigate("/project_manager");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to update project.");
@@ -787,11 +769,6 @@ const EditProject = () => {
               <span className="summary-count">
                 {getTotalEmployeesFromRoles()}
               </span>
-              {formData.requiredEmployees && (
-                <span className="summary-total">
-                  / {formData.requiredEmployees} total
-                </span>
-              )}
             </div>
           )}
 

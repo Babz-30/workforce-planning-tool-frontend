@@ -6,17 +6,13 @@ import "./Login.css";
 import { toast } from "react-toastify";
 import Roles from "../../constant/roles";
 
-console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
 
-// Automatically choose mock or real API
-const useMock = process.env.REACT_APP_USE_MOCK === "true";
-const api = useMock
-  ? require("../../services/mock/apiMockLogin")
-  : require("../../services/login/login_api");
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  // const [Base_URL, setBase_URL] = useState("");
+  const Base_URL = "https://workforcemangementtool.onrender.com";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,24 +23,42 @@ const Login = () => {
     setLoading(true);
 
     try {
+      
+      if (Base_URL.trim() !== "") {
+        localStorage.setItem("Base_URL", Base_URL);
+        localStorage.setItem("useMock", false);
+      } else {
+        localStorage.removeItem("Base_URL");
+        localStorage.setItem("useMock", true);
+      }      
+
+      // Automatically choose mock or real API
+      const useMock =
+        process.env.REACT_APP_USE_MOCK === localStorage.getItem("useMock");
+      const api = useMock
+        ? require("../../services/apiMock")
+        : require("../../services/login/login_api");
+
+      console.log("Using mock for login:", useMock);
+
       // API call to authenticate users
       const response = await api.login(username, password);
+
       console.log("API returned:", response);
 
-      // if (response.status === 201) {
-      if (response.status === 200) {
+      if (response.status === 201 || response.status === 200) {
         console.log("Logged in as:", response.data.username);
         toast.success(`Welcome back, ${response.data.firstName}! 👋`, {
           position: "top-right",
         });
 
         // Save for session
-        localStorage.setItem("logindata", JSON.stringify(response));
+        //localStorage.setItem("loginResponse", JSON.stringify(response));
 
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)
           navigate("/project_manager");
-        else if (response.data.role === Roles.employee) navigate("/update-employee", { state: response.data });
+        else if (response.data.role === Roles.Employee) navigate("/update-employee", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
@@ -65,7 +79,9 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login In</h2>
+      <h2>Workforce Management Tool </h2>
+      <h2>Log In</h2>
+
       <form onSubmit={handleLogin} className="login-form">
         <InputField
           label="User Name"
@@ -83,7 +99,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
         />
-
+        {/* <InputField
+          label="Base URL"
+          type="text"
+          name="Base_URL"
+          value={Base_URL}
+          onChange={(e) => setBase_URL(e.target.value)}
+          placeholder="Enter Base URL"
+        /> */}
         <Button
           type="submit"
           label={loading ? "Signing in..." : "Sign In"}
@@ -94,8 +117,13 @@ const Login = () => {
         {loading && <div className="spinner"></div>}
         {error && <p className="error">{error}</p>}
       </form>
-      <p className="note">Demo users: pm_john/pm123</p>
-      <p className="note">version: 0.3</p>
+      {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
+
+      <p className="note">version: 0.6.11.24</p>
+      <p className="note">
+        Please ensure that the backend service is started before attempting to
+        log in. For further assistance, kindly contact our team.
+      </p>
     </div>
   );
 };
