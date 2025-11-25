@@ -9,9 +9,9 @@ import Roles from "../../constant/roles";
 console.log("Using mock:", process.env.REACT_APP_USE_MOCK);
 
 // Automatically choose mock or real API
-const useMock = process.env.REACT_APP_USE_MOCK === "false";
+const useMock = process.env.REACT_APP_USE_MOCK === "true";
 const api = useMock
-  ? require("../../services/apiMock")
+  ? require("../../services/mock/apiMockLogin")
   : require("../../services/login/login_api");
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
     try {
       // API call to authenticate users
       const response = await api.login(username, password);
-      console.log("Mock API returned:", response);
+      console.log("API returned:", response);
 
       // if (response.status === 201) {
       if (response.status === 200) {
@@ -39,12 +39,12 @@ const Login = () => {
         });
 
         // Save for session
-        localStorage.setItem("response", JSON.stringify(response));
+        localStorage.setItem("logindata", JSON.stringify(response));
 
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)
           navigate("/project_manager");
-        else if (response.data.role === Roles.employee) navigate("/home");
+        else if (response.data.role === Roles.employee) navigate("/update-employee", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
