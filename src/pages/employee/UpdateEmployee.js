@@ -21,8 +21,8 @@ const useMock = process.env.REACT_APP_USE_MOCK === "true";
 console.log("Using mock for Employee Update:", useMock);
 
 const { getEmployeeById, updateEmployeeById } = useMock
-  ? require("../../services/mock/mockEmployeeApi")
-  : require("../../services/employee/employeeApi");
+    ? require("../../services/mock/mockEmployeeApi")
+    : require("../../services/employee/employeeApi");
 
 
 // Mock InputField component - replace with your actual component
@@ -90,7 +90,7 @@ const UpdateEmployee = () => {
     useEffect(() => {
         const loadEmployeeData = async () => {
             try {
-                const storedData = location.state || JSON.parse(localStorage.getItem("loginResponse") || "null");
+                const storedData = location.state.employeeData || JSON.parse(localStorage.getItem("loginResponse") || "null");
 
                 console.log("StoredData:", storedData);
 
@@ -257,7 +257,7 @@ const UpdateEmployee = () => {
 
             const response = await updateEmployeeById(formData.employeeId, formData);
 
-            console.log("Employee updated:",  response.data, formData);
+            console.log("Employee updated:", response.data, formData);
             toast.success("Employee profile updated successfully!");
             // navigate(-1); // Uncomment to navigate back
         } catch (error) {
@@ -269,7 +269,11 @@ const UpdateEmployee = () => {
     };
 
     const handleCancel = () => {
-        navigate(-1);
+        if (location.state.from === "employee") {
+            navigate("/employee_dashboard");
+        } else {
+            navigate(-1);
+        }
     };
 
     const isFormValid = formData.firstName.trim() &&
@@ -288,6 +292,14 @@ const UpdateEmployee = () => {
 
     return (
         <div className="create-project-container">
+            <button
+                type="button"
+                className="remove-btn"
+                onClick={handleCancel}
+                title="Close Update Employee Page"
+            >
+                ✕
+            </button>
             <h2>Employee Profile</h2>
             <form onSubmit={handleSubmit} className="create-project-form">
 

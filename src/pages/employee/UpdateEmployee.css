@@ -38,6 +38,26 @@
   font-family: inherit;
 }
 
+.remove-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  margin-left: auto;
+}
+
+.remove-btn:hover {
+  background-color: #dc2626;
+}
+
 /* Date Fields Row */
 .date-fields-row {
   display: grid;

@@ -36,7 +36,7 @@ const Login = () => {
       const useMock =
         process.env.REACT_APP_USE_MOCK === localStorage.getItem("useMock");
       const api = useMock
-        ? require("../../services/apiMock")
+        ? require("../../services/mock/apiMockLogin")
         : require("../../services/login/login_api");
 
       console.log("Using mock for login:", useMock);
@@ -51,9 +51,6 @@ const Login = () => {
         toast.success(`Welcome back, ${response.data.firstName}! 👋`, {
           position: "top-right",
         });
-
-        // Save for session
-        //localStorage.setItem("loginResponse", JSON.stringify(response));
 
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)

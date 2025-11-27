@@ -9,6 +9,7 @@ import EditProject from "./pages/edit_project/editproject";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UpdateEmployee from "./pages/employee/UpdateEmployee";
+import PrivateRoute from "./helper/PrivateRoute";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           path="/project_manager/edit-project/:projectId"
           element={<EditProject />}
         />
-        <Route path="/update-employee" element={<UpdateEmployee />} />
+        <Route path="/update-employee" element={<PrivateRoute><UpdateEmployee /></PrivateRoute>} />
       </Routes>
 
       <ToastContainer
