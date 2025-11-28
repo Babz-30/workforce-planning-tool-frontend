@@ -3,6 +3,6 @@ const Roles = Object.freeze({
   System_Admin: "SYSTEM_ADMIN",
   Department_Head: "DEPARTMENT_HEAD",
   Resource_Planner: "RESOURCE_PLANNER",
-  employee: "EMPLOYEE",
+  Employee: "EMPLOYEE",
 });
 export default Roles;

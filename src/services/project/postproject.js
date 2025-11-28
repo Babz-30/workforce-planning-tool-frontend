@@ -20,7 +20,7 @@ function mapToPayload(projectDetails) {
     selectedLocations: projectDetails.selectedLocations,
     roles: projectDetails.roles,
     createdBy:
-      JSON.parse(localStorage.getItem("apiResponse")).username || "admin",
+      JSON.parse(localStorage.getItem("loginResponse")).username || "admin",
     status: "PLANNED",
     isPublished: false,
   };

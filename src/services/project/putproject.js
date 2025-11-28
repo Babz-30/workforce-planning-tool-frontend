@@ -24,7 +24,7 @@ function mapToPayload(projectDetails, existingProjectDetails) {
     status: "PLANNED",
     isPublished: false,
     updatedBy:
-      JSON.parse(localStorage.getItem("apiResponse")).username || "admin",
+      JSON.parse(localStorage.getItem("loginResponse")).username || "admin",
     projectId: existingProjectDetails.projectId,
   };
 }
