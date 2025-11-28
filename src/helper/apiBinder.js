@@ -33,7 +33,7 @@ export function convertProjectsList(projectsList) {
     // Return transformed project object
     return {
       id: project.projectId,
-      description: project.description,
+      description: project.projectDescription,
       startDate: project.projectStart,
       endDate: project.projectEnd,
       taskDescription: project.taskDescription,
