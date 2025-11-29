@@ -6,8 +6,6 @@ import "./Login.css";
 import { toast } from "react-toastify";
 import Roles from "../../constant/roles";
 
-
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,14 +21,13 @@ const Login = () => {
     setLoading(true);
 
     try {
-      
       if (Base_URL.trim() !== "") {
         localStorage.setItem("Base_URL", Base_URL);
         localStorage.setItem("useMock", false);
       } else {
         localStorage.removeItem("Base_URL");
         localStorage.setItem("useMock", true);
-      }      
+      }
 
       // Automatically choose mock or real API
       const useMock =
@@ -53,9 +50,18 @@ const Login = () => {
         });
 
         // Redirect based on role
-        if (response.data.role === Roles.Project_Manager)
+        if (
+          response.data.role === Roles.Project_Manager &&
+          response.data.employeeId !== 2001
+        )
           navigate("/project_manager");
-        else if (response.data.role === Roles.Employee) navigate("/update-employee", { state: response.data });
+        else if (
+          response.data.role === Roles.Project_Manager &&
+          response.data.employeeId === 2001
+        )
+          navigate("/resource-planner");
+        else if (response.data.role === Roles.Employee)
+          navigate("/update-employee", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
