@@ -44,7 +44,9 @@ const Login = () => {
       // API call to authenticate users
       const response = await api.login(username, password);
 
-      console.log("API returned:", response);
+      console.log("Login response:", response);
+
+      localStorage.setItem("loginResponse", JSON.stringify(response.data));
 
       if (response.status === 201 || response.status === 200) {
         console.log("Logged in as:", response.data.username);
@@ -55,7 +57,7 @@ const Login = () => {
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)
           navigate("/project_manager");
-        else if (response.data.role === Roles.Employee) navigate("/update-employee", { state: response.data });
+        else if (response.data.role === Roles.Employee) navigate("/employee_dashboard", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
