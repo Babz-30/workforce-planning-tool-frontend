@@ -17,7 +17,7 @@ import {
 import { toast } from "react-toastify";
 
 // Automatically choose mock or real API
-const useMock = process.env.REACT_APP_USE_MOCK === "true";
+const useMock = true;
 
 console.log("Using mock for Employee Update:", useMock);
 

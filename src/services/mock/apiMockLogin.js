@@ -17,8 +17,8 @@ export const login = async (username, password) => {
                 "department": "IT",
                 "position": "Software Engineer",
                 "role": "EMPLOYEE",
-                "userId": "d9da4f0b-fefb-4781-b271-848d10aaa231",
-                "employeeId": "123456789"
+                "userId": "071de1d6-ed1a-4e1a-a7bb-ad6d0f2cd161",
+                "employeeId": "8"
             }
         },
         {

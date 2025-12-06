@@ -4,7 +4,7 @@ export default function AssignedProjects({ assignedProjects }) {
   return (
     <div className="employee-container">
       <div className="employee-header">
-        <h1 className="employee-title">Assigned Projects</h1>
+        <h2 style={{ color: "#1e3a8a",  fontSize: "26px" }} className="employee-title">Assigned Projects</h2>
         <p className="employee-subtitle">Track your current project assignments</p>
       </div>
 
