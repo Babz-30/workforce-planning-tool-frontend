@@ -2,6 +2,8 @@ import axios from "axios";
 
 const API_BASE_URL = localStorage.getItem("Base_URL") || process.env.REACT_APP_BACKEND_BASE_URL;
 
+const login = JSON.parse(localStorage.getItem("loginResponse"));
+
 // Helper to transform frontend data to backend format
 const transformToBackendFormat = (formData) => {
     return {
@@ -9,7 +11,7 @@ const transformToBackendFormat = (formData) => {
         employeeId: formData.employeeId,
         userId: formData.userId,
         remoteWorking: formData.remoteWorking || false,
-        username: formData.username,
+        username: login.username,
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -75,7 +77,9 @@ const transformToFrontendFormat = (backendData) => {
 // API call to update employee
 export const updateEmployeeById = async (employeeId, employeeData) => {
     try {
+
         const backendData = transformToBackendFormat(employeeData);
+        console.log("Put request", backendData);
         
         const response = await axios.put(
             `${API_BASE_URL}/api/employees/${employeeId}`,
