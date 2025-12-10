@@ -254,7 +254,11 @@ const UpdateEmployee = () => {
 
             console.log("Employee updated:", response.data, formData);
             toast.success("Employee profile updated successfully!");
-            navigate(-1);
+            if (location.state.from === "employee") {
+                navigate("/employee_dashboard");
+            } else {
+                navigate(-1);
+            }
         } catch (error) {
             console.error("Update failed:", error);
             toast.error("Failed to update employee.");
@@ -696,7 +700,7 @@ const UpdateEmployee = () => {
                                         <div className="date-field">
                                             <label>Start Date</label>
                                             <input
-                                                type="month"
+                                                type="date"
                                                 name={`startDate-${index}`}
                                                 value={exp.startDate || ""}
                                                 onChange={(e) => handleExperienceChange(index, "startDate", e.target.value)}
@@ -707,7 +711,7 @@ const UpdateEmployee = () => {
                                         <div className="date-field">
                                             <label>End Date</label>
                                             <input
-                                                type="month"
+                                                type="date"
                                                 name={`endDate-${index}`}
                                                 value={exp.endDate || ""}
                                                 onChange={(e) => handleExperienceChange(index, "endDate", e.target.value)}

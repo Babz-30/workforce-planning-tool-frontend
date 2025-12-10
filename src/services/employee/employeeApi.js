@@ -87,12 +87,7 @@ export const updateEmployeeById = async (employeeId, employeeData) => {
             }
         );
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return { data };
+        return { data: response.data };
 
     } catch (error) {
         console.error("Update Employee API Error:", error);
@@ -107,12 +102,7 @@ export const getEmployeeById = async (employeeId) => {
             `${API_BASE_URL}/api/employees/${employeeId}`
         );
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const transformedData = transformToFrontendFormat(data.data);
+        const transformedData = transformToFrontendFormat(response.data);
         return { data: transformedData };
 
     } catch (error) {
