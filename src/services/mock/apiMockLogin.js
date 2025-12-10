@@ -6,11 +6,11 @@ export const login = async (username, password) => {
     // Define mock users with full response data
     const mockUsers = [
         {
-            username: "emp_alicee",
+            username: "emp_alice",
             password: "emp123",
             data: {
                 "_id": { "$oid": "6910fe3647a984367dd713e0" },
-                "username": "emp_alicee",
+                "username": "emp_alice",
                 "firstName": "Alice",
                 "lastName": "Williams",
                 "email": "alice.williams@workforce.com",
