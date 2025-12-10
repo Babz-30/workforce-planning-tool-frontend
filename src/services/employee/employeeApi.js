@@ -18,7 +18,7 @@ const transformToBackendFormat = (formData) => {
         department: formData.department,
         supervisor: formData.supervisor,
         position: formData.position,
-        role: formData.role || "PROJECT_MANAGER",
+        role: formData.role || login.role,
         message: formData.message || "",
         skills: formData.selectedSkills || [],
         interests: formData.selectedInterests || [],
