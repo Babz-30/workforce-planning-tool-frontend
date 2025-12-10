@@ -24,7 +24,10 @@ const Login = () => {
 
       let useMock = process.env.REACT_APP_USE_MOCK === "true";
 
-      if (Base_URL.trim() == "") {
+      if (Base_URL.trim() !== "") {
+        useMock = false;
+      }
+      else {
         useMock = true;
       }
 
