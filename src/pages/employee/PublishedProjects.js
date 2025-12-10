@@ -30,7 +30,6 @@ export default function PublishedProjects({
         setPublishedProjects(projects);
         setError(null);
       } catch (err) {
-        console.error("Error fetching published projects:", err);
         setError("Failed to load projects. Please try again later.");
       } finally {
         setLoading(false);
@@ -283,6 +282,33 @@ export default function PublishedProjects({
 
     return pages;
   };
+
+  // Loading UI
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <div className="spinner"></div>
+        <p className="loader-text">Loading published projects...</p>
+      </div>
+    );
+  }
+
+  // Error UI
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-icon">⚠️</div>
+        <p className="error-title">Failed to load projects</p>
+        <p className="error-message">{error}</p>
+        <button
+          className="retry-btn"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="employee-container">
