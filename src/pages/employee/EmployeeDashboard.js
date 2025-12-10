@@ -169,9 +169,9 @@ export default function EmployeeDashboard() {
       <div className="dashboard-header">
         <div className="dashboard-header-content">
           <div className="welcome-section">
-            <h1 className="dashboard-main-title">Employee Dashboard</h1>
+            <h1 style={{ color: "#1e3a8a", fontSize: "32px"}} className="dashboard-main-title">Employee Dashboard</h1>
             <p className="welcome-text">Welcome back, <strong>{profileData.firstName}</strong></p>
-            
+
             {/* Breadcrumb Navigation */}
             <nav className="breadcrumb-nav">
               <button

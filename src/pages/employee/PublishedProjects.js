@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Filter, X, Calendar } from 'lucide-react';
+import { getPublishedProjects, applyForProject } from '../../services/employee/publishedProjectApi';
 
-export default function PublishedProjects({ 
-  publishedProjects, 
-  sortConfig, 
-  setSortConfig, 
-  currentPage, 
+export default function PublishedProjects({
+  sortConfig,
+  setSortConfig,
+  currentPage,
   setCurrentPage,
   searchQuery,
   setSearchQuery,
@@ -16,12 +16,48 @@ export default function PublishedProjects({
   filters,
   setFilters
 }) {
+  const [publishedProjects, setPublishedProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const itemsPerPage = 5;
 
-  const handleApplyProject = (projectId) => {
-    alert(`Application submitted for Project ID: ${projectId}`);
-    // TODO: Replace with actual API call
-    // Example: await applyForProject(projectId);
+  // Fetch published projects on component mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const projects = await getPublishedProjects(true);
+        setPublishedProjects(projects);
+        setError(null);
+      } catch (err) {
+        setError("Failed to load projects. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const handleApplyProject = async (projectId) => {
+    const confirmed = window.confirm("Are you sure you want to apply for this project?");
+    if (!confirmed) return;
+
+    try {
+      // Get employee data from localStorage
+      const employeeData = JSON.parse(localStorage.getItem("loginResponse") || "{}");
+
+      await applyForProject(projectId, {
+        employeeId: employeeData.id || employeeData.employeeId,
+        employeeName: employeeData.name || employeeData.username,
+        message: "I am interested in this project",
+      });
+
+      alert(`Application submitted successfully for Project ID: ${projectId}`);
+    } catch (error) {
+      console.error("Error applying for project:", error);
+      alert("Failed to submit application. Please try again.");
+    }
   };
 
   const isPublishedInTimeRange = (publishedDate) => {
@@ -247,11 +283,38 @@ export default function PublishedProjects({
     return pages;
   };
 
+  // Loading UI
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <div className="spinner"></div>
+        <p className="loader-text">Loading published projects...</p>
+      </div>
+    );
+  }
+
+  // Error UI
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-icon">⚠️</div>
+        <p className="error-title">Failed to load projects</p>
+        <p className="error-message">{error}</p>
+        <button
+          className="retry-btn"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="employee-container">
       <div className="employee-header">
         <div>
-          <h1 className="employee-title">Available Projects</h1>
+          <h2 style={{ color: "#1e3a8a", fontSize: "26px" }} className="employee-title">Available Projects</h2>
           <p className="employee-subtitle">Browse and apply for published projects</p>
         </div>
       </div>
@@ -488,14 +551,22 @@ export default function PublishedProjects({
                         <div className="roles-section">
                           <p className="roles-label">Roles:</p>
                           <div className="roles-container">
-                            {project.roles.map((role, idx) => (
-                              <span key={idx} className="role-badge">
-                                {role}
-                              </span>
-                            ))}
+                            {project.rolesWithCapacity && project.rolesWithCapacity.length > 0 ? (
+                              project.rolesWithCapacity.map((roleInfo, idx) => (
+                                <span key={idx} className="role-badge">
+                                  {roleInfo.role}
+                                </span>
+                              ))
+                            ) : null}
+                          </div>
+                          <div className="capacity">
+                            ⏱️ {project.rolesWithCapacity && project.rolesWithCapacity.length > 0
+                              ? project.rolesWithCapacity.map((roleInfo, idx) =>
+                                `${roleInfo.role.split(' ')[0]}: ${roleInfo.capacity}`
+                              ).join(', ')
+                              : 'Not specified'} Hours/Week
                           </div>
                         </div>
-                        <div className="capacity">⏱️ {project.capacity} Hours/Week</div>
                       </div>
                     </td>
                     <td>

@@ -613,7 +613,7 @@
 .roles-section {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .roles-label {
@@ -627,7 +627,7 @@
 .roles-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 
 .role-badge {
@@ -644,6 +644,7 @@
   font-size: 12px;
   color: #64748b;
   line-height: 1.5;
+  font-weight: 500;
 }
 
 /* Location & Actions */
