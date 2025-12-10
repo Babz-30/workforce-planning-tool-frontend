@@ -254,7 +254,7 @@ const UpdateEmployee = () => {
 
             console.log("Employee updated:", response.data, formData);
             toast.success("Employee profile updated successfully!");
-            // navigate(-1); // Uncomment to navigate back
+            navigate(-1);
         } catch (error) {
             console.error("Update failed:", error);
             toast.error("Failed to update employee.");
@@ -368,9 +368,19 @@ const UpdateEmployee = () => {
                         disabled={true}
                     />
 
+                    {/* Supervisor Dropdown */}
+                    <InputField
+                        label="Supervisor"
+                        type="text"
+                        name="supervisor"
+                        value={formData.supervisor}
+                        onChange={handleChange}
+                        disabled={true}
+                    />
+
                     {/* Primary Location */}
                     <div className="form-field">
-                        <label>Primary Location</label>
+                        <label>Base Location</label>
                         {formData.primaryLocation ? (
                             <div className="selected-value">
                                 <span>{formData.primaryLocation}</span>

@@ -16,7 +16,7 @@ export default function Suggestions({ suggestions }) {
   return (
     <div className="employee-container">
       <div className="employee-header">
-        <h1 className="employee-title">Accept Suggestions</h1>
+        <h2 style={{ color: "#1e3a8a",  fontSize: "26px" }} className="employee-title">Accept Suggestions</h2>
         <p className="employee-subtitle">Review and respond to suggestions from colleagues</p>
       </div>
 
