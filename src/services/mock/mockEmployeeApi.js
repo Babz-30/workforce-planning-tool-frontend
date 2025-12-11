@@ -5,15 +5,47 @@
 // ------------------------------
 const mockEmployees = {
     // EMPLOYEE → Alice
-    "123456789": {
-        "employeeId": "123456789",
+    "8": {
+        "employeeId": "8",
         "userId": "d9da4f0b-fefb-4781-b271-848d104asf231",
         firstName: "Alice",
         lastName: "Williams",
+        "username": "emp_alice",
         id: "Emp-001",
         position: "Software Engineer",
         department: "IT",
+        supervisor: "Babitha Nadar",
         email: "alice.williams@workforce.com",
+        emergencyContact: "+4915123456789",
+        primaryLocation: "Frankfurt",
+        selectedSkills: ["React", "Node.js", "MongoDB"],
+        selectedInterests: ["UI/UX Design", "Cloud Computing","Database Management"],
+        status: "Available",
+        contractType: "Full-time",
+        contractStartDate: "2024-05-01",
+        contractEndDate: "2027-05-01",
+        capacity: "40",
+        experiences: [
+            {
+                role: "Junior Engineer",
+                company: "SoftTech",
+                startDate: "2021-06",
+                endDate: "2024-04",
+                description: "Worked in frontend team delivering key UI modules."
+            }
+        ],
+    },
+
+    "50015": {
+        "employeeId": "50015",
+        "userId": "d9da4f0b-fefb-4781-b271-848d104e6231",
+        firstName: "David",
+        lastName: "Martinez",
+        "username": "david_dev",
+        id: "Emp-001",
+        position: "Software Engineer",
+        department: "IT",
+        email: "david.williams@workforce.com",
         emergencyContact: "+4915123456789",
         primaryLocation: "Frankfurt",
         selectedSkills: ["React", "Node.js", "MongoDB"],
