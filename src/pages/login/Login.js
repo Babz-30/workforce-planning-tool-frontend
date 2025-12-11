@@ -21,18 +21,20 @@ const Login = () => {
     setLoading(true);
 
     try {
-
       let useMock = process.env.REACT_APP_USE_MOCK === "true";
 
       if (Base_URL.trim() !== "") {
         useMock = false;
-      }
-      else {
+      } else {
         useMock = true;
       }
+      localStorage.setItem("Base_URL", Base_URL);
+      localStorage.setItem("useMock", false);
 
       // Automatically choose mock or real API
-      const api = useMock ? require("../../services/mock/apiMockLogin") : require("../../services/login/login_api");
+      const api = useMock
+        ? require("../../services/mock/apiMockLogin")
+        : require("../../services/login/login_api");
 
       console.log("Using mock for login:", useMock);
 
@@ -51,7 +53,10 @@ const Login = () => {
         // Redirect based on role
         if (response.data.role === Roles.Project_Manager)
           navigate("/project_manager");
-        else if (response.data.role === Roles.Employee) navigate("/employee_dashboard", { state: response.data });
+        else if (response.data.role === Roles.Resource_Planner)
+          navigate("/resource-planner");
+        else if (response.data.role === Roles.Employee)
+          navigate("/employee_dashboard", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }
@@ -104,7 +109,7 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: 1.7.12.10</p>
+      <p className="note">version: 1.8.12.11</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.
