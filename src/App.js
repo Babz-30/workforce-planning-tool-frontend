@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import UpdateEmployee from "./pages/employee/UpdateEmployee";
 import PrivateRoute from "./helper/PrivateRoute";
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
+import ResourcePlanner from "./pages/resource_planner/resourcePlanner";
 
 function App() {
   return (
@@ -29,8 +30,23 @@ function App() {
         />
         <Route path="/update-employee" element={<PrivateRoute><UpdateEmployee /></PrivateRoute>} />
         <Route path="/employee_dashboard" element={<PrivateRoute><EmployeeDashboard /></PrivateRoute>} />
+        <Route
+          path="/update-employee"
+          element={
+            <PrivateRoute>
+              <UpdateEmployee />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/resource-planner"
+          element={
+            <PrivateRoute>
+              <ResourcePlanner />
+            </PrivateRoute>
+          }
+        />
       </Routes>
-
       <ToastContainer
         position="top-right"
         autoClose={2500}
