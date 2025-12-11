@@ -50,15 +50,9 @@ const Login = () => {
         });
 
         // Redirect based on role
-        if (
-          response.data.role === Roles.Project_Manager &&
-          response.data.employeeId !== 2001
-        )
+        if (response.data.role === Roles.Project_Manager)
           navigate("/project_manager");
-        else if (
-          response.data.role === Roles.Project_Manager &&
-          response.data.employeeId === 2001
-        )
+        else if (response.data.role === Roles.Resource_Planner)
           navigate("/resource-planner");
         else if (response.data.role === Roles.Employee)
           navigate("/update-employee", { state: response.data });
@@ -122,7 +116,7 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: 0.6.11.24</p>
+      <p className="note">version: 1.2.12.11</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.
