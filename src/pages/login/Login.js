@@ -109,7 +109,7 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: 1.7.12.10</p>
+      <p className="note">version: 1.8.12.11</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.
