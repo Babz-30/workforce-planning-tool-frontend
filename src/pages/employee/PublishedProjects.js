@@ -589,7 +589,7 @@ export default function PublishedProjects({
                         <div className="location">📍 {project.location}</div>
                         <button
                           onClick={() => handleApplyProject(project.id)}
-                          disabled={appliedIds.includes(project.id) || appliedIds.includes(project.projectId)}
+                          disabled={appliedIds.includes(project.id)}
                           className="btn-apply"
                         >
                           {appliedIds.includes(project.id) ? "Applied" : "Apply"}

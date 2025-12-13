@@ -27,9 +27,9 @@ export default function Suggestions({ suggestions }) {
               <div className="suggestion-info">
                 <div className="suggestion-title-row">
                   <h3 className="suggestion-project">{suggestion.project}</h3>
-                  <span className={`priority-badge priority-${suggestion.priority.toLowerCase()}`}>
+                  {/* <span className={`priority-badge priority-${suggestion.priority.toLowerCase()}`}>
                     {suggestion.priority}
-                  </span>
+                  </span> */}
                 </div>
                 <p className="suggestion-meta">
                   From: <strong>{suggestion.from}</strong> • {suggestion.date}

@@ -1,17 +1,17 @@
 import axios from "axios";
 
-const API_BASE_URL = localStorage.getItem("Base_URL") || process.env.REACT_APP_BACKEND_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getItem("Base_URL") ;
 
-const login = JSON.parse(localStorage.getItem("loginResponse"));
+const employee = JSON.parse(localStorage.getItem("empResponse"));
 
 // Helper to transform frontend data to backend format
 const transformToBackendFormat = (formData) => {
     return {
         id: formData.id,
         employeeId: formData.employeeId,
-        userId: formData.userId,
+        userId: formData.userId || employee.userId,
         remoteWorking: formData.remoteWorking || false,
-        username: formData.username || login.username,
+        username: formData.username || employee.username,
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -19,12 +19,12 @@ const transformToBackendFormat = (formData) => {
         supervisor: formData.supervisor,
         assignedProjectId: formData.assignedProjectId,
         position: formData.position,
-        role: formData.role || login.role,
-        message: formData.message || "",
+        role: formData.role || employee.role,
+        message: formData.message || employee.message,
         skills: formData.selectedSkills || [],
         interests: formData.selectedInterests || [],
         baseLocation: formData.primaryLocation || "",
-        preferredLocations: formData.preferredLocations || [],
+        preferredLocations: formData.preferredLocations || employee.preferredLocations,
         emergencyContact: formData.emergencyContact || "",
         availabilityStatus: formData.status || "AVAILABLE",
         contractType: formData.contractType || "FULL_TIME",
@@ -107,7 +107,7 @@ export const getEmployeeById = async (employeeId) => {
         const response = await axios.get(
             `${API_BASE_URL}/api/employees/${employeeId}`
         );
-
+        localStorage.setItem("empResponse", JSON.stringify(response.data));
         const transformedData = transformToFrontendFormat(response.data);
         return { data: transformedData };
 

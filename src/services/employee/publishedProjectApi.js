@@ -1,4 +1,4 @@
-const API_BASE_URL = localStorage.getItem("Base_URL");
+const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
 
 /**
  * Fetch published projects from the API

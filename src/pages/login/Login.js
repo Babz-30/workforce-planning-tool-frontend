@@ -29,7 +29,6 @@ const Login = () => {
         useMock = true;
       }
       localStorage.setItem("Base_URL", Base_URL);
-      localStorage.setItem("useMock", false);
 
       // Automatically choose mock or real API
       const api = useMock
@@ -109,7 +108,7 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: 1.8.12.11</p>
+      <p className="note">version: 1.9.12.13</p>
       <p className="note">
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.
