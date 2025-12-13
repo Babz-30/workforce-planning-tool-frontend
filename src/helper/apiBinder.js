@@ -47,3 +47,26 @@ export function convertProjectsList(projectsList) {
     };
   });
 }
+
+// Helper function to format availability status
+const formatAvailability = (status) => {
+  const statusMap = {
+    AVAILABLE: "Available",
+    PARTIALLY_AVAILABLE: "Partially Available",
+    UNAVAILABLE: "Unavailable",
+  };
+  return statusMap[status] || status;
+};
+
+// Transform function
+export function transformEmployeesForResourcePlanner(apiData) {
+  return apiData.map((employee) => ({
+    id: employee.employeeId,
+    name: `${employee.firstName} ${employee.lastName}`,
+    role: employee.position,
+    capacity: employee.capacity,
+    skills: employee.skills,
+    projects: [], // You'll need to add project data if available
+    availability: formatAvailability(employee.availabilityStatus),
+  }));
+}

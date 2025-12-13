@@ -412,3 +412,8 @@ nav {
   color: #007bff;
   font-weight: 600;
 }
+
+.nav-tabs {
+  overflow-x: visible !important;
+  flex-wrap: wrap; /* ensures tabs wrap instead of scrolling */
+}
