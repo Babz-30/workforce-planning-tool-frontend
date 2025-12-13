@@ -5,23 +5,24 @@
 // ------------------------------
 const mockEmployees = {
     // EMPLOYEE → Alice
-    "8": {
-        "employeeId": "8",
+    "10": {
+        "employeeId": "10",
         "userId": "d9da4f0b-fefb-4781-b271-848d104asf231",
-        firstName: "Alice",
-        lastName: "Williams",
-        "username": "emp_alice",
+        firstName: "Emma",
+        lastName: "Wilson",
+        "username": "emp_emma",
         id: "Emp-001",
         position: "Software Engineer",
         department: "IT",
         supervisor: "Babitha Nadar",
-        email: "alice.williams@workforce.com",
+        assignedProjectId: "PRJ-CMK843",
+        email: "emma.wilson@workforce.com",
         emergencyContact: "+4915123456789",
         primaryLocation: "Frankfurt",
         selectedSkills: ["React", "Node.js", "MongoDB"],
         selectedInterests: ["UI/UX Design", "Cloud Computing","Database Management"],
-        status: "Available",
-        contractType: "Full-time",
+        status: "AVAILABLE",
+        contractType: "FULL_TIME",
         contractStartDate: "2024-05-01",
         contractEndDate: "2027-05-01",
         capacity: "40",
@@ -29,8 +30,8 @@ const mockEmployees = {
             {
                 role: "Junior Engineer",
                 company: "SoftTech",
-                startDate: "2021-06",
-                endDate: "2024-04",
+                startDate: "2024-05-01",
+                endDate: "2024-05-01",
                 description: "Worked in frontend team delivering key UI modules."
             }
         ],
@@ -50,8 +51,8 @@ const mockEmployees = {
         primaryLocation: "Frankfurt",
         selectedSkills: ["React", "Node.js", "MongoDB"],
         selectedInterests: ["Cloud", "Microservices"],
-        status: "Available",
-        contractType: "Full-time",
+        status: "AVAILABLE",
+        contractType: "FULL_TIME",
         contractStartDate: "2024-05-01",
         contractEndDate: "2027-05-01",
         capacity: "40",
@@ -59,8 +60,8 @@ const mockEmployees = {
             {
                 role: "Junior Engineer",
                 company: "SoftTech",
-                startDate: "2021-06",
-                endDate: "2024-04",
+                startDate: "2024-05-01",
+                endDate: "2024-05-01",
                 description: "Worked in frontend team delivering key UI modules."
             }
         ],
@@ -80,8 +81,8 @@ const mockEmployees = {
         primaryLocation: "Frankfurt",
         selectedSkills: ["JavaScript", "React", "Node.js"],
         selectedInterests: ["Project Management", "Web Development"],
-        status: "Partially Available",
-        contractType: "Part-time",
+        status: "AVAILABLE",
+        contractType: "PART_TIME",
         contractStartDate: "2025-10-30",
         contractEndDate: "2026-10-30",
         capacity: "20",
@@ -89,8 +90,8 @@ const mockEmployees = {
             {
                 role: "Senior Software Engineer",
                 company: "Tech Corp",
-                startDate: "2020-01",
-                endDate: "2024-11",
+                startDate: "2024-05-01",
+                endDate: "2024-05-01",
                 description: "Led cross-functional teams in delivering complex software projects"
             }
         ]
@@ -110,8 +111,8 @@ const mockEmployees = {
         primaryLocation: "Berlin",
         selectedSkills: ["Leadership", "Documentation"],
         selectedInterests: ["Compliance", "Auditing"],
-        status: "Available",
-        contractType: "Full-time",
+        status: "AVAILABLE",
+        contractType: "FULL_TIME",
         contractStartDate: "2023-01-01",
         contractEndDate: "2028-01-01",
         capacity: "40",
@@ -119,8 +120,8 @@ const mockEmployees = {
             {
                 role: "Admin Assistant",
                 company: "CorpX",
-                startDate: "2018-01",
-                endDate: "2022-12",
+                startDate: "2024-05-01",
+                endDate: "2024-05-01",
                 description: "Managed internal workflows and HR documentation."
             }
         ]

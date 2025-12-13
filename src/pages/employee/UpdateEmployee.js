@@ -382,6 +382,16 @@ const UpdateEmployee = () => {
                         disabled={true}
                     />
 
+                    {/* Assigned Project Id */}
+                    <InputField
+                        label="Assigned Project Id"
+                        type="text"
+                        name="assignedProjectId"
+                        value={formData.assignedProjectId}
+                        onChange={handleChange}
+                        disabled={true}
+                    />
+
                     {/* Primary Location */}
                     <div className="form-field">
                         <label>Base Location</label>
