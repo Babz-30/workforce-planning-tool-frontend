@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - resourceplanner
+      - searchbyskills
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - resourceplanner
+      - searchbyskills
 
 jobs:
   build_and_deploy_job:
@@ -44,3 +46,4 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_BUSH_02DA15903 }}
           action: "close"
+
