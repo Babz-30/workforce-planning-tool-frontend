@@ -187,7 +187,9 @@ export default function ProjectTable() {
                 </a>
               </li>
             </ul>
-            <UserProfile />
+            <div className="app-header-actions">
+              <UserProfile />
+            </div>
           </div>
         </nav>
         <div className="container">

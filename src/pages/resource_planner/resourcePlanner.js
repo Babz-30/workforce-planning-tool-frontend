@@ -159,15 +159,6 @@ const ResourcePlanner = () => {
   return (
     <div className="app-container">
       <div className="app-content">
-        {/* <div className="app-header">
-          <h1 className="app-title">Resource Planner</h1>
-          <p className="app-subtitle">
-            Match employees with open project roles
-          </p>
-          <UserProfile />
-        </div>
-
-         */}
         {/* Updated Header with UserProfile */}
         <div className="app-header">
           <div className="app-header-content">
@@ -177,11 +168,7 @@ const ResourcePlanner = () => {
             </p>
           </div>
           <div className="app-header-actions">
-            <UserProfile
-              userName="John Doe"
-              userEmail="john.doe@company.com"
-              onLogout={"handleLogout"}
-            />
+            <UserProfile />
           </div>
         </div>
         {/* Navigation Tabs */}

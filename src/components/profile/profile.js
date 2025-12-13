@@ -83,10 +83,11 @@ const getInitials = (name) => {
     .slice(0, 2);
 };
 
-export default function UserProfile({
-  userName = "John Doe",
-  userEmail = "john.doe@company.com",
-}) {
+export default function UserProfile() {
+  let employeeData = JSON.parse(localStorage.getItem("loginResponse") || "{}");
+  const userName = employeeData.firstName + " " + employeeData.lastName;
+  const userEmail = employeeData.email;
+  const Position = employeeData.position;
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -106,9 +107,10 @@ export default function UserProfile({
   const handleLogout = () => {
     setIsOpen(false);
     if (window.confirm("Are you sure you want to log out?")) {
-      // Add your actual logout logic here (e.g., clearing tokens)
       console.log("Logging out and navigating to /");
       navigate("/");
+      window.location.reload();
+      localStorage.clear();
     }
   };
 
@@ -136,7 +138,7 @@ export default function UserProfile({
 
         <div className="user-info">
           <span className="user-name">{userName}</span>
-          <span className="user-role">Manager</span>
+          <span className="user-role">{Position}</span>
         </div>
 
         <ChevronDown
@@ -170,7 +172,6 @@ export default function UserProfile({
               </button>
             </div>
           </div>
-          <div className="dropdown-divider"></div>
         </div>
       )}
     </div>
