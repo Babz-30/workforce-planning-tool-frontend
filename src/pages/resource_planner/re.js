@@ -11,34 +11,26 @@ import {
 import "./ResourcePlanner.css";
 import { getAllEmployee } from "../../services/employee/employeeApi";
 import { transformEmployeesForResourcePlanner } from "../../helper/apiBinder";
-import Pagination from "../../components/pagination/Pagination"; // Import the pagination component
-import UserProfile from "../../components/profile/profile";
-
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [employees, setEmployees] = useState([]);
-
-  // Pagination states for different tabs
-  const [availablePage, setAvailablePage] = useState(1);
-  const [searchPage, setSearchPage] = useState(1);
-  const [proposePage, setProposePage] = useState(1);
-  const [approvalsPage, setApprovalsPage] = useState(1);
-  const [staffingPage, setStaffingPage] = useState(1);
-
-  const ITEMS_PER_PAGE = 10;
 
   // Fetch employees from API
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         setLoading(true);
+        // Simulate API call delay
         await getAllEmployee().then((response) => {
+          console.log(response);
           setEmployees(transformEmployeesForResourcePlanner(response.data));
         });
+
         setError(null);
       } catch (err) {
         console.error("Error fetching employees:", err);
@@ -49,11 +41,6 @@ const ResourcePlanner = () => {
     };
     fetchEmployees();
   }, []);
-
-  // Reset page when changing tabs or filters
-  useEffect(() => {
-    setSearchPage(1);
-  }, [searchTerm, selectedSkills]);
 
   const projects = [
     {
@@ -133,13 +120,6 @@ const ResourcePlanner = () => {
     (emp) => emp.capacity > 0
   );
 
-  // Pagination helper function
-  const paginateItems = (items, currentPage) => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    return items.slice(startIndex, endIndex);
-  };
-
   const toggleSkill = (skill) => {
     setSelectedSkills((prev) =>
       prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
@@ -159,18 +139,13 @@ const ResourcePlanner = () => {
   return (
     <div className="app-container">
       <div className="app-content">
-        {/* Updated Header with UserProfile */}
         <div className="app-header">
-          <div className="app-header-content">
-            <h1 className="app-title">Resource Planner</h1>
-            <p className="app-subtitle">
-              Match employees with open project roles
-            </p>
-          </div>
-          <div className="app-header-actions">
-            <UserProfile />
-          </div>
+          <h1 className="app-title">Resource Planner</h1>
+          <p className="app-subtitle">
+            Match employees with open project roles
+          </p>
         </div>
+
         {/* Navigation Tabs */}
         <div className="nav-container">
           <div className="nav-tabs">
@@ -205,7 +180,7 @@ const ResourcePlanner = () => {
           <div className="content-card">
             <h2 className="section-title">Available Employees</h2>
             <div className="employee-list">
-              {paginateItems(availableEmployees, availablePage).map((emp) => (
+              {availableEmployees.map((emp) => (
                 <div
                   key={emp.id}
                   className="employee-card employee-card-available"
@@ -238,12 +213,6 @@ const ResourcePlanner = () => {
                 </div>
               ))}
             </div>
-            <Pagination
-              currentPage={availablePage}
-              totalItems={availableEmployees.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setAvailablePage}
-            />
           </div>
         )}
 
@@ -302,7 +271,7 @@ const ResourcePlanner = () => {
 
                 <div className="employee-list">
                   {filteredEmployees.length > 0 ? (
-                    paginateItems(filteredEmployees, searchPage).map((emp) => (
+                    filteredEmployees.map((emp) => (
                       <div
                         key={emp.id}
                         className="employee-card employee-card-search"
@@ -340,24 +309,17 @@ const ResourcePlanner = () => {
                     </p>
                   )}
                 </div>
-                <Pagination
-                  currentPage={searchPage}
-                  totalItems={filteredEmployees.length}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  onPageChange={setSearchPage}
-                />
               </>
             )}
           </div>
         )}
-
         {/* Propose for Projects */}
         {activeTab === "propose" && (
           <div className="content-card">
             <h2 className="section-title">Propose Employees for Projects</h2>
 
             <div className="project-list">
-              {paginateItems(projects, proposePage).map((project) => (
+              {projects.map((project) => (
                 <div key={project.id} className="project-card">
                   <div className="project-header">
                     <div className="project-info-header">
@@ -415,16 +377,10 @@ const ResourcePlanner = () => {
                 </div>
               ))}
             </div>
-            <Pagination
-              currentPage={proposePage}
-              totalItems={projects.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setProposePage}
-            />
           </div>
         )}
 
-        {/* Skill Gap Analysis - No pagination needed for this small list */}
+        {/* Skill Gap Analysis */}
         {activeTab === "gaps" && (
           <div className="content-card">
             <h2 className="section-title">Skill Gap Analysis</h2>
@@ -504,7 +460,7 @@ const ResourcePlanner = () => {
             </p>
 
             <div className="approval-list">
-              {paginateItems(approvalRequests, approvalsPage).map((request) => (
+              {approvalRequests.map((request) => (
                 <div key={request.id} className="approval-card">
                   <div className="approval-header">
                     <div className="approval-info">
@@ -530,12 +486,6 @@ const ResourcePlanner = () => {
                 </div>
               ))}
             </div>
-            <Pagination
-              currentPage={approvalsPage}
-              totalItems={approvalRequests.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setApprovalsPage}
-            />
 
             <div className="new-request-section">
               <button
@@ -559,29 +509,26 @@ const ResourcePlanner = () => {
             <p className="section-description">Track who is assigned where</p>
 
             <div className="staffing-list">
-              {paginateItems(
-                [
-                  {
-                    project: "Project Alpha",
-                    team: ["Sarah Chen", "Emma Thompson"],
-                    start: "2025-10-01",
-                    end: "2025-12-31",
-                  },
-                  {
-                    project: "Project Beta",
-                    team: ["Maria Garcia"],
-                    start: "2025-11-01",
-                    end: "2026-01-31",
-                  },
-                  {
-                    project: "Project Gamma",
-                    team: ["Emma Thompson"],
-                    start: "2025-11-15",
-                    end: "2026-02-15",
-                  },
-                ],
-                staffingPage
-              ).map((record, idx) => (
+              {[
+                {
+                  project: "Project Alpha",
+                  team: ["Sarah Chen", "Emma Thompson"],
+                  start: "2025-10-01",
+                  end: "2025-12-31",
+                },
+                {
+                  project: "Project Beta",
+                  team: ["Maria Garcia"],
+                  start: "2025-11-01",
+                  end: "2026-01-31",
+                },
+                {
+                  project: "Project Gamma",
+                  team: ["Emma Thompson"],
+                  start: "2025-11-15",
+                  end: "2026-02-15",
+                },
+              ].map((record, idx) => (
                 <div key={idx} className="staffing-card">
                   <h3 className="staffing-project-name">{record.project}</h3>
                   <div className="staffing-dates">
@@ -607,12 +554,6 @@ const ResourcePlanner = () => {
                 </div>
               ))}
             </div>
-            <Pagination
-              currentPage={staffingPage}
-              totalItems={3}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setStaffingPage}
-            />
 
             <div className="external-search-card">
               <div className="external-search-icon-wrapper">

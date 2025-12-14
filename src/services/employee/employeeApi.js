@@ -98,7 +98,7 @@ export const updateEmployeeById = async (employeeId, employeeData) => {
     } catch (error) {
         console.error("Update Employee API Error:", error);
         throw error;
-    }
+  }
 };
 
 // API call to get employee by ID
@@ -114,5 +114,16 @@ export const getEmployeeById = async (employeeId) => {
     } catch (error) {
         console.error("Get Employee API Error:", error);
         throw error;
-    }
+  }
+};
+
+// Fetch all employees
+export const getAllEmployee = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/employees`);
+    return { data: response.data };
+  } catch (error) {
+    console.error("Get Employee API Error:", error);
+    throw error;
+  }
 };
