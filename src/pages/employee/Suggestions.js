@@ -17,7 +17,7 @@ export default function Suggestions({ suggestions }) {
     <div className="employee-container">
       <div className="employee-header">
         <h2 style={{ color: "#1e3a8a",  fontSize: "26px" }} className="employee-title">Accept Suggestions</h2>
-        <p className="employee-subtitle">Review and respond to suggestions from colleagues</p>
+        <p className="employee-subtitle">Review and respond to suggestions</p>
       </div>
 
       <div className="suggestions-container">
@@ -27,9 +27,9 @@ export default function Suggestions({ suggestions }) {
               <div className="suggestion-info">
                 <div className="suggestion-title-row">
                   <h3 className="suggestion-project">{suggestion.project}</h3>
-                  <span className={`priority-badge priority-${suggestion.priority.toLowerCase()}`}>
+                  {/* <span className={`priority-badge priority-${suggestion.priority.toLowerCase()}`}>
                     {suggestion.priority}
-                  </span>
+                  </span> */}
                 </div>
                 <p className="suggestion-meta">
                   From: <strong>{suggestion.from}</strong> • {suggestion.date}
