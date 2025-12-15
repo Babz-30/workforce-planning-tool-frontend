@@ -1,4 +1,4 @@
-const API_BASE_URL = localStorage.getItem("Base_URL");
+const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
 
 /**
  * Fetch published projects from the API
@@ -13,8 +13,6 @@ export const getPublishedProjects = async (isPublished = true) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Add authorization header if needed
-          // "Authorization": `Bearer ${localStorage.getItem("authToken")}`
         },
       }
     );
@@ -28,6 +26,7 @@ export const getPublishedProjects = async (isPublished = true) => {
     const transformedProjects = transformProjects(data.data);
 
     return transformedProjects;
+
   } catch (error) {
     console.error("Error fetching published projects:", error);
     throw error;
@@ -95,7 +94,6 @@ const transformProjects = (apiProjects) => {
       status: project.status,
       createdBy: project.createdBy,
       links: project.links,
-      // Keep original roles data for detailed view
       rolesDetails: project.roles,
     };
   });
@@ -275,12 +273,10 @@ export const sortProjects = (projects, sortConfig) => {
  */
 export const applyForProject = async (projectId, applicationData = {}) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/apply-project`, {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/apply`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Add authorization header if needed
-        // "Authorization": `Bearer ${localStorage.getItem("authToken")}`
       },
       body: JSON.stringify({
         projectId: projectId,
@@ -295,7 +291,7 @@ export const applyForProject = async (projectId, applicationData = {}) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error applying for project:", error);
+    //console.error("Error applying for project:", error);
     throw error;
   }
 };

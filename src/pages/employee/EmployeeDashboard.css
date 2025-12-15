@@ -680,6 +680,18 @@
   transform: translateY(0);
 }
 
+.btn-apply:disabled {
+  background-color: #9ca3af;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-apply:disabled:hover {
+  background-color: #9ca3af;
+  transform: none;
+}
+
 /* Footer & Pagination */
 .footer {
   margin-top: 20px;

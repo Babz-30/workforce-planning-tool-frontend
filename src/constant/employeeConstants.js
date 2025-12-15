@@ -71,22 +71,22 @@ export const DEPARTMENT_OPTIONS = [
 ];
 
 export const STATUS_OPTIONS = [
-  "Available",
-  "Partially Available",
-  "Not Available",
+  "AVAILABLE",
+  "NOT_AVAILABLE",
 ];
 
 export const CONTRACT_TYPE_OPTIONS = [
-  "Full-time",
-  "Part-time",
-  "Temporary",
+  "FULL_TIME",
+  "PART_TIME",
+  "TEMPORARY",
+  "PERMANENT",
 ];
 
 // Default hours per week mapping
 export const CONTRACT_HOURS_MAP = {
-  "Full-time": "40",
-  "Part-time": "20",
-  "Temporary": "",
+  "FULL_TIME": "40",
+  "PART_TIME": "20",
+  "TEMPORARY": "",
 };
 
 // Initial employee form state
@@ -94,16 +94,18 @@ export const INITIAL_EMPLOYEE_STATE = {
   id: "",
   firstName: "",
   lastName: "",
+  username:"",
   email: "",
   emergencyContact: "",
   department: "",
   position: "",
   supervisor: "",
+  assignedProjectId: "",
   primaryLocation: "",
   selectedSkills: [],
   selectedInterests: [],
-  status: "Available",
-  contractType: "Full-time (40hrs/week)",
+  status: "AVAILABLE",
+  contractType: "FULL_TIME",
   contractStartDate: "",
   contractEndDate: "",
   hoursPerWeek: "40",
@@ -132,6 +134,7 @@ export const normalizeEmployeeData = (apiData) => {
     id: apiData.id || "",
     employeeId: apiData.employeeId || "",
     userId: apiData.userId || "",
+    username: apiData.username || "",
     firstName: apiData.firstName || "",
     lastName: apiData.lastName || "",
     email: apiData.email || "",
@@ -139,11 +142,12 @@ export const normalizeEmployeeData = (apiData) => {
     department: apiData.department || "",
     position: apiData.position || "",
     supervisor: apiData.supervisor || "",
+    assignedProjectId: apiData.assignedProjectId || "",
     primaryLocation: apiData.primaryLocation || "",
     selectedSkills: Array.isArray(apiData.selectedSkills) ? apiData.selectedSkills : [],
     selectedInterests: Array.isArray(apiData.selectedInterests) ? apiData.selectedInterests : [],
-    status: apiData.status || "Available",
-    contractType: apiData.contractType || "Full-time",
+    status: apiData.status || "AVAILABLE",
+    contractType: apiData.contractType || "FULL_TIME",
     contractStartDate: apiData.contractStartDate || "",
     contractEndDate: apiData.contractEndDate || "",
     capacity: apiData.capacity || "40",

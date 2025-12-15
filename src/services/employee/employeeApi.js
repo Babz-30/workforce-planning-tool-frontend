@@ -1,122 +1,119 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  localStorage.getItem("Base_URL") || process.env.REACT_APP_BACKEND_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getItem("Base_URL") ;
+
+const employee = JSON.parse(localStorage.getItem("empResponse"));
 
 // Helper to transform frontend data to backend format
 const transformToBackendFormat = (formData) => {
-  return {
-    id: formData.id,
-    employeeId: formData.employeeId,
-    userId: formData.userId,
-    remoteWorking: formData.remoteWorking || false,
-    username: formData.username,
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    department: formData.department,
-    supervisor: formData.supervisor,
-    position: formData.position,
-    role: formData.role || "PROJECT_MANAGER",
-    message: formData.message || "",
-    skills: formData.selectedSkills || [],
-    interests: formData.selectedInterests || [],
-    baseLocation: formData.primaryLocation || "",
-    preferredLocations: formData.preferredLocations || [],
-    emergencyContact: formData.emergencyContact || "",
-    availabilityStatus: formData.status || "AVAILABLE",
-    contractType: formData.contractType || "FULL_TIME",
-    capacity: parseInt(formData.capacity) || 40,
-    workExperience: (formData.experiences || []).map((exp) => ({
-      role: exp.role || "",
-      company: exp.company || "",
-      startDate: exp.startDate || null,
-      endDate: exp.endDate || null,
-      description: exp.description || "",
-    })),
-  };
+    return {
+        id: formData.id,
+        employeeId: formData.employeeId,
+        userId: employee.userId,
+        remoteWorking: formData.remoteWorking || false,
+        username: employee.username,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        department: formData.department,
+        supervisor: formData.supervisor,
+        assignedProjectId: formData.assignedProjectId,
+        position: formData.position,
+        role: employee.role || "",
+        message: employee.message || "",
+        skills: formData.selectedSkills || [],
+        interests: formData.selectedInterests || [],
+        baseLocation: formData.primaryLocation || "",
+        preferredLocations: employee.preferredLocations || formData.preferredLocations,
+        emergencyContact: formData.emergencyContact || "",
+        availabilityStatus: formData.status || "AVAILABLE",
+        contractType: formData.contractType || "FULL_TIME",
+        capacity: parseInt(formData.capacity) || 40,
+        workExperience: (formData.experiences || []).map(exp => ({
+            role: exp.role || "",
+            company: exp.company || "",
+            startDate: exp.startDate || null,
+            endDate: exp.endDate || null,
+            description: exp.description || ""
+        }))
+    };
 };
 
 // Helper to transform backend data to frontend format
 const transformToFrontendFormat = (backendData) => {
-  return {
-    id: backendData.id,
-    employeeId: backendData.employeeId,
-    userId: backendData.userId,
-    remoteWorking: backendData.remoteWorking,
-    username: backendData.username,
-    firstName: backendData.firstName,
-    lastName: backendData.lastName,
-    email: backendData.email,
-    department: backendData.department,
-    supervisor: backendData.supervisor,
-    position: backendData.position,
-    role: backendData.role,
-    message: backendData.message,
-    selectedSkills: backendData.skills || [],
-    selectedInterests: backendData.interests || [],
-    primaryLocation: backendData.baseLocation || "",
-    preferredLocations: backendData.preferredLocations || [],
-    emergencyContact: backendData.emergencyContact || "",
-    status: backendData.availabilityStatus || "AVAILABLE",
-    contractType: backendData.contractType || "FULL_TIME",
-    capacity: backendData.capacity || 40,
-    experiences: (backendData.workExperience || []).map((exp) => ({
-      role: exp.role,
-      company: exp.company,
-      startDate: exp.startDate,
-      endDate: exp.endDate,
-      description: exp.description,
-    })),
-    contractStartDate: "",
-    contractEndDate: "",
-  };
+    return {
+        id: backendData.id,
+        employeeId: backendData.employeeId,
+        userId: backendData.userId,
+        remoteWorking: backendData.remoteWorking,
+        username: backendData.username,
+        firstName: backendData.firstName,
+        lastName: backendData.lastName,
+        email: backendData.email,
+        department: backendData.department,
+        supervisor: backendData.supervisor,
+        assignedProjectId: backendData.assignedProjectId,
+        position: backendData.position,
+        role: backendData.role,
+        message: backendData.message,
+        selectedSkills: backendData.skills || [],
+        selectedInterests: backendData.interests || [],
+        primaryLocation: backendData.baseLocation || "",
+        preferredLocations: backendData.preferredLocations || [],
+        emergencyContact: backendData.emergencyContact || "",
+        status: backendData.availabilityStatus || "AVAILABLE",
+        contractType: backendData.contractType || "FULL_TIME",
+        capacity: backendData.capacity || 40,
+        experiences: (backendData.workExperience || []).map(exp => ({
+            role: exp.role,
+            company: exp.company,
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+            description: exp.description
+        })),
+        contractStartDate: "",
+        contractEndDate: ""
+    };
 };
 
 // API call to update employee
 export const updateEmployeeById = async (employeeId, employeeData) => {
-  try {
-    const backendData = transformToBackendFormat(employeeData);
+    try {
 
-    const response = await axios.put(
-      `${API_BASE_URL}/api/employees/${employeeId}`,
-      backendData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+        const backendData = transformToBackendFormat(employeeData);
+        console.log("Put request", backendData);
+        
+        const response = await axios.put(
+            `${API_BASE_URL}/api/employees/${employeeId}`,
+            backendData,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+        return { data: response.data };
 
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    console.error("Update Employee API Error:", error);
-    throw error;
+    } catch (error) {
+        console.error("Update Employee API Error:", error);
+        throw error;
   }
 };
 
 // API call to get employee by ID
 export const getEmployeeById = async (employeeId) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/employees/${employeeId}`
-    );
+    try {
+        const response = await axios.get(
+            `${API_BASE_URL}/api/employees/${employeeId}`
+        );
+        localStorage.setItem("empResponse", JSON.stringify(response.data));
+        const transformedData = transformToFrontendFormat(response.data);
+        return { data: transformedData };
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const transformedData = transformToFrontendFormat(data.data);
-    return { data: transformedData };
-  } catch (error) {
-    console.error("Get Employee API Error:", error);
-    throw error;
+    } catch (error) {
+        console.error("Get Employee API Error:", error);
+        throw error;
   }
 };
 

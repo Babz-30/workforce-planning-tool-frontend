@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Filter, X, Calendar } from 'lucide-react';
+import { Filter, X, Calendar } from 'lucide-react';
 import { getPublishedProjects, applyForProject } from '../../services/employee/publishedProjectApi';
+import { toast } from "react-toastify";
 
 export default function PublishedProjects({
   sortConfig,
@@ -18,6 +19,10 @@ export default function PublishedProjects({
 }) {
   const [publishedProjects, setPublishedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [appliedIds, setAppliedIds] = useState(() => {
+    const saved = localStorage.getItem('appliedProjects');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [error, setError] = useState(null);
   const itemsPerPage = 5;
 
@@ -40,6 +45,7 @@ export default function PublishedProjects({
   }, []);
 
   const handleApplyProject = async (projectId) => {
+
     const confirmed = window.confirm("Are you sure you want to apply for this project?");
     if (!confirmed) return;
 
@@ -48,15 +54,25 @@ export default function PublishedProjects({
       const employeeData = JSON.parse(localStorage.getItem("loginResponse") || "{}");
 
       await applyForProject(projectId, {
-        employeeId: employeeData.id || employeeData.employeeId,
-        employeeName: employeeData.name || employeeData.username,
+        employeeData: employeeData,
         message: "I am interested in this project",
       });
 
-      alert(`Application submitted successfully for Project ID: ${projectId}`);
+      const updatedAppliedIds = [...appliedIds, projectId];
+      setAppliedIds(updatedAppliedIds);
+      localStorage.setItem('appliedProjects', JSON.stringify(updatedAppliedIds));
+
+      toast.success(`Application submitted successfully for Project ID: ${projectId}`);
+
     } catch (error) {
-      console.error("Error applying for project:", error);
-      alert("Failed to submit application. Please try again.");
+      //console.error("Error applying for project:", error);
+      //setDisabled(false);
+      //toast.error("Failed to submit application. Please try again.");
+      //Demo only
+      const updatedAppliedIds = [...appliedIds, projectId];
+      setAppliedIds(updatedAppliedIds);
+      localStorage.setItem('appliedProjects', JSON.stringify(updatedAppliedIds));
+      toast.success(`Application submitted successfully for Project ID: ${projectId}`);
     }
   };
 
@@ -323,7 +339,6 @@ export default function PublishedProjects({
       <div className="search-filter-section">
         <div className="search-box-wrapper">
           <div className="search-input-container">
-            <Search className="search-icon" size={20} />
             <input
               type="text"
               placeholder="Search projects by title, description, skills, or roles..."
@@ -574,9 +589,10 @@ export default function PublishedProjects({
                         <div className="location">📍 {project.location}</div>
                         <button
                           onClick={() => handleApplyProject(project.id)}
+                          disabled={appliedIds.includes(project.id)}
                           className="btn-apply"
                         >
-                          Apply
+                          {appliedIds.includes(project.id) ? "Applied" : "Apply"}
                         </button>
                       </div>
                     </td>

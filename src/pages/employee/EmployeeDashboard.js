@@ -154,7 +154,7 @@ export default function EmployeeDashboard() {
   ]);
 
   const handleLogout = () => {
-    localStorage.removeItem("loginResponse");
+    localStorage.clear();
     sessionStorage.clear();
     navigate("/", { replace: true });
     toast.success("You've been logged out", {
@@ -192,7 +192,7 @@ export default function EmployeeDashboard() {
                 onClick={() => setActiveTab('assigned')}
                 className={`breadcrumb-item ${activeTab === 'assigned' ? 'active' : ''}`}
               >
-                Assigned Projects
+                Assigned Project
               </button>
             </nav>
           </div>
