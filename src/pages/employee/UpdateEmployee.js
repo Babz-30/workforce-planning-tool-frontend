@@ -63,6 +63,7 @@ const UpdateEmployee = () => {
     const [skillOptions, setSkillOptions] = useState(SKILL_OPTIONS);
     const [interestOptions, setInterestOptions] = useState(INTEREST_OPTIONS);
     const [locationOptions] = useState(LOCATION_OPTIONS);
+    const [currentEmployee, setCurrentEmployee] = useState(null);
 
     const [formData, setFormData] = useState(INITIAL_EMPLOYEE_STATE);
     const [loading, setLoading] = useState(false);
@@ -89,20 +90,20 @@ const UpdateEmployee = () => {
 
                 console.log("StoredData:", storedData);
 
-                const employeeIdFromLogin = storedData.employeeId;
-
-                const apiData = await getEmployeeById(employeeIdFromLogin);
-
+                const apiData = await getEmployeeById(storedData.employeeId);
+                setCurrentEmployee(apiData.data);
                 console.log("apiData:", apiData.data);
 
                 const normalizedData = normalizeEmployeeData(apiData.data);
                 console.log("Normalized Data:", normalizedData);
                 setFormData(normalizedData);
-                setInitialLoading(false);
+                setInitialLoading(true);
             } catch (error) {
                 console.error("Error loading employee:", error);
                 toast.error("Failed to load employee data");
                 setFormData({ ...INITIAL_EMPLOYEE_STATE });
+                setInitialLoading(false);
+            } finally {
                 setInitialLoading(false);
             }
         };
@@ -247,10 +248,10 @@ const UpdateEmployee = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
+        if (!currentEmployee) return;
         try {
 
-            const response = await updateEmployeeById(formData.employeeId, formData);
+            const response = await updateEmployeeById(formData.employeeId, formData, currentEmployee);
 
             console.log("Employee updated:", response.data, formData);
             toast.success("Employee profile updated successfully!");
