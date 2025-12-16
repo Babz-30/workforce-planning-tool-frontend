@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getItem("Base_URL") ;
-
-const employee = JSON.parse(localStorage.getItem("empResponse"));
+const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getItem("Base_URL");
 
 // Helper to transform frontend data to backend format
-const transformToBackendFormat = (formData) => {
+const transformToBackendFormat = (formData, currentEmployee) => {
+
+    const employee = currentEmployee || JSON.parse(localStorage.getItem("empResponse"));
+
     return {
         id: formData.id,
         employeeId: formData.employeeId,
@@ -24,7 +25,7 @@ const transformToBackendFormat = (formData) => {
         skills: formData.selectedSkills || [],
         interests: formData.selectedInterests || [],
         baseLocation: formData.primaryLocation || "",
-        preferredLocations: employee.preferredLocations || formData.preferredLocations,
+        preferredLocations: employee.preferredLocations || formData.preferredLocations || [],
         emergencyContact: formData.emergencyContact || "",
         availabilityStatus: formData.status || "AVAILABLE",
         contractType: formData.contractType || "FULL_TIME",
@@ -77,12 +78,16 @@ const transformToFrontendFormat = (backendData) => {
 };
 
 // API call to update employee
-export const updateEmployeeById = async (employeeId, employeeData) => {
+export const updateEmployeeById = async (employeeId, employeeData, currentEmployee) => {
     try {
 
-        const backendData = transformToBackendFormat(employeeData);
+        if (!currentEmployee) {
+            throw new Error("Employee details are required!");
+        }
+
+        const backendData = transformToBackendFormat(employeeData, currentEmployee);
         console.log("Put request", backendData);
-        
+
         const response = await axios.put(
             `${API_BASE_URL}/api/employees/${employeeId}`,
             backendData,
@@ -98,7 +103,7 @@ export const updateEmployeeById = async (employeeId, employeeData) => {
     } catch (error) {
         console.error("Update Employee API Error:", error);
         throw error;
-  }
+    }
 };
 
 // API call to get employee by ID
@@ -114,16 +119,16 @@ export const getEmployeeById = async (employeeId) => {
     } catch (error) {
         console.error("Get Employee API Error:", error);
         throw error;
-  }
+    }
 };
 
 // Fetch all employees
 export const getAllEmployee = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/api/employees`);
-    return { data: response.data };
-  } catch (error) {
-    console.error("Get Employee API Error:", error);
-    throw error;
-  }
+    try {
+        const response = await axios.get(`${API_BASE_URL}/api/employees`);
+        return { data: response.data };
+    } catch (error) {
+        console.error("Get Employee API Error:", error);
+        throw error;
+    }
 };
