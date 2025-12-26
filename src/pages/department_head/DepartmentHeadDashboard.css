@@ -1,0 +1,164 @@
+/* Department Head Dashboard Styles */
+
+.dept-head-dashboard-page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Dashboard Header with Navigation Bar */
+.dashboard-header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  margin-bottom: 0;
+}
+
+.dashboard-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.welcome-section {
+  flex: 1;
+}
+
+.dashboard-main-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.welcome-text {
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  color: #64748b;
+  font-weight: 400;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.welcome-text strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.icon-btn {
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Main Content */
+.main-content {
+  min-height: calc(100vh - 200px);
+  background-color: #f8fafc;
+  padding-top: 0;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.breadcrumb-item:hover {
+  color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+.breadcrumb-item.active {
+  background: none;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+  font-weight: 300;
+  user-select: none;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  /* No stats-overview responsive styles */
+}
+
+@media (max-width: 768px) {
+  .dashboard-header-content {
+    padding: 0 20px;
+  }
+
+  .dashboard-main-title {
+    font-size: 24px;
+  }
+
+  .welcome-text {
+    font-size: 14px;
+  }
+
+  .breadcrumb-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
