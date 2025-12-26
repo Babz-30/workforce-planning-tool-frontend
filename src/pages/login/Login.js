@@ -56,6 +56,8 @@ const Login = () => {
           navigate("/resource-planner");
         else if (response.data.role === Roles.Employee)
           navigate("/employee_dashboard", { state: response.data });
+        else if (response.data.role === Roles.Department_Head)
+          navigate("/department_head", { state: response.data });
         else if (response.data.role === Roles.System_Admin) navigate("/home");
         else navigate("/");
       }

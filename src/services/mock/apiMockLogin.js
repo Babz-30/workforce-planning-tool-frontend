@@ -38,6 +38,22 @@ export const login = async (username, password) => {
             }
         },
         {
+            username: "dh_jane",
+            password: "dh123",
+            data: {
+                "_id": { "$oid": "6933610a799a5830ded00a59" },
+                "username": "dh_jane",
+                "firstName": "Jane",
+                "lastName": "Smith",
+                "email": "jane.smith@workforce.com",
+                "department": "HR",
+                "position": "Department Head",
+                "role": "DEPARTMENT_HEAD",
+                "userId": "8c48fce5-978f-4d3f-9ecc-ae8e767eddf7",
+                "employeeId": "4"
+            }
+        },
+        {
             username: "admin_john",
             password: "admin123",
             data: {
