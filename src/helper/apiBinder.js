@@ -70,3 +70,38 @@ export function transformEmployeesForResourcePlanner(apiData) {
     availability: formatAvailability(employee.availabilityStatus),
   }));
 }
+
+export function transformProjectDetails(apiData) {
+  console.log("API Data for Project Details:", apiData);
+  return apiData.map((project) => ({
+    id: project.projectId,
+    name: project.projectDescription,
+    startDate: project.projectStart,
+    endDate: project.projectEnd,
+    roles: project.roles.map((role) => ({
+      requiredRole: role.requiredRole,
+      numberOfEmployees: role.numberOfEmployees,
+      capacity: role.capacity,
+      requiredCompetencies: role.requiredCompetencies || [],
+    })),
+  }));
+}
+
+// return {
+//   id: apiData.projectId,
+//   name: apiData.projectDescription,
+//   startDate: apiData.projectStart,
+//   endDate: apiData.projectEnd,
+//   // requiredEmployees: apiData.requiredEmployees,
+//   roles: apiData.roles.map((role) => ({
+//     requiredRole: role.requiredRole,
+//     numberOfEmployees: role.numberOfEmployees,
+//     capacity: role.capacity,
+//     requiredCompetencies: role.requiredCompetencies || [],
+//   })),
+//   // competencies: apiData.selectedSkills || [],
+//   // capacity: apiData.capacity || "",
+//   // location: Array.isArray(apiData.selectedLocations)
+//   //   ? apiData.selectedLocations.join(" / ")
+//   //   : apiData.selectedLocations || "",
+// };

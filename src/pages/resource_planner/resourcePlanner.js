@@ -11,6 +11,8 @@ import {
 import "./ResourcePlanner.css";
 import { getAllEmployee } from "../../services/employee/employeeApi";
 import { transformEmployeesForResourcePlanner } from "../../helper/apiBinder";
+import { transformProjectDetails } from "../../helper/apiBinder";
+import { GetAllProject } from "../../services/project/getprojects";
 import Pagination from "../../components/pagination/Pagination"; // Import the pagination component
 import UserProfile from "../../components/profile/profile";
 import ProposeTabContent from "../../components/rp_propose/proposeTab";
@@ -22,6 +24,7 @@ const ResourcePlanner = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   // Pagination states for different tabs
   const [availablePage, setAvailablePage] = useState(1);
@@ -34,11 +37,15 @@ const ResourcePlanner = () => {
 
   // Fetch employees from API
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const fetchRecords = async () => {
       try {
         setLoading(true);
         await getAllEmployee().then((response) => {
           setEmployees(transformEmployeesForResourcePlanner(response.data));
+        });
+
+        await GetAllProject().then((response2) => {
+          setProjects(transformProjectDetails(response2));
         });
         setError(null);
       } catch (err) {
@@ -48,7 +55,7 @@ const ResourcePlanner = () => {
         setLoading(false);
       }
     };
-    fetchEmployees();
+    fetchRecords();
   }, []);
 
   // Reset page when changing tabs or filters
@@ -56,71 +63,70 @@ const ResourcePlanner = () => {
     setSearchPage(1);
   }, [searchTerm, selectedSkills]);
 
-  // Updated projects structure with multiple roles
-  const projects = [
-    {
-      id: 1,
-      name: "Project Delta",
-      status: "Open",
-      roles: [
-        {
-          requiredRole: "UI/UX Designer",
-          requiredCompetencies: ["Figma", "UI/UX Design"],
-          capacity: "30",
-          numberOfEmployees: "2",
-        },
-        {
-          requiredRole: "Frontend Developer",
-          requiredCompetencies: ["React", "REST API"],
-          capacity: "40",
-          numberOfEmployees: "2",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Project Echo",
-      status: "Open",
-      roles: [
-        {
-          requiredRole: "Backend Developer",
-          requiredCompetencies: ["Python", "ML", "REST API"],
-          capacity: "35",
-          numberOfEmployees: "1",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Project Foxtrot",
-      status: "Open",
-      roles: [
-        {
-          requiredRole: "Backend Developer",
-          requiredCompetencies: [
-            "Node.js",
-            "PostgreSQL",
-            "REST API",
-            "Payment Integration",
-          ],
-          capacity: "35",
-          numberOfEmployees: "2",
-        },
-        {
-          requiredRole: "QA Engineer",
-          requiredCompetencies: ["Testing"],
-          capacity: "25",
-          numberOfEmployees: "2",
-        },
-        {
-          requiredRole: "DevOps Engineer",
-          requiredCompetencies: ["Java", "AWS"],
-          capacity: "30",
-          numberOfEmployees: "3",
-        },
-      ],
-    },
-  ];
+  // const projects = [
+  //   {
+  //     id: 1,
+  //     name: "Project Delta",
+  //     status: "Open",
+  //     roles: [
+  //       {
+  //         requiredRole: "UI/UX Designer",
+  //         requiredCompetencies: ["Figma", "UI/UX Design"],
+  //         capacity: "30",
+  //         numberOfEmployees: "2",
+  //       },
+  //       {
+  //         requiredRole: "Frontend Developer",
+  //         requiredCompetencies: ["React", "REST API"],
+  //         capacity: "40",
+  //         numberOfEmployees: "2",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Project Echo",
+  //     status: "Open",
+  //     roles: [
+  //       {
+  //         requiredRole: "Backend Developer",
+  //         requiredCompetencies: ["Python", "ML", "REST API"],
+  //         capacity: "35",
+  //         numberOfEmployees: "1",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Project Foxtrot",
+  //     status: "Open",
+  //     roles: [
+  //       {
+  //         requiredRole: "Backend Developer",
+  //         requiredCompetencies: [
+  //           "Node.js",
+  //           "PostgreSQL",
+  //           "REST API",
+  //           "Payment Integration",
+  //         ],
+  //         capacity: "35",
+  //         numberOfEmployees: "2",
+  //       },
+  //       {
+  //         requiredRole: "QA Engineer",
+  //         requiredCompetencies: ["Testing"],
+  //         capacity: "25",
+  //         numberOfEmployees: "2",
+  //       },
+  //       {
+  //         requiredRole: "DevOps Engineer",
+  //         requiredCompetencies: ["Java", "AWS"],
+  //         capacity: "30",
+  //         numberOfEmployees: "3",
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const skillGaps = [
     { skill: "Kubernetes", required: 5, available: 1, gap: 4 },
@@ -199,6 +205,9 @@ const ResourcePlanner = () => {
     );
   };
 
+  if (loading) {
+    return <div className="loading-state">Loading resource planner...</div>;
+  }
   return (
     <div className="app-container">
       <div className="app-content">
@@ -405,6 +414,7 @@ const ResourcePlanner = () => {
             proposeEmployee={proposeEmployee}
             ITEMS_PER_PAGE={ITEMS_PER_PAGE}
             paginateItems={paginateItems}
+            loading={loading}
           />
         )}
 

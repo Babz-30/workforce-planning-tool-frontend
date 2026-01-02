@@ -21,3 +21,11 @@ export async function GetProjectById(ProjectId) {
   );
   return response.data.data;
 }
+
+export async function GetAllProject() {
+  const response = await axios.get(
+    localStorage.getItem("Base_URL") + ApiEndPoints.Get_Project_All_Projects
+  );
+  console.log("All Projects Response data:", response.data.data);
+  return response.data.data;
+}

@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Pagination from "../pagination/Pagination";
 import "./proposeCard.css";
 
-// Updated projects structure with multiple roles
+// Utility function for better date formatting
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  return date.toLocaleDateString("en-US", options);
+};
 
-const ProjectCard = ({ project, employees, onPropose }) => {
+const ProjectCard = ({ project, employees, onPropose, proposedEmployees }) => {
   const totalPositions =
     project.roles?.reduce(
       (sum, role) => sum + parseInt(role.numberOfEmployees || 0),
@@ -16,6 +21,9 @@ const ProjectCard = ({ project, employees, onPropose }) => {
       <div className="project-header">
         <div className="project-info-header">
           <h3 className="project-name">{project.name}</h3>
+          <span className="project-date">
+            {formatDate(project.startDate)} - {formatDate(project.endDate)}
+          </span>
           <span className="positions-badge">
             {totalPositions} position{totalPositions !== 1 ? "s" : ""} open
           </span>
@@ -31,6 +39,7 @@ const ProjectCard = ({ project, employees, onPropose }) => {
               project={project}
               employees={employees}
               onPropose={onPropose}
+              proposedEmployees={proposedEmployees}
             />
           ))
         ) : (
@@ -44,10 +53,25 @@ const ProjectCard = ({ project, employees, onPropose }) => {
 // ------------------
 // Role Section
 // ------------------
-const RoleSection = ({ role, project, employees, onPropose }) => {
-  const recommendedEmployees = employees.filter((emp) =>
-    role.requiredCompetencies.some((skill) => emp.skills.includes(skill))
-  );
+const RoleSection = ({
+  role,
+  project,
+  employees,
+  onPropose,
+  proposedEmployees,
+}) => {
+  const recommendedEmployees = employees.filter((emp) => {
+    // Check if employee matches required competencies
+    const hasMatchingSkills = role.requiredCompetencies.some((skill) =>
+      emp.skills.includes(skill)
+    );
+
+    // Check if employee has already been proposed for this role
+    const employeeKey = `${project.id}-${role.requiredRole}-${emp.id}`;
+    const alreadyProposed = proposedEmployees.has(employeeKey);
+
+    return hasMatchingSkills && !alreadyProposed;
+  });
 
   return (
     <div className="role-section">
@@ -55,7 +79,7 @@ const RoleSection = ({ role, project, employees, onPropose }) => {
         <h4 className="role-title">{role.requiredRole}</h4>
         <span className="role-positions-badge">
           {role.numberOfEmployees} position
-          {parseInt(role.numberOfEmployees) > 1 ? "s" : ""} • {role.capacity}
+          {parseInt(role.numberOfEmployees) > 1 ? "s" : ""} • {role.capacity}{" "}
           Hours/Week
         </span>
       </div>
@@ -151,16 +175,90 @@ const suggestEmployee = async (
       }),
     });
 
-    if (!response.ok) {
+    const data = await response.json();
+
+    if (response.status === 200) {
+      return { success: true, status: 200, data };
+    } else if (response.status === 409) {
+      return {
+        success: false,
+        status: 409,
+        error: "Employee already suggested",
+        data,
+      };
+    } else {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
-
-    const data = await response.json();
-    return { success: true, data };
   } catch (error) {
     console.error("Error suggesting employee:", error);
-    return { success: false, error: error.message };
+    return { success: false, status: 500, error: error.message };
   }
+};
+
+// ------------------
+// Filter and Sort Controls
+// ------------------
+const FilterSortControls = ({
+  searchTerm,
+  setSearchTerm,
+  sortBy,
+  setSortBy,
+}) => {
+  return (
+    <div
+      className="filter-sort-controls"
+      style={{
+        display: "flex",
+        gap: "1rem",
+        marginBottom: "1.5rem",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <div className="search-box" style={{ flex: "1", minWidth: "250px" }}>
+        <input
+          type="text"
+          placeholder="Search by project name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem 1rem",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+            fontSize: "0.95rem",
+          }}
+        />
+      </div>
+
+      <div
+        className="sort-controls"
+        style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+      >
+        <label style={{ fontWeight: "500", fontSize: "0.9rem" }}>
+          Sort by:
+        </label>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          style={{
+            padding: "0.5rem 1rem",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+            fontSize: "0.95rem",
+            cursor: "pointer",
+          }}
+        >
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="date-asc">Start Date (Earliest)</option>
+          <option value="date-desc">Start Date (Latest)</option>
+          <option value="positions-desc">Most Positions</option>
+          <option value="positions-asc">Least Positions</option>
+        </select>
+      </div>
+    </div>
+  );
 };
 
 // ------------------
@@ -171,12 +269,56 @@ const ProposeTabContent = ({
   employees,
   proposePage,
   setProposePage,
-  plannerUserId, // Add this prop
+  plannerUserId,
   ITEMS_PER_PAGE,
   paginateItems,
-  onProposeSuccess, // Optional callback for success handling
-  onProposeError, // Optional callback for error handling
+  loading,
+  onProposeSuccess,
+  onProposeError,
 }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("name-asc");
+  const [proposedEmployees, setProposedEmployees] = useState(new Set());
+
+  // Filter and sort projects
+  const filteredAndSortedProjects = useMemo(() => {
+    let filtered = projects.filter((project) =>
+      project.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Calculate total positions for sorting
+    const projectsWithPositions = filtered.map((project) => ({
+      ...project,
+      totalPositions:
+        project.roles?.reduce(
+          (sum, role) => sum + parseInt(role.numberOfEmployees || 0),
+          0
+        ) || 0,
+    }));
+
+    // Sort based on selected option
+    const sorted = [...projectsWithPositions].sort((a, b) => {
+      switch (sortBy) {
+        case "name-asc":
+          return a.name.localeCompare(b.name);
+        case "name-desc":
+          return b.name.localeCompare(a.name);
+        case "date-asc":
+          return new Date(a.startDate) - new Date(b.startDate);
+        case "date-desc":
+          return new Date(b.startDate) - new Date(a.startDate);
+        case "positions-desc":
+          return b.totalPositions - a.totalPositions;
+        case "positions-asc":
+          return a.totalPositions - b.totalPositions;
+        default:
+          return 0;
+      }
+    });
+
+    return sorted;
+  }, [projects, searchTerm, sortBy]);
+
   const handlePropose = async (employee, project, role) => {
     const result = await suggestEmployee(
       project.id,
@@ -185,45 +327,98 @@ const ProposeTabContent = ({
       plannerUserId
     );
 
-    if (result.success) {
+    const employeeKey = `${project.id}-${role.requiredRole}-${employee.id}`;
+
+    if (result.status === 200) {
+      // Success - remove employee from list
+      setProposedEmployees((prev) => new Set(prev).add(employeeKey));
       console.log("Employee proposed successfully:", result.data);
+
       if (onProposeSuccess) {
         onProposeSuccess(employee, project, role, result.data);
       }
-      // You can add toast notification here
+
       alert(`Successfully proposed ${employee.name} for ${role.requiredRole}`);
-    } else {
-      console.error("Failed to propose employee:", result.error);
+    } else if (result.status === 409) {
+      // Already suggested - remove employee from list
+      setProposedEmployees((prev) => new Set(prev).add(employeeKey));
+      console.log("Employee already suggested:", employee.name);
+
       if (onProposeError) {
         onProposeError(employee, project, role, result.error);
       }
-      // You can add toast notification here
+
+      alert(
+        `${employee.name} has already been suggested for ${role.requiredRole}`
+      );
+    } else {
+      // Other errors - keep employee in list
+      console.error("Failed to propose employee:", result.error);
+
+      if (onProposeError) {
+        onProposeError(employee, project, role, result.error);
+      }
+
       alert(`Failed to propose employee: ${result.error}`);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="content-card">
+        <h2 className="section-title">Propose Employees for Projects</h2>
+        <FilterSortControls
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
+        <div style={{ textAlign: "center" }}>Loading Projects...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="content-card">
       <h2 className="section-title">Propose Employees for Projects</h2>
-      <div className="project-list">
-        {paginateItems(projects, proposePage).map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            employees={employees}
-            onPropose={handlePropose}
-          />
-        ))}
-      </div>
-      <Pagination
-        currentPage={proposePage}
-        totalItems={projects.length}
-        itemsPerPage={ITEMS_PER_PAGE}
-        onPageChange={setProposePage}
+
+      <FilterSortControls
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
+
+      {filteredAndSortedProjects.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+          No projects found matching "{searchTerm}"
+        </div>
+      ) : (
+        <>
+          <div className="project-list">
+            {paginateItems(filteredAndSortedProjects, proposePage).map(
+              (project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  employees={employees}
+                  onPropose={handlePropose}
+                  proposedEmployees={proposedEmployees}
+                />
+              )
+            )}
+          </div>
+          <Pagination
+            currentPage={proposePage}
+            totalItems={filteredAndSortedProjects.length}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={setProposePage}
+          />
+        </>
+      )}
     </div>
   );
 };
 
-export { ProjectCard, ProposeTabContent, suggestEmployee };
+// export { ProjectCard, ProposeTabContent, suggestEmployee, formatDate };
 export default ProposeTabContent;
