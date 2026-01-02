@@ -12,6 +12,7 @@ import UpdateEmployee from "./pages/employee/UpdateEmployee";
 import PrivateRoute from "./helper/PrivateRoute";
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
 import ResourcePlanner from "./pages/resource_planner/resourcePlanner";
+import DepartmentHeadDashboard from "./pages/department_head/DepartmentHeadDashboard"
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         />
         <Route path="/update-employee" element={<PrivateRoute><UpdateEmployee /></PrivateRoute>} />
         <Route path="/employee_dashboard" element={<PrivateRoute><EmployeeDashboard /></PrivateRoute>} />
+        <Route path="/department_head" element={<PrivateRoute><DepartmentHeadDashboard /></PrivateRoute>} />
         <Route
           path="/update-employee"
           element={
