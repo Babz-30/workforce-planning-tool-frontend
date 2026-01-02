@@ -13,6 +13,7 @@ import { getAllEmployee } from "../../services/employee/employeeApi";
 import { transformEmployeesForResourcePlanner } from "../../helper/apiBinder";
 import Pagination from "../../components/pagination/Pagination"; // Import the pagination component
 import UserProfile from "../../components/profile/profile";
+import ProposeTabContent from "../../components/rp_propose/proposeTab";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
@@ -55,27 +56,69 @@ const ResourcePlanner = () => {
     setSearchPage(1);
   }, [searchTerm, selectedSkills]);
 
+  // Updated projects structure with multiple roles
   const projects = [
     {
       id: 1,
       name: "Project Delta",
-      requiredSkills: ["React", "Node.js"],
       status: "Open",
-      positions: 2,
+      roles: [
+        {
+          requiredRole: "UI/UX Designer",
+          requiredCompetencies: ["Figma", "UI/UX Design"],
+          capacity: "30",
+          numberOfEmployees: "2",
+        },
+        {
+          requiredRole: "Frontend Developer",
+          requiredCompetencies: ["React", "REST API"],
+          capacity: "40",
+          numberOfEmployees: "2",
+        },
+      ],
     },
     {
       id: 2,
       name: "Project Echo",
-      requiredSkills: ["Python", "ML"],
       status: "Open",
-      positions: 1,
+      roles: [
+        {
+          requiredRole: "Backend Developer",
+          requiredCompetencies: ["Python", "ML", "REST API"],
+          capacity: "35",
+          numberOfEmployees: "1",
+        },
+      ],
     },
     {
       id: 3,
       name: "Project Foxtrot",
-      requiredSkills: ["Java", "AWS"],
       status: "Open",
-      positions: 3,
+      roles: [
+        {
+          requiredRole: "Backend Developer",
+          requiredCompetencies: [
+            "Node.js",
+            "PostgreSQL",
+            "REST API",
+            "Payment Integration",
+          ],
+          capacity: "35",
+          numberOfEmployees: "2",
+        },
+        {
+          requiredRole: "QA Engineer",
+          requiredCompetencies: ["Testing"],
+          capacity: "25",
+          numberOfEmployees: "2",
+        },
+        {
+          requiredRole: "DevOps Engineer",
+          requiredCompetencies: ["Java", "AWS"],
+          capacity: "30",
+          numberOfEmployees: "3",
+        },
+      ],
     },
   ];
 
@@ -353,75 +396,16 @@ const ResourcePlanner = () => {
 
         {/* Propose for Projects */}
         {activeTab === "propose" && (
-          <div className="content-card">
-            <h2 className="section-title">Propose Employees for Projects</h2>
-
-            <div className="project-list">
-              {paginateItems(projects, proposePage).map((project) => (
-                <div key={project.id} className="project-card">
-                  <div className="project-header">
-                    <div className="project-info-header">
-                      <h3 className="project-name">{project.name}</h3>
-                      <span className="positions-badge">
-                        {project.positions} positions open
-                      </span>
-                    </div>
-                    <div className="project-skills">
-                      <span className="required-skills-label">
-                        Required Skills:
-                      </span>
-                      {project.requiredSkills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="skill-badge skill-badge-purple"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="candidates-section">
-                    <h4 className="candidates-title">
-                      Recommended Candidates:
-                    </h4>
-                    {employees
-                      .filter((emp) =>
-                        project.requiredSkills.some((skill) =>
-                          emp.skills.includes(skill)
-                        )
-                      )
-                      .map((emp) => (
-                        <div key={emp.id} className="candidate-item">
-                          <div className="candidate-info">
-                            <p className="candidate-name">{emp.name}</p>
-                            <p className="candidate-match">
-                              Matching skills:{" "}
-                              {emp.skills
-                                .filter((s) =>
-                                  project.requiredSkills.includes(s)
-                                )
-                                .join(", ")}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => proposeEmployee(emp, project)}
-                            className="propose-btn"
-                          >
-                            Propose
-                          </button>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Pagination
-              currentPage={proposePage}
-              totalItems={projects.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setProposePage}
-            />
-          </div>
+          // Use the exported projects constant
+          <ProposeTabContent
+            projects={projects} // Use the projects from the artifact
+            employees={employees}
+            proposePage={proposePage}
+            setProposePage={setProposePage}
+            proposeEmployee={proposeEmployee}
+            ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+            paginateItems={paginateItems}
+          />
         )}
 
         {/* Skill Gap Analysis - No pagination needed for this small list */}
