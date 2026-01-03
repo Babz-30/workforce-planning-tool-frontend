@@ -3,7 +3,7 @@ import {
   Search,
   Users,
   TrendingUp,
-  CheckCircle,
+  // CheckCircle,
   UserPlus,
   FileText,
   ExternalLink,
@@ -32,7 +32,7 @@ const ResourcePlanner = () => {
   const [availablePage, setAvailablePage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
   const [proposePage, setProposePage] = useState(1);
-  const [approvalsPage, setApprovalsPage] = useState(1);
+
   const [staffingPage, setStaffingPage] = useState(1);
 
   const ITEMS_PER_PAGE = 10;
@@ -66,25 +66,6 @@ const ResourcePlanner = () => {
   }, [searchTerm, selectedSkills]);
 
   const skillGaps = calculateSkillGaps(employees, projects);
-
-  const approvalRequests = [
-    {
-      id: 1,
-      employee: "Sarah Chen",
-      project: "Project Delta",
-      status: "Pending",
-      requestedBy: "John Doe",
-      date: "2025-11-25",
-    },
-    {
-      id: 2,
-      employee: "James Wilson",
-      project: "Project Echo",
-      status: "Approved",
-      requestedBy: "Jane Smith",
-      date: "2025-11-24",
-    },
-  ];
 
   const allSkills = [
     "React",
@@ -132,12 +113,6 @@ const ResourcePlanner = () => {
     alert(`Proposing ${employee.name} for ${project.name}`);
   };
 
-  const requestApproval = (employee, project) => {
-    alert(
-      `Approval request sent to Department Head for ${employee.name} to join ${project.name}`
-    );
-  };
-
   if (loading) {
     return <div className="loading-state">Loading resource planner...</div>;
   }
@@ -164,11 +139,11 @@ const ResourcePlanner = () => {
               { id: "search", label: "Search by Skills", icon: Search },
               { id: "propose", label: "Propose for Projects", icon: UserPlus },
               { id: "gaps", label: "Skill Gap Analysis", icon: TrendingUp },
-              {
-                id: "approvals",
-                label: "Approval Requests",
-                icon: CheckCircle,
-              },
+              // {
+              //   id: "approvals",
+              //   label: "Approval Requests",
+              //   icon: CheckCircle,
+              // },
               { id: "staffing", label: "Staffing Records", icon: FileText },
             ].map((tab) => (
               <button
@@ -353,134 +328,6 @@ const ResourcePlanner = () => {
 
         {activeTab === "gaps" && (
           <SkillGapAnalysis skillGaps={skillGaps} loading={loading} />
-        )}
-
-        {/* Skill Gap Analysis - No pagination needed for this small list */}
-        {/* {activeTab === "gaps" && (
-          <div className="content-card">
-            <h2 className="section-title">Skill Gap Analysis</h2>
-            <p className="section-description">
-              Identify missing skill sets across the organization
-            </p>
-
-            <div className="gap-list">
-              {skillGaps.map((gap) => (
-                <div key={gap.skill} className="gap-card">
-                  <div className="gap-header">
-                    <h3 className="gap-skill-name">{gap.skill}</h3>
-                    <span
-                      className={`gap-badge gap-${
-                        gap.gap > 3 ? "high" : gap.gap > 1 ? "medium" : "low"
-                      }`}
-                    >
-                      Gap: {gap.gap}
-                    </span>
-                  </div>
-                  <div className="gap-stats">
-                    <div className="gap-stat">
-                      <div className="gap-stat-number">{gap.required}</div>
-                      <div className="gap-stat-label">Required</div>
-                    </div>
-                    <div className="gap-stat">
-                      <div className="gap-stat-number gap-stat-available">
-                        {gap.available}
-                      </div>
-                      <div className="gap-stat-label">Available</div>
-                    </div>
-                    <div className="gap-stat">
-                      <div className="gap-stat-number gap-stat-gap">
-                        {gap.gap}
-                      </div>
-                      <div className="gap-stat-label">Gap</div>
-                    </div>
-                  </div>
-                  <div className="gap-progress-container">
-                    <div className="gap-progress-bar">
-                      <div
-                        className="gap-progress-fill"
-                        style={{
-                          width: `${(gap.available / gap.required) * 100}%`,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="recommendations-card">
-              <h4 className="recommendations-title">
-                <TrendingUp className="recommendations-icon" />
-                Recommendations
-              </h4>
-              <ul className="recommendations-list">
-                <li>
-                  • Consider hiring external talent for Kubernetes expertise
-                </li>
-                <li>• Upskill existing team members in ML technologies</li>
-                <li>
-                  • Recruit additional UI/UX designers for upcoming projects
-                </li>
-              </ul>
-            </div>
-          </div>
-        )} */}
-
-        {/* Approval Requests */}
-        {activeTab === "approvals" && (
-          <div className="content-card">
-            <h2 className="section-title">Approval Requests</h2>
-            <p className="section-description">
-              Request approval from Department Head for employee assignments
-            </p>
-
-            <div className="approval-list">
-              {paginateItems(approvalRequests, approvalsPage).map((request) => (
-                <div key={request.id} className="approval-card">
-                  <div className="approval-header">
-                    <div className="approval-info">
-                      <h3 className="approval-title">
-                        {request.employee} → {request.project}
-                      </h3>
-                      <p className="approval-meta">
-                        Requested by {request.requestedBy} on {request.date}
-                      </p>
-                    </div>
-                    <span
-                      className={`status-badge status-${request.status.toLowerCase()}`}
-                    >
-                      {request.status}
-                    </span>
-                  </div>
-                  {request.status === "Pending" && (
-                    <div className="approval-actions">
-                      <button className="approve-btn">Approve</button>
-                      <button className="reject-btn">Reject</button>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <Pagination
-              currentPage={approvalsPage}
-              totalItems={approvalRequests.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setApprovalsPage}
-            />
-
-            <div className="new-request-section">
-              <button
-                onClick={() => {
-                  const emp = employees[0];
-                  const proj = projects[0];
-                  requestApproval(emp, proj);
-                }}
-                className="new-request-btn"
-              >
-                + New Approval Request
-              </button>
-            </div>
-          </div>
         )}
 
         {/* Staffing Records */}
