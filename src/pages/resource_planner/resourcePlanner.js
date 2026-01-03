@@ -12,10 +12,12 @@ import "./ResourcePlanner.css";
 import { getAllEmployee } from "../../services/employee/employeeApi";
 import { transformEmployeesForResourcePlanner } from "../../helper/apiBinder";
 import { transformProjectDetails } from "../../helper/apiBinder";
-import { GetAllProject } from "../../services/project/getprojects";
+import { GetAllPublishedProject } from "../../services/project/getprojects";
 import Pagination from "../../components/pagination/Pagination"; // Import the pagination component
 import UserProfile from "../../components/profile/profile";
 import ProposeTabContent from "../../components/rp_propose/proposeTab";
+import SkillGapAnalysis from "../../components/rp_skill_gap_analysis/skillGapAnalysisTab";
+import { calculateSkillGaps } from "../../helper/skillGap";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
@@ -44,7 +46,7 @@ const ResourcePlanner = () => {
           setEmployees(transformEmployeesForResourcePlanner(response.data));
         });
 
-        await GetAllProject().then((response2) => {
+        await GetAllPublishedProject().then((response2) => {
           setProjects(transformProjectDetails(response2));
         });
         setError(null);
@@ -63,76 +65,7 @@ const ResourcePlanner = () => {
     setSearchPage(1);
   }, [searchTerm, selectedSkills]);
 
-  // const projects = [
-  //   {
-  //     id: 1,
-  //     name: "Project Delta",
-  //     status: "Open",
-  //     roles: [
-  //       {
-  //         requiredRole: "UI/UX Designer",
-  //         requiredCompetencies: ["Figma", "UI/UX Design"],
-  //         capacity: "30",
-  //         numberOfEmployees: "2",
-  //       },
-  //       {
-  //         requiredRole: "Frontend Developer",
-  //         requiredCompetencies: ["React", "REST API"],
-  //         capacity: "40",
-  //         numberOfEmployees: "2",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Project Echo",
-  //     status: "Open",
-  //     roles: [
-  //       {
-  //         requiredRole: "Backend Developer",
-  //         requiredCompetencies: ["Python", "ML", "REST API"],
-  //         capacity: "35",
-  //         numberOfEmployees: "1",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Project Foxtrot",
-  //     status: "Open",
-  //     roles: [
-  //       {
-  //         requiredRole: "Backend Developer",
-  //         requiredCompetencies: [
-  //           "Node.js",
-  //           "PostgreSQL",
-  //           "REST API",
-  //           "Payment Integration",
-  //         ],
-  //         capacity: "35",
-  //         numberOfEmployees: "2",
-  //       },
-  //       {
-  //         requiredRole: "QA Engineer",
-  //         requiredCompetencies: ["Testing"],
-  //         capacity: "25",
-  //         numberOfEmployees: "2",
-  //       },
-  //       {
-  //         requiredRole: "DevOps Engineer",
-  //         requiredCompetencies: ["Java", "AWS"],
-  //         capacity: "30",
-  //         numberOfEmployees: "3",
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  const skillGaps = [
-    { skill: "Kubernetes", required: 5, available: 1, gap: 4 },
-    { skill: "ML", required: 3, available: 1, gap: 2 },
-    { skill: "UI/UX", required: 4, available: 1, gap: 3 },
-  ];
+  const skillGaps = calculateSkillGaps(employees, projects);
 
   const approvalRequests = [
     {
@@ -418,8 +351,12 @@ const ResourcePlanner = () => {
           />
         )}
 
-        {/* Skill Gap Analysis - No pagination needed for this small list */}
         {activeTab === "gaps" && (
+          <SkillGapAnalysis skillGaps={skillGaps} loading={loading} />
+        )}
+
+        {/* Skill Gap Analysis - No pagination needed for this small list */}
+        {/* {activeTab === "gaps" && (
           <div className="content-card">
             <h2 className="section-title">Skill Gap Analysis</h2>
             <p className="section-description">
@@ -487,7 +424,7 @@ const ResourcePlanner = () => {
               </ul>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Approval Requests */}
         {activeTab === "approvals" && (

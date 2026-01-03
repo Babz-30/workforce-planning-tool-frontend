@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from "react";
 import Pagination from "../pagination/Pagination";
 import "./proposeCard.css";
-
-// Utility function for better date formatting
+import { ProposeProject } from "../../services/application/ProposeAPI";
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const options = { year: "numeric", month: "short", day: "numeric" };
@@ -22,7 +21,8 @@ const ProjectCard = ({ project, employees, onPropose, proposedEmployees }) => {
         <div className="project-info-header">
           <h3 className="project-name">{project.name}</h3>
           <span className="project-date">
-            {formatDate(project.startDate)} - {formatDate(project.endDate)}
+            Project Start: {formatDate(project.startDate)} &nbsp;–&nbsp; Project
+            End: {formatDate(project.endDate)}
           </span>
           <span className="positions-badge">
             {totalPositions} position{totalPositions !== 1 ? "s" : ""} open
@@ -155,36 +155,20 @@ const CandidateItem = ({ employee, project, role, onPropose }) => {
 // ------------------
 // API Service
 // ------------------
-const suggestEmployee = async (
-  projectId,
-  projectRole,
-  employeeId,
-  plannerUserId
-) => {
+const suggestEmployee = async (projectId, projectRole, employeeId) => {
   try {
-    const response = await fetch("http://localhost/api/applications/suggest", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectId: String(projectId),
-        projectRole: projectRole,
-        employeeId: employeeId,
-        plannerUserId: String(plannerUserId),
-      }),
-    });
+    const response = await ProposeProject(projectId, projectRole, employeeId);
+    console.log("API Response:", response);
+    // const data = await response.json();
 
-    const data = await response.json();
-
-    if (response.status === 200) {
-      return { success: true, status: 200, data };
+    if (response.status === 201) {
+      return { success: true, status: 201, response };
     } else if (response.status === 409) {
       return {
         success: false,
         status: 409,
         error: "Employee already suggested",
-        data,
+        response,
       };
     } else {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
@@ -323,13 +307,12 @@ const ProposeTabContent = ({
     const result = await suggestEmployee(
       project.id,
       role.requiredRole,
-      employee.id,
-      plannerUserId
+      employee.id
     );
 
     const employeeKey = `${project.id}-${role.requiredRole}-${employee.id}`;
 
-    if (result.status === 200) {
+    if (result.status === 201) {
       // Success - remove employee from list
       setProposedEmployees((prev) => new Set(prev).add(employeeKey));
       console.log("Employee proposed successfully:", result.data);
@@ -420,5 +403,4 @@ const ProposeTabContent = ({
   );
 };
 
-// export { ProjectCard, ProposeTabContent, suggestEmployee, formatDate };
 export default ProposeTabContent;
