@@ -11,8 +11,13 @@ import {
 import "./ResourcePlanner.css";
 import { getAllEmployee } from "../../services/employee/employeeApi";
 import { transformEmployeesForResourcePlanner } from "../../helper/apiBinder";
+import { transformProjectDetails } from "../../helper/apiBinder";
+import { GetAllPublishedProject } from "../../services/project/getprojects";
 import Pagination from "../../components/pagination/Pagination"; // Import the pagination component
 import UserProfile from "../../components/profile/profile";
+import ProposeTabContent from "../../components/rp_propose/proposeTab";
+import SkillGapAnalysis from "../../components/rp_skill_gap_analysis/skillGapAnalysisTab";
+import { calculateSkillGaps } from "../../helper/skillGap";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
@@ -21,6 +26,7 @@ const ResourcePlanner = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   // Pagination states for different tabs
   const [availablePage, setAvailablePage] = useState(1);
@@ -33,11 +39,15 @@ const ResourcePlanner = () => {
 
   // Fetch employees from API
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const fetchRecords = async () => {
       try {
         setLoading(true);
         await getAllEmployee().then((response) => {
           setEmployees(transformEmployeesForResourcePlanner(response.data));
+        });
+
+        await GetAllPublishedProject().then((response2) => {
+          setProjects(transformProjectDetails(response2));
         });
         setError(null);
       } catch (err) {
@@ -47,7 +57,7 @@ const ResourcePlanner = () => {
         setLoading(false);
       }
     };
-    fetchEmployees();
+    fetchRecords();
   }, []);
 
   // Reset page when changing tabs or filters
@@ -55,35 +65,7 @@ const ResourcePlanner = () => {
     setSearchPage(1);
   }, [searchTerm, selectedSkills]);
 
-  const projects = [
-    {
-      id: 1,
-      name: "Project Delta",
-      requiredSkills: ["React", "Node.js"],
-      status: "Open",
-      positions: 2,
-    },
-    {
-      id: 2,
-      name: "Project Echo",
-      requiredSkills: ["Python", "ML"],
-      status: "Open",
-      positions: 1,
-    },
-    {
-      id: 3,
-      name: "Project Foxtrot",
-      requiredSkills: ["Java", "AWS"],
-      status: "Open",
-      positions: 3,
-    },
-  ];
-
-  const skillGaps = [
-    { skill: "Kubernetes", required: 5, available: 1, gap: 4 },
-    { skill: "ML", required: 3, available: 1, gap: 2 },
-    { skill: "UI/UX", required: 4, available: 1, gap: 3 },
-  ];
+  const skillGaps = calculateSkillGaps(employees, projects);
 
   const approvalRequests = [
     {
@@ -156,6 +138,9 @@ const ResourcePlanner = () => {
     );
   };
 
+  if (loading) {
+    return <div className="loading-state">Loading resource planner...</div>;
+  }
   return (
     <div className="app-container">
       <div className="app-content">
@@ -353,79 +338,25 @@ const ResourcePlanner = () => {
 
         {/* Propose for Projects */}
         {activeTab === "propose" && (
-          <div className="content-card">
-            <h2 className="section-title">Propose Employees for Projects</h2>
+          // Use the exported projects constant
+          <ProposeTabContent
+            projects={projects} // Use the projects from the artifact
+            employees={employees}
+            proposePage={proposePage}
+            setProposePage={setProposePage}
+            proposeEmployee={proposeEmployee}
+            ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+            paginateItems={paginateItems}
+            loading={loading}
+          />
+        )}
 
-            <div className="project-list">
-              {paginateItems(projects, proposePage).map((project) => (
-                <div key={project.id} className="project-card">
-                  <div className="project-header">
-                    <div className="project-info-header">
-                      <h3 className="project-name">{project.name}</h3>
-                      <span className="positions-badge">
-                        {project.positions} positions open
-                      </span>
-                    </div>
-                    <div className="project-skills">
-                      <span className="required-skills-label">
-                        Required Skills:
-                      </span>
-                      {project.requiredSkills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="skill-badge skill-badge-purple"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="candidates-section">
-                    <h4 className="candidates-title">
-                      Recommended Candidates:
-                    </h4>
-                    {employees
-                      .filter((emp) =>
-                        project.requiredSkills.some((skill) =>
-                          emp.skills.includes(skill)
-                        )
-                      )
-                      .map((emp) => (
-                        <div key={emp.id} className="candidate-item">
-                          <div className="candidate-info">
-                            <p className="candidate-name">{emp.name}</p>
-                            <p className="candidate-match">
-                              Matching skills:{" "}
-                              {emp.skills
-                                .filter((s) =>
-                                  project.requiredSkills.includes(s)
-                                )
-                                .join(", ")}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => proposeEmployee(emp, project)}
-                            className="propose-btn"
-                          >
-                            Propose
-                          </button>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Pagination
-              currentPage={proposePage}
-              totalItems={projects.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setProposePage}
-            />
-          </div>
+        {activeTab === "gaps" && (
+          <SkillGapAnalysis skillGaps={skillGaps} loading={loading} />
         )}
 
         {/* Skill Gap Analysis - No pagination needed for this small list */}
-        {activeTab === "gaps" && (
+        {/* {activeTab === "gaps" && (
           <div className="content-card">
             <h2 className="section-title">Skill Gap Analysis</h2>
             <p className="section-description">
@@ -493,7 +424,7 @@ const ResourcePlanner = () => {
               </ul>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Approval Requests */}
         {activeTab === "approvals" && (
