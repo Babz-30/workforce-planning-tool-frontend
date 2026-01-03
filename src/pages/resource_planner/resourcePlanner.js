@@ -3,7 +3,7 @@ import {
   Search,
   Users,
   TrendingUp,
-  CheckCircle,
+  // CheckCircle,
   UserPlus,
   FileText,
   ExternalLink,
@@ -32,7 +32,7 @@ const ResourcePlanner = () => {
   const [availablePage, setAvailablePage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
   const [proposePage, setProposePage] = useState(1);
-  
+
   const [staffingPage, setStaffingPage] = useState(1);
 
   const ITEMS_PER_PAGE = 10;
@@ -66,8 +66,6 @@ const ResourcePlanner = () => {
   }, [searchTerm, selectedSkills]);
 
   const skillGaps = calculateSkillGaps(employees, projects);
-
-
 
   const allSkills = [
     "React",
@@ -115,8 +113,6 @@ const ResourcePlanner = () => {
     alert(`Proposing ${employee.name} for ${project.name}`);
   };
 
-
-
   if (loading) {
     return <div className="loading-state">Loading resource planner...</div>;
   }
@@ -143,11 +139,11 @@ const ResourcePlanner = () => {
               { id: "search", label: "Search by Skills", icon: Search },
               { id: "propose", label: "Propose for Projects", icon: UserPlus },
               { id: "gaps", label: "Skill Gap Analysis", icon: TrendingUp },
-              {
-                id: "approvals",
-                label: "Approval Requests",
-                icon: CheckCircle,
-              },
+              // {
+              //   id: "approvals",
+              //   label: "Approval Requests",
+              //   icon: CheckCircle,
+              // },
               { id: "staffing", label: "Staffing Records", icon: FileText },
             ].map((tab) => (
               <button
