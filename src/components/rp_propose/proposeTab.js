@@ -19,7 +19,7 @@ const ProjectCard = ({ project, employees, onPropose, proposedEmployees }) => {
     <div className="project-card">
       <div className="project-header">
         <div className="project-info-header">
-          <h3 className="project-name">{project.name}</h3>
+          <div className="project-title">{project.name}</div>
           <span className="project-date">
             Project Start: {formatDate(project.startDate)} &nbsp;–&nbsp; Project
             End: {formatDate(project.endDate)}
