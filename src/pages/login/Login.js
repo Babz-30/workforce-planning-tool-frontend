@@ -110,7 +110,7 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version:{process.env.REACT_APP_VERSION}</p>
+      <p className="note">version: {process.env.REACT_APP_VERSION}</p>
 
       <p className="note">
         Please ensure that the backend service is started before attempting to

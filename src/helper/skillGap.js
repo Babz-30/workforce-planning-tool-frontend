@@ -49,6 +49,15 @@ export function calculateSkillGaps(employees, projects) {
       });
     }
   });
-
-  return skillGaps;
+  // Combine and deduplicate skills
+  const allSkills = [
+    ...new Set([
+      ...Object.keys(availableSkills),
+      ...Object.keys(requiredSkills),
+    ]),
+  ];
+  return {
+    skillGaps,
+    allSkills,
+  };
 }
