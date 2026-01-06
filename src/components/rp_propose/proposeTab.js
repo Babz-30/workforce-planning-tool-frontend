@@ -2,13 +2,20 @@ import React, { useState, useMemo } from "react";
 import Pagination from "../pagination/Pagination";
 import "./proposeCard.css";
 import { ProposeProject } from "../../services/application/ProposeAPI";
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const options = { year: "numeric", month: "short", day: "numeric" };
   return date.toLocaleDateString("en-US", options);
 };
 
-const ProjectCard = ({ project, employees, onPropose, proposedEmployees }) => {
+const ProjectCard = ({
+  project,
+  employees,
+  onPropose,
+  proposedEmployees,
+  appliedEmployees,
+}) => {
   const totalPositions =
     project.roles?.reduce(
       (sum, role) => sum + parseInt(role.numberOfEmployees || 0),
@@ -40,6 +47,7 @@ const ProjectCard = ({ project, employees, onPropose, proposedEmployees }) => {
               employees={employees}
               onPropose={onPropose}
               proposedEmployees={proposedEmployees}
+              appliedEmployees={appliedEmployees}
             />
           ))
         ) : (
@@ -59,7 +67,11 @@ const RoleSection = ({
   employees,
   onPropose,
   proposedEmployees,
+  appliedEmployees,
 }) => {
+  // Get applied employee IDs for this project
+  const appliedEmployeeIds = appliedEmployees[project.id] || [];
+
   const recommendedEmployees = employees.filter((emp) => {
     // Check if employee matches required competencies
     const hasMatchingSkills = role.requiredCompetencies.some((skill) =>
@@ -70,7 +82,20 @@ const RoleSection = ({
     const employeeKey = `${project.id}-${role.requiredRole}-${emp.id}`;
     const alreadyProposed = proposedEmployees.has(employeeKey);
 
-    return hasMatchingSkills && !alreadyProposed;
+    // Check if employee has already applied to this project
+    const alreadyApplied = appliedEmployeeIds.includes(emp.id);
+
+    return hasMatchingSkills && !alreadyProposed && !alreadyApplied;
+  });
+
+  // Get already applied employees who match the role requirements
+  const alreadyAppliedEmployees = employees.filter((emp) => {
+    const hasMatchingSkills = role.requiredCompetencies.some((skill) =>
+      emp.skills.includes(skill)
+    );
+    const isApplied = appliedEmployeeIds.includes(emp.id);
+
+    return hasMatchingSkills && isApplied;
   });
 
   return (
@@ -110,6 +135,24 @@ const RoleSection = ({
           />
         ))}
       </div>
+
+      {alreadyAppliedEmployees.length > 0 && (
+        <div
+          className="applied-candidates-section"
+          style={{ marginTop: "1.5rem" }}
+        >
+          <h4 className="candidates-title" style={{ color: "#666" }}>
+            Already Applied:
+          </h4>
+          {alreadyAppliedEmployees.map((employee) => (
+            <AppliedCandidateItem
+              key={employee.id}
+              employee={employee}
+              role={role}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -153,13 +196,49 @@ const CandidateItem = ({ employee, project, role, onPropose }) => {
 };
 
 // ------------------
+// Already Applied Candidate Item
+// ------------------
+const AppliedCandidateItem = ({ employee, role }) => {
+  const matchingSkills = employee.skills.filter((skill) =>
+    role.requiredCompetencies.includes(skill)
+  );
+
+  return (
+    <div
+      className="candidate-item"
+      style={{ opacity: 0.7, backgroundColor: "#f9f9f9" }}
+    >
+      <div className="candidate-info">
+        <p className="candidate-name">{employee.name}</p>
+        <p className="candidate-match">
+          Matching skills: {matchingSkills.join(", ")}
+        </p>
+      </div>
+
+      <span
+        className="applied-badge"
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#e8f4f8",
+          color: "#0066cc",
+          borderRadius: "4px",
+          fontSize: "0.85rem",
+          fontWeight: "500",
+        }}
+      >
+        Applied
+      </span>
+    </div>
+  );
+};
+
+// ------------------
 // API Service
 // ------------------
 const suggestEmployee = async (projectId, projectRole, employeeId) => {
   try {
     const response = await ProposeProject(projectId, projectRole, employeeId);
     console.log("API Response:", response);
-    // const data = await response.json();
 
     if (response.status === 201) {
       return { success: true, status: 201, response };
@@ -259,6 +338,7 @@ const ProposeTabContent = ({
   loading,
   onProposeSuccess,
   onProposeError,
+  appliedEmployees = {}, // Add this new prop
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name-asc");
@@ -313,10 +393,10 @@ const ProposeTabContent = ({
     const employeeKey = `${project.id}-${role.requiredRole}-${employee.id}`;
 
     if (result.status === 201) {
-      // Success - remove employee from list
+      // Success - remove employee from recommended list
       setProposedEmployees((prev) => new Set(prev).add(employeeKey));
-      console.log("Employee proposed successfully:", result.data);
 
+      // Move employee to applied list
       if (onProposeSuccess) {
         onProposeSuccess(employee, project, role, result.data);
       }
@@ -325,7 +405,6 @@ const ProposeTabContent = ({
     } else if (result.status === 409) {
       // Already suggested - remove employee from list
       setProposedEmployees((prev) => new Set(prev).add(employeeKey));
-      console.log("Employee already suggested:", employee.name);
 
       if (onProposeError) {
         onProposeError(employee, project, role, result.error);
@@ -387,6 +466,7 @@ const ProposeTabContent = ({
                   employees={employees}
                   onPropose={handlePropose}
                   proposedEmployees={proposedEmployees}
+                  appliedEmployees={appliedEmployees}
                 />
               )
             )}

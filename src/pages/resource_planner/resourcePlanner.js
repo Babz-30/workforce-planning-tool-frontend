@@ -18,6 +18,9 @@ import UserProfile from "../../components/profile/profile";
 import ProposeTabContent from "../../components/rp_propose/proposeTab";
 import SkillGapAnalysis from "../../components/rp_skill_gap_analysis/skillGapAnalysisTab";
 import { calculateSkillGaps } from "../../helper/skillGap";
+import { GetAllApplication } from "../../services/application/GetApplicationAPI";
+import getAppliedEmployees from "../../helper/DuplicateEmployeeBinder";
+// import SearchSkillTab from "../../components/rp_skill_search/searchskillTab";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
@@ -27,6 +30,7 @@ const ResourcePlanner = () => {
   const [error, setError] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [appliedEmployees, setAppliedEmployees] = useState({});
 
   // Pagination states for different tabs
   const [availablePage, setAvailablePage] = useState(1);
@@ -49,6 +53,10 @@ const ResourcePlanner = () => {
         await GetAllPublishedProject().then((response2) => {
           setProjects(transformProjectDetails(response2));
         });
+
+        await GetAllApplication().then((response3) => {
+          setAppliedEmployees(getAppliedEmployees(response3));
+        });
         setError(null);
       } catch (err) {
         console.error("Error fetching employees:", err);
@@ -65,22 +73,7 @@ const ResourcePlanner = () => {
     setSearchPage(1);
   }, [searchTerm, selectedSkills]);
 
-  const skillGaps = calculateSkillGaps(employees, projects);
-
-  const allSkills = [
-    "React",
-    "Node.js",
-    "Python",
-    "Java",
-    "Kubernetes",
-    "AWS",
-    "ML",
-    "SQL",
-    "Figma",
-    "UI/UX",
-    "TypeScript",
-    "CSS",
-  ];
+  const { skillGaps, allSkills } = calculateSkillGaps(employees, projects);
 
   const filteredEmployees = employees.filter((emp) => {
     const matchesSearch =
@@ -113,6 +106,14 @@ const ResourcePlanner = () => {
     alert(`Proposing ${employee.name} for ${project.name}`);
   };
 
+  const handleProposeSuccess = (employee, project, role, data) => {
+    // Add the employee to the applied list for this project
+    setAppliedEmployees((prev) => ({
+      ...prev,
+      [project.id]: [...(prev[project.id] || []), employee.id],
+    }));
+  };
+
   if (loading) {
     return <div className="loading-state">Loading resource planner...</div>;
   }
@@ -139,11 +140,6 @@ const ResourcePlanner = () => {
               { id: "search", label: "Search by Skills", icon: Search },
               { id: "propose", label: "Propose for Projects", icon: UserPlus },
               { id: "gaps", label: "Skill Gap Analysis", icon: TrendingUp },
-              // {
-              //   id: "approvals",
-              //   label: "Approval Requests",
-              //   icon: CheckCircle,
-              // },
               { id: "staffing", label: "Staffing Records", icon: FileText },
             ].map((tab) => (
               <button
@@ -320,6 +316,8 @@ const ResourcePlanner = () => {
             proposePage={proposePage}
             setProposePage={setProposePage}
             proposeEmployee={proposeEmployee}
+            appliedEmployees={appliedEmployees}
+            onProposeSuccess={handleProposeSuccess}
             ITEMS_PER_PAGE={ITEMS_PER_PAGE}
             paginateItems={paginateItems}
             loading={loading}

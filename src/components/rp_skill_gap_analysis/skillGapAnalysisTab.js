@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TrendingUp } from "lucide-react";
 import "./skillGapAnalysisTab.css";
 
-const SkillGapAnalysis = ({ skillGaps, loading }) => {
+const SkillGapAnalysis = ({ skillGaps }) => {
   const [sortConfig, setSortConfig] = useState({
     key: "gap",
     direction: "desc",
