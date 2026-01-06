@@ -4,6 +4,7 @@ const ApiEndPoints = Object.freeze({
   Get_Project_by_Id: "/api/projects/",
   Get_Project_All_Projects: "/api/projects",
   Get_Project_All_Published_Projects: "/api/projects/published/true",
+  Get_All_Project_Application: "/api/applications/all",
   Update_Project: "/api/projects/",
   Publish_Project: "/api/projects/{projectId}/publish",
   Delete_Project: "/api/projects/",
