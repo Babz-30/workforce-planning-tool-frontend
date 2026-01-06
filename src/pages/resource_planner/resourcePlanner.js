@@ -20,12 +20,12 @@ import SkillGapAnalysis from "../../components/rp_skill_gap_analysis/skillGapAna
 import { calculateSkillGaps } from "../../helper/skillGap";
 import { GetAllApplication } from "../../services/application/GetApplicationAPI";
 import getAppliedEmployees from "../../helper/DuplicateEmployeeBinder";
-// import SearchSkillTab from "../../components/rp_skill_search/searchskillTab";
+import EmployeeSearch from "../../components/rp_skill_search/searchskillTab";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("available");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [searchTerm] = useState("");
+  const [selectedSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [employees, setEmployees] = useState([]);
@@ -34,7 +34,7 @@ const ResourcePlanner = () => {
 
   // Pagination states for different tabs
   const [availablePage, setAvailablePage] = useState(1);
-  const [searchPage, setSearchPage] = useState(1);
+  const [, setSearchPage] = useState(1);
   const [proposePage, setProposePage] = useState(1);
 
   const [staffingPage, setStaffingPage] = useState(1);
@@ -96,17 +96,11 @@ const ResourcePlanner = () => {
     return items.slice(startIndex, endIndex);
   };
 
-  const toggleSkill = (skill) => {
-    setSelectedSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
-    );
-  };
-
   const proposeEmployee = (employee, project) => {
     alert(`Proposing ${employee.name} for ${project.name}`);
   };
 
-  const handleProposeSuccess = (employee, project, role, data) => {
+  const handleProposeSuccess = (employee, project) => {
     // Add the employee to the applied list for this project
     setAppliedEmployees((prev) => ({
       ...prev,
@@ -205,106 +199,14 @@ const ResourcePlanner = () => {
 
         {/* Search by Skills */}
         {activeTab === "search" && (
-          <div className="content-card">
-            <h2 className="section-title">Search Employees by Skills</h2>
-
-            {loading && (
-              <div className="loading-state">Loading employees...</div>
-            )}
-
-            {error && (
-              <div className="error-state">
-                Error: {error}
-                <button
-                  onClick={() => window.location.reload()}
-                  className="retry-btn"
-                >
-                  Retry
-                </button>
-              </div>
-            )}
-
-            {!loading && !error && (
-              <>
-                <div className="search-section">
-                  <label className="form-label">Search by Name or Role</label>
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search employees..."
-                    className="search-input"
-                  />
-                </div>
-
-                <div className="filter-section">
-                  <label className="form-label">Filter by Skills</label>
-                  <div className="skills-filter">
-                    {allSkills.map((skill) => (
-                      <button
-                        key={skill}
-                        onClick={() => toggleSkill(skill)}
-                        className={`skill-filter-btn ${
-                          selectedSkills.includes(skill)
-                            ? "skill-filter-btn-active"
-                            : ""
-                        }`}
-                      >
-                        {skill}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="employee-list">
-                  {filteredEmployees.length > 0 ? (
-                    paginateItems(filteredEmployees, searchPage).map((emp) => (
-                      <div
-                        key={emp.id}
-                        className="employee-card employee-card-search"
-                      >
-                        <div className="employee-card-content">
-                          <div className="employee-info">
-                            <h3 className="employee-name">{emp.name}</h3>
-                            <p className="employee-role">{emp.role}</p>
-                            <div className="skills-container">
-                              {emp.skills.map((skill) => (
-                                <span
-                                  key={skill}
-                                  className={`skill-badge ${
-                                    selectedSkills.includes(skill)
-                                      ? "skill-badge-highlighted"
-                                      : "skill-badge-normal"
-                                  }`}
-                                >
-                                  {skill}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          <span
-                            className={`availability-badge availability-${emp.availability.toLowerCase()}`}
-                          >
-                            {emp.availability}
-                          </span>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="empty-state">
-                      No employees match your search criteria
-                    </p>
-                  )}
-                </div>
-                <Pagination
-                  currentPage={searchPage}
-                  totalItems={filteredEmployees.length}
-                  itemsPerPage={ITEMS_PER_PAGE}
-                  onPageChange={setSearchPage}
-                />
-              </>
-            )}
-          </div>
+          <EmployeeSearch
+            employees={employees} // Array of employee objects
+            loading={loading} // Boolean loading state
+            error={error} // Error message string or null
+            allSkills={allSkills} // Array of all available skills
+            ITEMS_PER_PAGE={ITEMS_PER_PAGE} // Number for pagination
+            Pagination={Pagination} // Your Pagination component
+          />
         )}
 
         {/* Propose for Projects */}
