@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Filter, X, Calendar } from 'lucide-react';
+import { Filter, X, Calendar, Briefcase } from 'lucide-react';
 import { getPublishedProjects, applyForProject } from '../../services/employee/publishedProjectApi';
 import { toast } from "react-toastify";
 
@@ -44,35 +44,61 @@ export default function PublishedProjects({
     fetchProjects();
   }, []);
 
-  const handleApplyProject = async (projectId) => {
-
-    const confirmed = window.confirm("Are you sure you want to apply for this project?");
+  const handleApplyProject = async (project) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to apply for the role of "${project.requiredRole}" in this project?`
+    );
     if (!confirmed) return;
 
     try {
       // Get employee data from localStorage
       const employeeData = JSON.parse(localStorage.getItem("loginResponse") || "{}");
+      const employeeId = employeeData.employeeId || employeeData.id;
 
-      await applyForProject(projectId, {
-        employeeData: employeeData,
-        message: "I am interested in this project",
-      });
+      if (!employeeId) {
+        toast.error("Employee ID not found. Please log in again.");
+        return;
+      }
 
-      const updatedAppliedIds = [...appliedIds, projectId];
+      var response = await applyForProject(
+        employeeId,
+        project.projectId,
+        project.requiredRole,
+        {
+          employeeData: employeeData,
+          message: `Application for ${project.requiredRole} position`,
+          competencies: project.roleCompetencies,
+          capacity: project.roleCapacity,
+        }
+      );
+
+      // Store application with unique ID (project + role)
+      const applicationId = `${project.projectId}_${project.requiredRole}`;
+      const updatedAppliedIds = [...appliedIds, applicationId];
       setAppliedIds(updatedAppliedIds);
       localStorage.setItem('appliedProjects', JSON.stringify(updatedAppliedIds));
 
-      toast.success(`Application submitted successfully for Project ID: ${projectId}`);
+      if (response.status === 409) {
+        toast.info(`Application was already submitted for ${project.requiredRole} in Project ${project.projectId}`);
+      }
+      else {
+        toast.success(
+          `Application submitted successfully for ${project.requiredRole} in Project ${project.projectId}`
+        );
+      }
 
     } catch (error) {
-      //console.error("Error applying for project:", error);
-      //setDisabled(false);
-      //toast.error("Failed to submit application. Please try again.");
-      //Demo only
-      const updatedAppliedIds = [...appliedIds, projectId];
+      console.error("Error applying for project:", error);
+
+      // Demo fallback
+      const applicationId = `${project.projectId}_${project.requiredRole}`;
+      const updatedAppliedIds = [...appliedIds, applicationId];
       setAppliedIds(updatedAppliedIds);
       localStorage.setItem('appliedProjects', JSON.stringify(updatedAppliedIds));
-      toast.success(`Application submitted successfully for Project ID: ${projectId}`);
+
+      toast.success(
+        `Application submitted successfully for ${project.requiredRole} in Project ${project.projectId}`
+      );
     }
   };
 
@@ -103,19 +129,16 @@ export default function PublishedProjects({
     const projStart = new Date(projectStartDate);
     const projEnd = new Date(projectEndDate);
 
-    // Start Date Filter: Show all projects that start from the selected date onwards
     if (filters.startDate && !filters.endDate) {
       const filterStart = new Date(filters.startDate);
       return projStart >= filterStart;
     }
 
-    // End Date Filter: Show all projects that finish before or on the selected date
     if (!filters.startDate && filters.endDate) {
       const filterEnd = new Date(filters.endDate);
       return projEnd <= filterEnd;
     }
 
-    // Both filters: Show projects that start from startDate and end before endDate
     if (filters.startDate && filters.endDate) {
       const filterStart = new Date(filters.startDate);
       const filterEnd = new Date(filters.endDate);
@@ -136,14 +159,14 @@ export default function PublishedProjects({
           project.description.toLowerCase().includes(query) ||
           project.taskDescription.toLowerCase().includes(query) ||
           project.competencies.some((comp) => comp.toLowerCase().includes(query)) ||
-          project.roles.some((role) => role.toLowerCase().includes(query))
+          project.requiredRole.toLowerCase().includes(query)
       );
     }
 
     // Role filter
     if (filters.role) {
       filtered = filtered.filter((project) =>
-        project.roles.some((role) => role.toLowerCase().includes(filters.role.toLowerCase()))
+        project.requiredRole.toLowerCase().includes(filters.role.toLowerCase())
       );
     }
 
@@ -256,6 +279,11 @@ export default function PublishedProjects({
     );
   };
 
+  const isApplicationSubmitted = (project) => {
+    const applicationId = `${project.projectId}_${project.requiredRole}`;
+    return appliedIds.includes(applicationId);
+  };
+
   const sortedProjects = getSortedProjects();
   const totalPages = Math.ceil(sortedProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -330,8 +358,12 @@ export default function PublishedProjects({
     <div className="employee-container">
       <div className="employee-header">
         <div>
-          <h2 style={{ color: "#1e3a8a", fontSize: "26px" }} className="employee-title">Available Projects</h2>
-          <p className="employee-subtitle">Browse and apply for published projects</p>
+          <h2 style={{ color: "#1e3a8a", fontSize: "26px" }} className="employee-title">
+            Available Project Roles
+          </h2>
+          <p className="employee-subtitle">
+            Browse and apply for specific roles in published projects
+          </p>
         </div>
       </div>
 
@@ -505,28 +537,27 @@ export default function PublishedProjects({
           <table className="table">
             <thead>
               <tr>
-                <th onClick={() => sortData('description')}>
+                <th onClick={() => sortData('description')} style={{ width: '30%' }}>
                   <div className="th-content">
                     Project Details
                     <SortIcon columnKey="description" />
                   </div>
                 </th>
+                <th onClick={() => sortData('requiredRole')} style={{ width: '25%' }}>
+                  <div className="th-content">
+                    Role & Requirements
+                    <SortIcon columnKey="requiredRole" />
+                  </div>
+                </th>
                 <th onClick={() => sortData('startDate')}>
                   <div className="th-content">
-                    Timeline
+                    Timeline & Location
                     <SortIcon columnKey="startDate" />
                   </div>
                 </th>
-                <th onClick={() => sortData('requiredEmployees')}>
+                <th>
                   <div className="th-content">
-                    Team Requirements
-                    <SortIcon columnKey="requiredEmployees" />
-                  </div>
-                </th>
-                <th onClick={() => sortData('location')}>
-                  <div className="th-content">
-                    Location & Actions
-                    <SortIcon columnKey="location" />
+                    Actions
                   </div>
                 </th>
               </tr>
@@ -540,12 +571,36 @@ export default function PublishedProjects({
                         <h3 className="project-title">{project.description}</h3>
                         <p className="project-desc">{project.taskDescription}</p>
                         <div className="chips-container">
-                          {project.competencies.map((comp, idx) => (
+                          {project.competencies.slice(0, 5).map((comp, idx) => (
                             <span key={idx} className="chip">
                               {comp}
                             </span>
                           ))}
+                          {project.competencies.length > 5 && (
+                            <span className="chip">+{project.competencies.length - 5} more</span>
+                          )}
                         </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="team-container">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px', flexWrap: 'nowrap' }}>
+                          <Briefcase size={16} style={{ color: '#1e3a8a', flexShrink: 0 }} />
+                          <span style={{ fontSize: '15px', fontWeight: '600', color: '#1e293b', whiteSpace: 'nowrap' }}>
+                            {project.requiredRole}
+                          </span>
+                        </div>
+                        <div className="role-details">
+                          <div className="detail-row">
+                            <span className="detail-label">Positions:</span>
+                            <span className="detail-value">{project.roleNumberOfEmployees || 1}</span>
+                          </div>
+                          <div className="detail-row">
+                            <span className="detail-label">Capacity:</span>
+                            <span className="detail-value">{project.roleCapacity} hrs/week</span>
+                          </div>
+                        </div>
+
                       </div>
                     </td>
                     <td>
@@ -558,42 +613,30 @@ export default function PublishedProjects({
                           <span className="date-label">End:</span>
                           <span className="date-value">{project.endDate}</span>
                         </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="team-container">
-                        <div className="employee-count">👥 {project.requiredEmployees} employees</div>
-                        <div className="roles-section">
-                          <p className="roles-label">Roles:</p>
-                          <div className="roles-container">
-                            {project.rolesWithCapacity && project.rolesWithCapacity.length > 0 ? (
-                              project.rolesWithCapacity.map((roleInfo, idx) => (
-                                <span key={idx} className="role-badge">
-                                  {roleInfo.role}
-                                </span>
-                              ))
-                            ) : null}
-                          </div>
-                          <div className="capacity">
-                            ⏱️ {project.rolesWithCapacity && project.rolesWithCapacity.length > 0
-                              ? project.rolesWithCapacity.map((roleInfo, idx) =>
-                                `${roleInfo.role.split(' ')[0]}: ${roleInfo.capacity}`
-                              ).join(', ')
-                              : 'Not specified'} Hours/Week
-                          </div>
+                        <div className="location" style={{ marginTop: '12px' }}>
+                          📍 {project.location}
                         </div>
                       </div>
                     </td>
                     <td>
                       <div className="location-container">
-                        <div className="location">📍 {project.location}</div>
                         <button
-                          onClick={() => handleApplyProject(project.id)}
-                          disabled={appliedIds.includes(project.id)}
+                          onClick={() => handleApplyProject(project)}
+                          disabled={isApplicationSubmitted(project)}
                           className="btn-apply"
                         >
-                          {appliedIds.includes(project.id) ? "Applied" : "Apply"}
+                          {isApplicationSubmitted(project) ? "Applied" : "Apply for Role"}
                         </button>
+                        {isApplicationSubmitted(project) && (
+                          <p style={{
+                            fontSize: '12px',
+                            color: '#059669',
+                            marginTop: '8px',
+                            fontWeight: '500'
+                          }}>
+                            ✓ Application submitted
+                          </p>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -603,7 +646,7 @@ export default function PublishedProjects({
                   <td colSpan="4" className="no-results">
                     <div className="no-results-content">
                       <div className="no-results-icon">🔍</div>
-                      <p className="no-results-title">No projects found</p>
+                      <p className="no-results-title">No project roles found</p>
                       <p className="no-results-text">Try adjusting your search or filter criteria</p>
                       <button onClick={clearFilters} className="clear-filters-btn">
                         <X size={16} />
@@ -623,7 +666,7 @@ export default function PublishedProjects({
         <div className="footer">
           <span className="footer-text">
             Showing <strong>{startIndex + 1}-{Math.min(endIndex, sortedProjects.length)}</strong> of{' '}
-            <strong>{sortedProjects.length}</strong> projects
+            <strong>{sortedProjects.length}</strong> project roles
           </span>
           <div className="pagination">
             <button
