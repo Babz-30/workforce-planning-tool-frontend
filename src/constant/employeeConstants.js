@@ -78,8 +78,6 @@ export const STATUS_OPTIONS = [
 export const CONTRACT_TYPE_OPTIONS = [
   "FULL_TIME",
   "PART_TIME",
-  "TEMPORARY",
-  "PERMANENT",
 ];
 
 // Default hours per week mapping

@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
 /**
  * Fetch published projects from the API
  * @param {boolean} isPublished - Flag to filter published projects (true/false)
- * @returns {Promise<Array>} - Array of published projects
+ * @returns {Promise<Array>} - Array of published projects with roles expanded
  */
 export const getPublishedProjects = async (isPublished = true) => {
   try {
@@ -23,7 +23,8 @@ export const getPublishedProjects = async (isPublished = true) => {
 
     const data = await response.json();
 
-    const transformedProjects = transformProjects(data.data);
+    // Transform and expand projects by roles
+    const transformedProjects = transformProjectsWithRoles(data.data);
 
     return transformedProjects;
 
@@ -34,74 +35,106 @@ export const getPublishedProjects = async (isPublished = true) => {
 };
 
 /**
- * Transform API response to match component's expected format
+ * Transform API response and create separate entries for each role
  * @param {Array} apiProjects - Raw projects from API
- * @returns {Array} - Transformed projects
+ * @returns {Array} - Transformed projects with one entry per role
  */
-const transformProjects = (apiProjects) => {
+const transformProjectsWithRoles = (apiProjects) => {
   if (!Array.isArray(apiProjects)) {
     console.error("Expected array of projects, got:", apiProjects);
     return [];
   }
 
-  return apiProjects.map((project) => {
-    // Extract all unique competencies from roles
-    const competencies = project.roles
-      ? [
-        ...new Set(
-          project.roles.flatMap((role) => role.requiredCompetencies || [])
-        ),
-      ]
-      : [];
+  const expandedProjects = [];
 
-    // Extract all role names
-    const roles = project.roles
-      ? project.roles.map((role) => role.requiredRole)
-      : [];
+  apiProjects.forEach((project) => {
+    // If project has roles, create separate entry for each role
+    if (project.roles && project.roles.length > 0) {
+      project.roles.forEach((role, roleIndex) => {
+        const location =
+          project.selectedLocations && project.selectedLocations.length > 0
+            ? project.selectedLocations.join(" / ")
+            : "Remote";
 
-    // Keep role-specific capacity information
-    const rolesWithCapacity = project.roles
-      ? project.roles.map((role) => ({
-        role: role.requiredRole,
-        competencies: role.requiredCompetencies,
-        capacity: role.capacity,
-        numberOfEmployees: role.numberOfEmployees,
-      }))
-      : [];
+        expandedProjects.push({
+          id: `${project.id || project.projectId}_role_${roleIndex}`,
+          projectId: project.projectId,
+          originalProjectId: project.id,
+          description: project.projectDescription,
+          taskDescription: project.taskDescription,
+          startDate: project.projectStart || "",
+          endDate: project.projectEnd || "",
+          
+          // Role-specific information
+          requiredRole: role.requiredRole,
+          roleCompetencies: role.requiredCompetencies || [],
+          roleCapacity: role.capacity,
+          roleNumberOfEmployees: role.numberOfEmployees,
+          
+          // Combined competencies (role + project skills)
+          competencies: [
+            ...new Set([
+              ...(role.requiredCompetencies || []),
+              ...(project.selectedSkills || [])
+            ])
+          ],
+          
+          // Project-level information
+          requiredEmployees: project.requiredEmployees,
+          allRoles: project.roles.map(r => r.requiredRole),
+          location: location,
+          locations: project.selectedLocations || [],
+          skills: project.selectedSkills || [],
+          isPublished: project.isPublished,
+          publishedDate: project.createdAt || "",
+          status: project.status,
+          createdBy: project.createdBy,
+          links: project.links,
+          
+          // Full role details for reference
+          roleDetails: role,
+          allRolesDetails: project.roles,
+        });
+      });
+    } else {
+      // If no roles, create single entry with project info
+      const location =
+        project.selectedLocations && project.selectedLocations.length > 0
+          ? project.selectedLocations.join(" / ")
+          : "Remote";
 
-    // Get primary location (first location in array)
-    const location =
-      project.selectedLocations && project.selectedLocations.length > 0
-        ? project.selectedLocations.join("  / ")
-        : "Remote";
-
-    return {
-      id: project._id?.$oid || project.projectId,
-      projectId: project.projectId,
-      description: project.projectDescription,
-      taskDescription: project.taskDescription,
-      startDate: project.projectStart || "",
-      endDate: project.projectEnd || "",
-      requiredEmployees: project.requiredEmployees,
-      roles: roles,
-      competencies: [...new Set([...competencies, ...(project.selectedSkills || [])])], // Combine role competencies and selected skills
-      rolesWithCapacity: rolesWithCapacity,
-      location: location,
-      locations: project.selectedLocations || [],
-      skills: project.selectedSkills || [],
-      isPublished: project.isPublished,
-      publishedDate: project.createdAt || "",
-      status: project.status,
-      createdBy: project.createdBy,
-      links: project.links,
-      rolesDetails: project.roles,
-    };
+      expandedProjects.push({
+        id: project.id || project.projectId,
+        projectId: project.projectId,
+        description: project.projectDescription,
+        taskDescription: project.taskDescription,
+        startDate: project.projectStart || "",
+        endDate: project.projectEnd || "",
+        requiredEmployees: project.requiredEmployees,
+        requiredRole: "Not specified",
+        roleCompetencies: [],
+        roleCapacity: "Not specified",
+        roleNumberOfEmployees: 0,
+        competencies: project.selectedSkills || [],
+        allRoles: [],
+        location: location,
+        locations: project.selectedLocations || [],
+        skills: project.selectedSkills || [],
+        isPublished: project.isPublished,
+        publishedDate: project.createdAt || "",
+        status: project.status,
+        createdBy: project.createdBy,
+        links: project.links,
+        allRolesDetails: [],
+      });
+    }
   });
+
+  return expandedProjects;
 };
 
 /**
  * Filter projects based on search and filter criteria
- * This is a client-side filtering function since the API doesn't support these filters
  * @param {Array} projects - Array of projects to filter
  * @param {Object} filters - Filter criteria
  * @returns {Array} - Filtered projects
@@ -119,16 +152,14 @@ export const filterProjects = (projects, filters) => {
         project.competencies.some((comp) =>
           comp.toLowerCase().includes(query)
         ) ||
-        project.roles.some((role) => role.toLowerCase().includes(query))
+        project.requiredRole.toLowerCase().includes(query)
     );
   }
 
   // Role filter
   if (filters.role) {
     filtered = filtered.filter((project) =>
-      project.roles.some((role) =>
-        role.toLowerCase().includes(filters.role.toLowerCase())
-      )
+      project.requiredRole.toLowerCase().includes(filters.role.toLowerCase())
     );
   }
 
@@ -266,32 +297,40 @@ export const sortProjects = (projects, sortConfig) => {
 };
 
 /**
- * Apply for a project
+ * Apply for a project with specific role
+ * @param {string} employeeId - Employee ID applying
  * @param {string} projectId - Project ID to apply for
- * @param {Object} applicationData - Application data
+ * @param {string} projectRole - Specific role being applied for
+ * @param {Object} additionalData - Additional application data
  * @returns {Promise<Object>} - Response from API
  */
-export const applyForProject = async (projectId, applicationData = {}) => {
+export const applyForProject = async (employeeId, projectId, projectRole, additionalData = {}) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/apply`, {
+    const response = await fetch(`${API_BASE_URL}/api/applications/apply/applyToOpenProject`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        employeeId: employeeId,
         projectId: projectId,
-        ...applicationData,
+        projectRole: projectRole
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if(response.status === 409){
+        return await response.json();
+      }
+      else { 
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }     
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    //console.error("Error applying for project:", error);
+    console.error("Error applying for project:", error);
     throw error;
   }
 };
@@ -318,7 +357,7 @@ export const getProjectById = async (projectId) => {
     }
 
     const data = await response.json();
-    return transformProjects([data])[0];
+    return transformProjectsWithRoles([data]);
   } catch (error) {
     console.error("Error fetching project details:", error);
     throw error;

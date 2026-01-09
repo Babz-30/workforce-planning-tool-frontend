@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './EmployeeDashboard.css';
-import { Bell, Settings, LogOut } from 'lucide-react';
+import { Settings, LogOut } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import PublishedProjects from './PublishedProjects';
@@ -49,48 +49,6 @@ export default function EmployeeDashboard() {
       location: 'New York, NY',
       isPublished: true,
       publishedDate: '2024-11-20'
-    },
-    {
-      id: 2,
-      description: 'Mobile App Redesign',
-      taskDescription: 'Complete redesign of mobile application with enhanced user experience',
-      startDate: '2024-11-20',
-      endDate: '2025-02-28',
-      requiredEmployees: 3,
-      roles: ['Mobile Dev', 'UI Designer'],
-      competencies: ['React Native', 'Figma', 'Firebase'],
-      capacity: 35,
-      location: 'Remote',
-      isPublished: true,
-      publishedDate: '2024-11-22'
-    },
-    {
-      id: 3,
-      description: 'CRM System Integration',
-      taskDescription: 'Integrate CRM system with existing enterprise tools and databases',
-      startDate: '2024-12-10',
-      endDate: '2025-04-30',
-      requiredEmployees: 4,
-      roles: ['Backend Dev', 'DevOps', 'QA Engineer'],
-      competencies: ['Python', 'SQL', 'Docker', 'Kubernetes'],
-      capacity: 40,
-      location: 'San Francisco, CA',
-      isPublished: true,
-      publishedDate: '2024-11-18'
-    },
-    {
-      id: 4,
-      description: 'Data Analytics Dashboard',
-      taskDescription: 'Create comprehensive analytics dashboard for business intelligence',
-      startDate: '2024-12-05',
-      endDate: '2025-03-20',
-      requiredEmployees: 3,
-      roles: ['Frontend Dev', 'Data Analyst'],
-      competencies: ['React', 'D3.js', 'Python', 'Tableau'],
-      capacity: 35,
-      location: 'Remote',
-      isPublished: true,
-      publishedDate: '2024-11-23'
     }
   ]);
 
@@ -103,22 +61,6 @@ export default function EmployeeDashboard() {
       suggestion: 'Consider adding a wishlist feature for better user engagement',
       date: '2024-11-15',
       priority: 'Medium'
-    },
-    {
-      id: 2,
-      from: 'Mike Chen',
-      project: 'Mobile App Redesign',
-      suggestion: 'Implement dark mode for better accessibility',
-      date: '2024-11-14',
-      priority: 'High'
-    },
-    {
-      id: 3,
-      from: 'Emma Davis',
-      project: 'CRM Integration',
-      suggestion: 'Add export functionality for reports',
-      date: '2024-11-13',
-      priority: 'Low'
     }
   ]);
 
@@ -132,24 +74,6 @@ export default function EmployeeDashboard() {
       progress: 65,
       priority: 'High',
       status: 'In Progress'
-    },
-    {
-      id: 2,
-      title: 'API Documentation',
-      assignedBy: 'Mike Chen',
-      deadline: '2024-11-25',
-      progress: 40,
-      priority: 'Medium',
-      status: 'In Progress'
-    },
-    {
-      id: 3,
-      title: 'User Authentication Update',
-      assignedBy: 'Emma Davis',
-      deadline: '2024-12-10',
-      progress: 20,
-      priority: 'Low',
-      status: 'Not Started'
     }
   ]);
 
@@ -197,9 +121,6 @@ export default function EmployeeDashboard() {
             </nav>
           </div>
           <div className="header-actions">
-            <button className="icon-btn" title="Notifications">
-              <Bell size={20} />
-            </button>
             <button className="icon-btn" title="Settings" onClick={() => {
               const employeeData = JSON.parse(localStorage.getItem("loginResponse"));
               if (employeeData) {
