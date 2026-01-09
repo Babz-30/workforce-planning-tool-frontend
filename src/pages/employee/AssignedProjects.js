@@ -8,7 +8,7 @@ export default function AssignedProjects() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const allowedStatuses = ["SUGGESTED", "CONFIRMED", "APPROVED", "ACTIVE", "COMPLETED"]
+  const allowedStatuses = ["ACTIVE", "COMPLETED", "APPLIED", "REQUEST_DH_APPROVAL", "REJECTED_BY_PM", "REJECTED_BY_DH", "PROJECT_COMPLETED"]
 
   const profileData = JSON.parse(localStorage.getItem("loginResponse"))
   const employeeId = profileData?.employeeId
@@ -115,12 +115,24 @@ export default function AssignedProjects() {
 
   const getStatusClass = (status) => {
     if (!status) return "status-active"
-    const statusLower = status.toLowerCase()
-    if (statusLower === "completed") return "status-completed"
-    if (statusLower === "suggested") return "status-not-started"
-    if (statusLower === "confirmed" || statusLower === "approved" || statusLower === "assigned")
-      return "status-in-progress"
+    const statusUpper = status.toUpperCase()
+    if (statusUpper === "COMPLETED" || statusUpper === "PROJECT_COMPLETED") return "status-completed"
+    if (statusUpper === "ACTIVE") return "status-active"
+    if (statusUpper === "APPLIED" || statusUpper === "REQUEST_DH_APPROVAL") return "status-applied"
+    if (statusUpper === "REJECTED_BY_PM" || statusUpper === "REJECTED_BY_DH") return "status-rejected"
     return "status-active"
+  }
+
+  const getStatusPriority = (status) => {
+    const priorities = {
+      'ACTIVE': 1,
+      'COMPLETED': 2,
+      'APPLIED': 3,
+      'REQUEST_DH_APPROVAL': 3,
+      'REJECTED_BY_PM': 4,
+      'REJECTED_BY_DH': 4
+    }
+    return priorities[status] || 5
   }
 
   if (loading) {
@@ -184,7 +196,7 @@ export default function AssignedProjects() {
       </div>
 
       <div className="assigned-container">
-        {assignedProjects.map((project) => (
+        {assignedProjects.sort((a, b) => getStatusPriority(a.status) - getStatusPriority(b.status)).map((project) => (
           <div key={project.id} className="assigned-card">
             <div className="assigned-header">
               <div className="assigned-title-section">
@@ -220,7 +232,7 @@ export default function AssignedProjects() {
                   TEAM SIZE
                 </span>
                 <span className="detail-value-large">
-                  {project.requiredEmployees || 1} {project.requiredEmployees === 1 ? "Member" : "Members"}
+                  {project.requiredEmployees || 0} {project.requiredEmployees === 1 ? "Member" : "Members"}
                 </span>
               </div>
 

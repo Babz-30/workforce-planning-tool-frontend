@@ -107,19 +107,19 @@
   color: #065f46;
 }
 
-.status-in-progress {
-  background-color: #dbeafe;
-  color: #1e40af;
-}
-
-.status-not-started {
-  background-color: #f3f4f6;
-  color: #374151;
-}
-
 .status-completed {
   background-color: #f3f4f6;
   color: #6b7280;
+}
+
+.status-applied {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 .priority-badge {
