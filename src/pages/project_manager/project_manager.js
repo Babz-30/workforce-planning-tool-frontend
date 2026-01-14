@@ -8,12 +8,14 @@ import UserProfile from "../../components/profile/profile";
 import HomeTab from "../../components/pm_home/home"; // ✅ adjust path if needed
 import ProjectApprovalsManager from "../../components/pm_approvals/approval"; // ✅ adjust path if needed
 import { GetProjectByCreator } from "../../services/project/getprojects";
+import { GetAllAplliedApplication } from "../../services/application/GetApplicationAPI";
 
 export default function ProjectTable() {
   const [activeTab, setActiveTab] = useState("home");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [applications, setApplications] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -21,6 +23,7 @@ export default function ProjectTable() {
         setLoading(true);
         const res = await GetProjectByCreator();
         setProjects(res);
+        setApplications(await GetAllAplliedApplication());
         setError(null);
       } catch (err) {
         console.error("Error fetching projects:", err);
@@ -99,7 +102,12 @@ export default function ProjectTable() {
         {activeTab === "home" && <HomeTab allProjects={projects} />}
 
         {/* optional placeholders so the UI doesn't look broken if you stay on-page */}
-        {activeTab === "approvals" && <ProjectApprovalsManager />}
+        {activeTab === "approvals" && (
+          <ProjectApprovalsManager
+            allProjectsData={projects}
+            allApplicationData={applications}
+          />
+        )}
       </div>
     </div>
   );

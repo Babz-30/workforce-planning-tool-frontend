@@ -10,6 +10,10 @@ import {
   ChevronUp,
 } from "lucide-react";
 import "./approval.css";
+import {
+  keepOnlyExistingProjects,
+  keepPublishedProjects,
+} from "../../helper/approvalBinder";
 
 const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
   const [projects, setProjects] = useState([]);
@@ -18,87 +22,29 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [processingApp, setProcessingApp] = useState(null);
 
-  // Mock API calls - replace with your actual API endpoints
-  const fetchProjects = async () => {
-    // Simulating API call
-    return {
-      message: "Projects fetched successfully for isPublished=true",
-      data: [
-        {
-          id: "69238f33a29eb872f2726f89",
-          projectId: "PRJ-CMK843",
-          projectDescription: "OCR",
-          requiredEmployees: 4,
-          roles: [
-            { requiredRole: "Blockchain Developer", numberOfEmployees: "3" },
-            { requiredRole: "Backend Developer", numberOfEmployees: "1" },
-          ],
-        },
-        {
-          id: "6929a614ce1ce30ca2f1dffb",
-          projectId: "PRJ-HOQ618",
-          projectDescription: "AI-Powered Analytics Dashboard",
-          requiredEmployees: 10,
-          roles: [
-            { requiredRole: "Data Scientist", numberOfEmployees: "3" },
-            { requiredRole: "ML Engineer", numberOfEmployees: "2" },
-          ],
-        },
-      ],
-    };
-  };
-
-  const fetchApplications = async () => {
-    // Simulating API call
-    return {
-      "PRJ-CMK843": [
-        {
-          id: "695ecd970e17901ec5670b36",
-          applicationId: "App_PRJ-CMK843_aa850b86",
-          projectRole: "Blockchain Developer",
-          projectId: "PRJ-CMK843",
-          employeeId: 36,
-          currentStatus: "APPLIED",
-          timestamps: {
-            appliedAt: "2026-01-07T21:18:14.404+00:00",
-          },
-        },
-      ],
-      "PRJ-HOQ618": [
-        {
-          id: "69650bd2e9cfeb3a0353bc45",
-          applicationId: "App_PRJ-HOQ618_db8d3962",
-          projectRole: "ML Engineer",
-          projectId: "PRJ-HOQ618",
-          employeeId: 10,
-          currentStatus: "APPLIED",
-          timestamps: {
-            appliedAt: "2026-01-12T14:57:22.050+00:00",
-          },
-        },
-      ],
-    };
-  };
-
   useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       try {
         setLoading(true);
-        const [projectsData, applicationsData] = await Promise.all([
-          fetchProjects(),
-          fetchApplications(),
-        ]);
-        setProjects(projectsData.data);
-        setApplications(applicationsData);
+
+        const projectsData = keepPublishedProjects(allProjectsData);
+        const applicationsData = keepOnlyExistingProjects(
+          allApplicationData,
+          projectsData
+        );
+
+        setProjects(projectsData);
+        setApplications(applicationsData || {}); // ✅ safety
       } catch (error) {
         console.error("Error loading data:", error);
+        setApplications({}); // ✅ fallback
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [allProjectsData, allApplicationData]);
 
   const handleApprove = async (applicationId, projectId) => {
     setProcessingApp(applicationId);
@@ -204,17 +150,17 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
         {/* Projects List */}
         <div className="pam-projects">
           {projects.map((project) => {
-            const projectApps = applications[project.projectId] || [];
+            const projectApps = applications[project.id] || [];
             const pendingCount = projectApps.filter(
               (app) => app.currentStatus === "APPLIED"
             ).length;
-            const isExpanded = expandedProjects[project.projectId];
+            const isExpanded = expandedProjects[project.id];
 
             return (
               <div key={project.id} className="pam-card pam-project">
                 {/* Project Header */}
                 <button
-                  onClick={() => toggleProject(project.projectId)}
+                  onClick={() => toggleProject(project.id)}
                   className="pam-project-toggle"
                   type="button"
                 >
@@ -223,9 +169,7 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
                       <h2 className="pam-project-name">
                         {project.projectDescription}
                       </h2>
-                      <span className="pam-project-id">
-                        ({project.projectId})
-                      </span>
+                      <span className="pam-project-id">({project.id})</span>
                       {pendingCount > 0 && (
                         <span className="pam-pending-badge">
                           {pendingCount} Pending
@@ -340,7 +284,7 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
                                     onClick={() =>
                                       handleApprove(
                                         app.applicationId,
-                                        project.projectId
+                                        project.id
                                       )
                                     }
                                     disabled={
@@ -359,7 +303,7 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
                                     onClick={() =>
                                       handleReject(
                                         app.applicationId,
-                                        project.projectId
+                                        project.id
                                       )
                                     }
                                     disabled={
