@@ -3,6 +3,7 @@ import "./project_manager.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import { Home, Users, CheckCircle } from "lucide-react";
 import UserProfile from "../../components/profile/profile";
 import { GetProjectByCreator } from "../../services/project/getprojects";
 import { publishProject } from "../../services/project/patchprojects";
@@ -13,7 +14,8 @@ export default function ProjectTable() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [publishingId, setPublishingId] = useState(null); // Track which project is being published
+  const [publishingId, setPublishingId] = useState(null);
+  const [activeTab, setActiveTab] = useState("home");
   const itemsPerPage = 5;
   const navigate = useNavigate();
 
@@ -35,14 +37,12 @@ export default function ProjectTable() {
     fetchProjects();
   }, []);
 
-  // Handle publish function
   const handlePublish = async (projectId) => {
     setPublishingId(projectId);
 
     try {
       const response = await publishProject(projectId);
       if (response === 200) {
-        // Mark project as published
         setProjects((prevProjects) =>
           prevProjects.map((project) =>
             project.id === projectId
@@ -60,6 +60,15 @@ export default function ProjectTable() {
       return { success: false };
     } finally {
       setPublishingId(null);
+    }
+  };
+
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+    if (tabId === "staffing") {
+      navigate("/home");
+    } else if (tabId === "approvals") {
+      navigate("/project_manager");
     }
   };
 
@@ -110,13 +119,6 @@ export default function ProjectTable() {
   const sortedProjects = getSortedProjects();
   const unpublishedProjects = sortedProjects;
 
-  /*This is the code to filter out published projects, but currently commented out*/
-
-  // Filter out published projects
-  // const unpublishedProjects = sortedProjects.filter(
-  //   (project) => !project.isPublished
-  // );
-
   const totalPages = Math.ceil(unpublishedProjects.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -159,39 +161,38 @@ export default function ProjectTable() {
     return pages;
   };
 
-  // Loading state
   if (loading) {
     return (
       <div className="project-manager-page">
-        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-          <div className="container-fluid max-w-custom d-flex justify-between align-items-center">
-            <ul className="nav nav-tabs gap-4">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#home">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/home">
-                  Staffing
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/project_manager">
-                  Approvals
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" aria-disabled="true" href="/">
-                  Disabled
-                </a>
-              </li>
-            </ul>
-            <div className="app-header-actions">
-              <UserProfile />
-            </div>
+        <div className="app-header">
+          <div className="app-header-content">
+            <h1 className="app-title">Project Management</h1>
+            <p className="app-subtitle">Manage and track all active projects</p>
           </div>
-        </nav>
+          <div className="app-header-actions">
+            <UserProfile />
+          </div>
+        </div>
+        <div className="nav-container">
+          <div className="nav-tabs">
+            {[
+              { id: "home", label: "Home", icon: Home },
+              { id: "staffing", label: "Staffing", icon: Users },
+              { id: "approvals", label: "Approvals", icon: CheckCircle },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className={`nav-tab ${
+                  activeTab === tab.id ? "nav-tab-active" : ""
+                }`}
+              >
+                <tab.icon className="nav-tab-icon" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="container">
           <div className="text-center mt-5">
             <div className="spinner-border text-primary" role="status">
@@ -204,37 +205,38 @@ export default function ProjectTable() {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="project-manager-page">
-        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-          <div className="container-fluid max-w-custom d-flex justify-between align-items-center">
-            <ul className="nav nav-tabs gap-4">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#home">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/home">
-                  Staffing
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/project_manager">
-                  Approvals
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" aria-disabled="true" href="/">
-                  Disabled
-                </a>
-              </li>
-            </ul>
+        <div className="app-header">
+          <div className="app-header-content">
+            <h1 className="app-title">Project Management</h1>
+            <p className="app-subtitle">Manage and track all active projects</p>
+          </div>
+          <div className="app-header-actions">
             <UserProfile />
           </div>
-        </nav>
+        </div>
+        <div className="nav-container">
+          <div className="nav-tabs">
+            {[
+              { id: "home", label: "Home", icon: Home },
+              { id: "staffing", label: "Staffing", icon: Users },
+              { id: "approvals", label: "Approvals", icon: CheckCircle },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className={`nav-tab ${
+                  activeTab === tab.id ? "nav-tab-active" : ""
+                }`}
+              >
+                <tab.icon className="nav-tab-icon" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="container">
           <div className="alert alert-danger mt-5" role="alert">
             <h4 className="alert-heading">Error!</h4>
@@ -253,33 +255,37 @@ export default function ProjectTable() {
 
   return (
     <div className="project-manager-page">
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div className="container-fluid max-w-custom d-flex justify-between align-items-center">
-          <ul className="nav nav-tabs gap-4">
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#home">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/home">
-                Staffing
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/project_manager">
-                Approvals
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link disabled" aria-disabled="true" href="/">
-                Disabled
-              </a>
-            </li>
-          </ul>
+      <div className="app-header">
+        <div className="app-header-content">
+          <h1 className="app-title">Project Management</h1>
+          <p className="app-subtitle">Manage and track all active projects</p>
+        </div>
+        <div className="app-header-actions">
           <UserProfile />
         </div>
-      </nav>
+      </div>
+
+      <div className="nav-container">
+        <div className="nav-tabs">
+          {[
+            { id: "home", label: "Home", icon: Home },
+            { id: "staffing", label: "Staffing", icon: Users },
+            { id: "approvals", label: "Approvals", icon: CheckCircle },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => handleTabClick(tab.id)}
+              className={`nav-tab ${
+                activeTab === tab.id ? "nav-tab-active" : ""
+              }`}
+            >
+              <tab.icon className="nav-tab-icon" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="container">
         <div className="header d-flex justify-content-between align-items-center">
           <div>
@@ -382,31 +388,19 @@ export default function ProjectTable() {
                     <td>
                       <div className="location-container">
                         <div className="location">📍 {project.location}</div>
-                        <button
-                          type="button"
-                          className="btn btn-warning"
-                          onClick={() =>
-                            navigate(
-                              `/project_manager/edit-project/${project.id}`
-                            )
-                          }
-                        >
-                          Edit/Delete
-                        </button>
-                        {/* <button
-                          type="button"
-                          className="btn btn-success"
-                          onClick={() => handlePublish(project.id)}
-                          disabled={
-                            project.isPublished || publishingId === project.id
-                          }
-                        >
-                          {project.isPublished
-                            ? "Published ✓"
-                            : publishingId === project.id
-                            ? "Publishing..."
-                            : "Publish"}
-                        </button> */}
+                        {!project.isPublished && (
+                          <button
+                            type="button"
+                            className="btn btn-warning"
+                            onClick={() =>
+                              navigate(
+                                `/project_manager/edit-project/${project.id}`
+                              )
+                            }
+                          >
+                            Edit/Delete
+                          </button>
+                        )}
                         <button
                           type="button"
                           className={`btn ${
