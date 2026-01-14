@@ -9,8 +9,9 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import "./approval.css";
 
-const ProjectApprovalsManager = () => {
+const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
   const [projects, setProjects] = useState([]);
   const [applications, setApplications] = useState({});
   const [loading, setLoading] = useState(true);
@@ -165,45 +166,43 @@ const ProjectApprovalsManager = () => {
     });
   };
 
-  const getStatusColor = (status) => {
+  const statusClass = (status) => {
     switch (status) {
       case "APPLIED":
-        return "bg-blue-100 text-blue-800";
+        return "applied";
       case "APPROVED":
-        return "bg-green-100 text-green-800";
+        return "approved";
       case "REJECTED":
-        return "bg-red-100 text-red-800";
+        return "rejected";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "default";
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading applications...</p>
+      <div className="pam-loading-screen">
+        <div className="pam-loading-inner">
+          <div className="pam-spinner" />
+          <p className="pam-loading-text">Loading applications...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="pam-page">
+      <div className="pam-container">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Project Applications
-          </h1>
-          <p className="text-gray-600 mt-2">
+        <div className="pam-card pam-header">
+          <h1 className="pam-title">Project Applications</h1>
+          <p className="pam-subtitle">
             Review and manage employee applications for published projects
           </p>
         </div>
 
         {/* Projects List */}
-        <div className="space-y-4">
+        <div className="pam-projects">
           {projects.map((project) => {
             const projectApps = applications[project.projectId] || [];
             const pendingCount = projectApps.filter(
@@ -212,40 +211,40 @@ const ProjectApprovalsManager = () => {
             const isExpanded = expandedProjects[project.projectId];
 
             return (
-              <div
-                key={project.id}
-                className="bg-white rounded-lg shadow-sm overflow-hidden"
-              >
+              <div key={project.id} className="pam-card pam-project">
                 {/* Project Header */}
                 <button
                   onClick={() => toggleProject(project.projectId)}
-                  className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  className="pam-project-toggle"
+                  type="button"
                 >
-                  <div className="flex-1 text-left">
-                    <div className="flex items-center gap-3">
-                      <h2 className="text-xl font-semibold text-gray-900">
+                  <div className="pam-project-left">
+                    <div className="pam-project-top">
+                      <h2 className="pam-project-name">
                         {project.projectDescription}
                       </h2>
-                      <span className="text-sm text-gray-500">
+                      <span className="pam-project-id">
                         ({project.projectId})
                       </span>
                       {pendingCount > 0 && (
-                        <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                        <span className="pam-pending-badge">
                           {pendingCount} Pending
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                      <span className="flex items-center gap-1">
+
+                    <div className="pam-project-meta">
+                      <span className="pam-meta-item">
                         <User size={16} />
                         {project.requiredEmployees} employees needed
                       </span>
-                      <span className="flex items-center gap-1">
+                      <span className="pam-meta-item">
                         <Briefcase size={16} />
                         {projectApps.length} applications
                       </span>
                     </div>
                   </div>
+
                   {isExpanded ? (
                     <ChevronUp size={24} />
                   ) : (
@@ -255,38 +254,34 @@ const ProjectApprovalsManager = () => {
 
                 {/* Applications List */}
                 {isExpanded && (
-                  <div className="border-t border-gray-200">
+                  <div className="pam-expanded">
                     {projectApps.length === 0 ? (
-                      <div className="p-8 text-center text-gray-500">
-                        <AlertCircle
-                          size={48}
-                          className="mx-auto mb-3 opacity-50"
-                        />
+                      <div className="pam-empty">
+                        <AlertCircle size={48} className="pam-empty-icon" />
                         <p>No applications yet for this project</p>
                       </div>
                     ) : (
-                      <div className="divide-y divide-gray-200">
+                      <div className="pam-apps">
                         {projectApps.map((app) => (
-                          <div
-                            key={app.id}
-                            className="p-6 hover:bg-gray-50 transition-colors"
-                          >
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <User size={20} className="text-blue-600" />
+                          <div key={app.id} className="pam-app">
+                            <div className="pam-app-row">
+                              <div className="pam-app-main">
+                                <div className="pam-app-header">
+                                  <div className="pam-avatar">
+                                    <User size={20} />
                                   </div>
+
                                   <div>
-                                    <h3 className="font-semibold text-gray-900">
+                                    <h3 className="pam-app-title">
                                       Employee ID: {app.employeeId}
                                     </h3>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="pam-app-subtitle">
                                       Application ID: {app.applicationId}
                                     </p>
                                   </div>
+
                                   <span
-                                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                                    className={`pam-status ${statusClass(
                                       app.currentStatus
                                     )}`}
                                   >
@@ -294,14 +289,14 @@ const ProjectApprovalsManager = () => {
                                   </span>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <div className="pam-details">
+                                  <div className="pam-detail">
                                     <Briefcase size={16} />
                                     <span>
                                       <strong>Role:</strong> {app.projectRole}
                                     </span>
                                   </div>
-                                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                                  <div className="pam-detail">
                                     <Calendar size={16} />
                                     <span>
                                       <strong>Applied:</strong>{" "}
@@ -311,7 +306,7 @@ const ProjectApprovalsManager = () => {
                                 </div>
 
                                 {app.initiatedBy && (
-                                  <div className="text-sm text-gray-600 mb-2">
+                                  <div className="pam-info-line">
                                     <strong>Initiated by:</strong>{" "}
                                     {app.initiatedBy.role}
                                     {app.initiatedBy.userName &&
@@ -320,7 +315,7 @@ const ProjectApprovalsManager = () => {
                                 )}
 
                                 {app.suggestedBy && (
-                                  <div className="text-sm text-gray-600 mb-2">
+                                  <div className="pam-info-line">
                                     <strong>Suggested by:</strong>{" "}
                                     {app.suggestedBy.role}
                                     {app.suggestedBy.userName &&
@@ -329,8 +324,8 @@ const ProjectApprovalsManager = () => {
                                 )}
 
                                 {app.rejectionReason && (
-                                  <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded">
-                                    <p className="text-sm text-red-800">
+                                  <div className="pam-rejection">
+                                    <p>
                                       <strong>Rejection Reason:</strong>{" "}
                                       {app.rejectionReason}
                                     </p>
@@ -340,7 +335,7 @@ const ProjectApprovalsManager = () => {
 
                               {/* Action Buttons */}
                               {app.currentStatus === "APPLIED" && (
-                                <div className="flex gap-2 ml-4">
+                                <div className="pam-actions">
                                   <button
                                     onClick={() =>
                                       handleApprove(
@@ -351,13 +346,15 @@ const ProjectApprovalsManager = () => {
                                     disabled={
                                       processingApp === app.applicationId
                                     }
-                                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    className="pam-btn pam-btn-approve"
+                                    type="button"
                                   >
                                     <CheckCircle size={18} />
                                     {processingApp === app.applicationId
                                       ? "Processing..."
                                       : "Approve"}
                                   </button>
+
                                   <button
                                     onClick={() =>
                                       handleReject(
@@ -368,7 +365,8 @@ const ProjectApprovalsManager = () => {
                                     disabled={
                                       processingApp === app.applicationId
                                     }
-                                    className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    className="pam-btn pam-btn-reject"
+                                    type="button"
                                   >
                                     <XCircle size={18} />
                                     {processingApp === app.applicationId
@@ -390,12 +388,10 @@ const ProjectApprovalsManager = () => {
         </div>
 
         {projects.length === 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-            <AlertCircle size={64} className="mx-auto mb-4 text-gray-400" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              No Published Projects
-            </h2>
-            <p className="text-gray-600">
+          <div className="pam-card pam-noprojects">
+            <AlertCircle size={64} className="pam-noprojects-icon" />
+            <h2 className="pam-noprojects-title">No Published Projects</h2>
+            <p className="pam-noprojects-text">
               There are no published projects with applications to review.
             </p>
           </div>
