@@ -13,33 +13,15 @@ export default function HomeTab({ allProjects }) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
 
-  let [projects, setProjects] = useState([]);
-  projects = allProjects;
+  const [projects, setProjects] = useState(allProjects || []);
+
+  useEffect(() => {
+    setProjects(allProjects || []);
+  }, [allProjects]);
   const [publishingId, setPublishingId] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState(""); // from Search component
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
   const ITEMS_PER_PAGE = 5;
-  // setProjects(allProjects);
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const res = await GetProjectByCreator();
-  //       setProjects(res);
-  //       setError(null);
-  //     } catch (err) {
-  //       console.error("Error fetching projects:", err);
-  //       setError("Failed to load projects. Please try again later.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchProjects();
-  // }, []);
 
   // reset page when search changes
   useEffect(() => {
@@ -290,7 +272,7 @@ export default function HomeTab({ allProjects }) {
                             )
                           }
                         >
-                          Edit/Delete
+                          Edit
                         </button>
                       )}
 

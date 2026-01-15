@@ -110,7 +110,9 @@ const RoleSection = ({
       </div>
 
       <div className="role-skills">
-        <span className="required-skills-label">Required Competencies:</span>
+        <span className="required-skills-label">
+          Required Competencies / Skills:
+        </span>
         {role.requiredCompetencies.map((skill) => (
           <span key={skill} className="skill-badge skill-badge-purple">
             {skill}

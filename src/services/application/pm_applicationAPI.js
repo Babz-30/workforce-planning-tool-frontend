@@ -17,7 +17,7 @@ export async function requestDhApproval(applicationID) {
       localStorage.getItem("Base_URL") +
         ApiEndPoints.Deparment_Header_Approval_And_Reject +
         applicationID +
-        "/approve",
+        "/request-dh-approval",
       mappedPayload
     );
     console.log("Success:", response.data);

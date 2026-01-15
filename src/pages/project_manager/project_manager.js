@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import "./project_manager.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Home, Users, CheckCircle } from "lucide-react";
+import { Home, CheckCircle } from "lucide-react";
 
 import UserProfile from "../../components/profile/profile";
 import HomeTab from "../../components/pm_home/home"; // ✅ adjust path if needed
 import ProjectApprovalsManager from "../../components/pm_approvals/approval"; // ✅ adjust path if needed
 import { GetProjectByCreator } from "../../services/project/getprojects";
 import { GetAllAplliedApplication } from "../../services/application/GetApplicationAPI";
+import { getAllEmployee } from "../../services/employee/employeeApi";
 
 export default function ProjectTable() {
   const [activeTab, setActiveTab] = useState("home");
@@ -16,6 +17,7 @@ export default function ProjectTable() {
   const [error, setError] = useState(null);
   const [projects, setProjects] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -24,6 +26,9 @@ export default function ProjectTable() {
         const res = await GetProjectByCreator();
         setProjects(res);
         setApplications(await GetAllAplliedApplication());
+        await getAllEmployee().then((response) => {
+          setEmployees(response.data);
+        });
         setError(null);
       } catch (err) {
         console.error("Error fetching projects:", err);
@@ -81,7 +86,7 @@ export default function ProjectTable() {
         <div className="nav-tabs">
           {[
             { id: "home", label: "Home", icon: Home },
-            { id: "staffing", label: "Staffing", icon: Users },
+            // { id: "staffing", label: "Staffing", icon: Users },
             { id: "approvals", label: "Approvals", icon: CheckCircle },
           ].map((tab) => (
             <button
@@ -106,6 +111,7 @@ export default function ProjectTable() {
           <ProjectApprovalsManager
             allProjectsData={projects}
             allApplicationData={applications}
+            employees={employees}
           />
         )}
       </div>
