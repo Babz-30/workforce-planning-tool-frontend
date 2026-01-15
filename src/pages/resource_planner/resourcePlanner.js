@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Search,
-  Users,
+  // Users,
   TrendingUp,
   // CheckCircle,
   UserPlus,
@@ -23,7 +23,7 @@ import getAppliedEmployees from "../../helper/DuplicateEmployeeBinder";
 import EmployeeSearch from "../../components/rp_skill_search/searchskillTab";
 
 const ResourcePlanner = () => {
-  const [activeTab, setActiveTab] = useState("available");
+  const [activeTab, setActiveTab] = useState("search");
   const [searchTerm] = useState("");
   const [selectedSkills] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ const ResourcePlanner = () => {
   const [appliedEmployees, setAppliedEmployees] = useState({});
 
   // Pagination states for different tabs
-  const [availablePage, setAvailablePage] = useState(1);
+  // const [availablePage, setAvailablePage] = useState(1);
   const [, setSearchPage] = useState(1);
   const [proposePage, setProposePage] = useState(1);
 
@@ -75,19 +75,19 @@ const ResourcePlanner = () => {
 
   const { skillGaps, allSkills } = calculateSkillGaps(employees, projects);
 
-  const filteredEmployees = employees.filter((emp) => {
-    const matchesSearch =
-      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.role.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSkills =
-      selectedSkills.length === 0 ||
-      selectedSkills.some((skill) => emp.skills.includes(skill));
-    return matchesSearch && matchesSkills;
-  });
+  // const filteredEmployees = employees.filter((emp) => {
+  //   const matchesSearch =
+  //     emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     emp.role.toLowerCase().includes(searchTerm.toLowerCase());
+  //   const matchesSkills =
+  //     selectedSkills.length === 0 ||
+  //     selectedSkills.some((skill) => emp.skills.includes(skill));
+  //   return matchesSearch && matchesSkills;
+  // });
 
-  const availableEmployees = filteredEmployees.filter(
-    (emp) => emp.capacity > 0
-  );
+  // const availableEmployees = filteredEmployees.filter(
+  //   (emp) => emp.capacity > 0
+  // );
 
   // Pagination helper function
   const paginateItems = (items, currentPage) => {
@@ -130,7 +130,7 @@ const ResourcePlanner = () => {
         <div className="nav-container">
           <div className="nav-tabs">
             {[
-              { id: "available", label: "Available Employees", icon: Users },
+              // { id: "available", label: "Available Employees", icon: Users },
               { id: "search", label: "Search by Skills", icon: Search },
               { id: "propose", label: "Propose for Projects", icon: UserPlus },
               { id: "gaps", label: "Skill Gap Analysis", icon: TrendingUp },
@@ -150,7 +150,7 @@ const ResourcePlanner = () => {
           </div>
         </div>
 
-        {/* Available Employees */}
+        {/* Available Employees
         {activeTab === "available" && (
           <div className="content-card">
             <h2 className="section-title">Available Employees</h2>
@@ -195,7 +195,7 @@ const ResourcePlanner = () => {
               onPageChange={setAvailablePage}
             />
           </div>
-        )}
+        )} */}
 
         {/* Search by Skills */}
         {activeTab === "search" && (
