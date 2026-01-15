@@ -11,5 +11,6 @@ const ApiEndPoints = Object.freeze({
   Propose_Project: "/api/applications/suggest",
   Get_Applied_Projects_by_User:
     "/api/applications/grouped-by-project?status=APPLIED",
+  Deparment_Header_Approval_And_Reject: "/api/project-manager/applications",
 });
 export default ApiEndPoints;

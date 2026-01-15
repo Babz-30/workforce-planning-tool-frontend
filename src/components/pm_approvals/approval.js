@@ -15,6 +15,11 @@ import {
   keepPublishedProjects,
 } from "../../helper/approvalBinder";
 
+import {
+  requestDhApproval,
+  rejectApplication,
+} from "../../services/application/pm_applicationAPI";
+
 const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
   const [projects, setProjects] = useState([]);
   const [applications, setApplications] = useState({});
@@ -50,7 +55,7 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
     setProcessingApp(applicationId);
     try {
       // Replace with your actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await requestDhApproval(applicationId);
 
       // Update local state
       setApplications((prev) => ({
@@ -76,7 +81,7 @@ const ProjectApprovalsManager = ({ allProjectsData, allApplicationData }) => {
     setProcessingApp(applicationId);
     try {
       // Replace with your actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await rejectApplication(applicationId, reason);
 
       // Update local state
       setApplications((prev) => ({
