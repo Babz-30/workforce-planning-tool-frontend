@@ -1,28 +1,15 @@
 import { useState } from "react"
 import "./DepartmentHeadDashboard.css"
-import { Bell, Settings, LogOut } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
+import UserProfile from "../../components/profile/profile";
 import EmployeeProfiles from "./EmployeeProfiles"
 import ProjectRequests from "./ProjectRequests"
 import DepartmentResources from "./DepartmentResources"
 
 export default function DepartmentHeadDashboard() {
-  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState("employees")
 
   // Profile data
   const profileData = JSON.parse(localStorage.getItem("loginResponse"))
-
-  const handleLogout = () => {
-    localStorage.clear()
-    sessionStorage.clear()
-    navigate("/", { replace: true })
-    toast.success("You've been logged out", {
-      autoClose: 2000,
-      position: "top-right",
-    })
-  }
 
   return (
     <div className="dept-head-dashboard-page">
@@ -61,28 +48,8 @@ export default function DepartmentHeadDashboard() {
               </button>
             </nav>
           </div>
-          <div className="header-actions">
-            <button className="icon-btn" title="Notifications">
-              <Bell size={20} />
-            </button>
-            <button
-              className="icon-btn"
-              title="Settings"
-              onClick={() => {
-                const deptHeadData = JSON.parse(localStorage.getItem("loginResponse"))
-                if (deptHeadData) {
-                  navigate("/update-profile", { state: { userData: deptHeadData, from: "dept-head" }, replace: true })
-                } else {
-                  console.error("No department head data in localStorage")
-                }
-              }}
-            >
-              <Settings size={20} />
-            </button>
-            <button className="logout-btn" onClick={handleLogout}>
-              <LogOut size={18} />
-              Logout
-            </button>
+          <div className="app-header-actions">
+            <UserProfile />
           </div>
         </div>
       </div>
