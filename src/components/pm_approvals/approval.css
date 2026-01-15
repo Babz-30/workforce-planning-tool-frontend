@@ -1,0 +1,391 @@
+/* ProjectApprovalsManager.css */
+
+/* ---------- Page + layout ---------- */
+.pam-loading-screen,
+.pam-page {
+  min-height: 100vh;
+  background: #f9fafb; /* gray-50 */
+}
+
+.pam-loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pam-page {
+  padding: 24px; /* p-6 */
+}
+
+.pam-container {
+  max-width: 80rem; /* max-w-7xl */
+  margin: 0 auto;
+}
+
+/* ---------- Header card ---------- */
+.pam-card {
+  background: #ffffff;
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); /* shadow-sm */
+}
+
+.pam-header {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.pam-title {
+  margin: 0;
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 700; /* font-bold */
+  color: #111827; /* gray-900 */
+}
+
+.pam-subtitle {
+  margin: 8px 0 0; /* mt-2 */
+  color: #4b5563; /* gray-600 */
+}
+
+/* ---------- Projects list ---------- */
+.pam-projects {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* space-y-4 */
+}
+
+.pam-project {
+  overflow: hidden; /* overflow-hidden */
+}
+
+/* ---------- Project header button ---------- */
+.pam-project-toggle {
+  width: 100%;
+  padding: 24px; /* p-6 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.pam-project-toggle:hover {
+  background: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.pam-project-left {
+  flex: 1;
+  text-align: left;
+}
+
+.pam-project-top {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* gap-3 */
+}
+
+.pam-project-name {
+  margin: 0;
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.75rem;
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* gray-900 */
+}
+
+.pam-project-id {
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: #6b7280; /* gray-500 */
+}
+
+.pam-pending-badge {
+  padding: 4px 12px; /* px-3 py-1 */
+  background: #fef3c7; /* yellow-100 */
+  color: #92400e; /* yellow-800 */
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  font-weight: 500; /* font-medium */
+}
+
+.pam-project-meta {
+  margin-top: 8px; /* mt-2 */
+  display: flex;
+  align-items: center;
+  gap: 16px; /* gap-4 */
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: #4b5563; /* gray-600 */
+}
+
+.pam-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* gap-1 */
+}
+
+/* ---------- Expanded area ---------- */
+.pam-expanded {
+  border-top: 1px solid #e5e7eb; /* border-t border-gray-200 */
+}
+
+.pam-empty {
+  padding: 32px; /* p-8 */
+  text-align: center;
+  color: #6b7280; /* gray-500 */
+}
+
+.pam-empty-icon {
+  display: block;
+  margin: 0 auto 12px; /* mx-auto mb-3 */
+  opacity: 0.5;
+}
+
+/* ---------- Applications list ---------- */
+.pam-apps {
+  border-top: 1px solid #e5e7eb; /* helps mimic divide-y start */
+}
+
+.pam-app {
+  padding: 24px; /* p-6 */
+  border-top: 1px solid #e5e7eb; /* divide-y divide-gray-200 */
+  transition: background-color 150ms ease;
+}
+
+.pam-app:first-child {
+  border-top: 0;
+}
+
+.pam-app:hover {
+  background: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.pam-app-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pam-app-main {
+  flex: 1;
+}
+
+/* ---------- App header ---------- */
+.pam-app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* gap-3 */
+  margin-bottom: 12px; /* mb-3 */
+}
+
+.pam-avatar {
+  width: 40px; /* w-10 */
+  height: 40px; /* h-10 */
+  background: #dbeafe; /* blue-100 */
+  border-radius: 9999px; /* rounded-full */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pam-avatar svg {
+  color: #2563eb; /* blue-600 */
+}
+
+.pam-app-title {
+  margin: 0;
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* gray-900 */
+  font-size: 1.3rem; /* text-sm */
+}
+
+.pam-app-subtitle {
+  margin: 0;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: #4b5563; /* gray-600 */
+}
+
+/* ---------- Status pill ---------- */
+.pam-status {
+  padding: 4px 12px; /* px-3 py-1 */
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.75rem; /* text-xs */
+  line-height: 1rem;
+  font-weight: 500; /* font-medium */
+}
+
+/* match getStatusColor() outputs */
+.pam-status.applied {
+  background: #dbeafe; /* blue-100 */
+  color: #1e40af; /* blue-800 */
+}
+.pam-status.approved {
+  background: #dcfce7; /* green-100 */
+  color: #166534; /* green-800 */
+}
+.pam-status.rejected {
+  background: #fee2e2; /* red-100 */
+  color: #991b1b; /* red-800 */
+}
+.pam-status.default {
+  background: #f3f4f6; /* gray-100 */
+  color: #1f2937; /* gray-800 */
+}
+
+/* ---------- Details grid ---------- */
+.pam-details {
+  padding: 10px 0 0; /* pt-2 */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
+  gap: 16px; /* gap-4 */
+  margin-bottom: 16px; /* mb-4 */
+}
+
+.pam-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* gap-2 */
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: #4b5563; /* gray-600 */
+}
+
+.pam-detail strong {
+  color: #111827; /* gray-900 */
+}
+
+/* ---------- Optional initiated/suggested blocks ---------- */
+.pam-info-line {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  /* color: #4b5563; gray-600 */
+  margin-bottom: 8px; /* mb-2 */
+  gap: 8px; /* gap-2 */
+}
+
+/* ---------- Rejection reason ---------- */
+.pam-rejection {
+  margin-top: 12px; /* mt-3 */
+  padding: 12px; /* p-3 */
+  background: #fef2f2; /* red-50 */
+  border: 1px solid #fecaca; /* red-200 */
+  border-radius: 0.25rem; /* rounded */
+}
+
+.pam-rejection p {
+  margin: 0;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: #991b1b; /* red-800 */
+}
+
+/* ---------- Action buttons ---------- */
+.pam-actions {
+  display: flex;
+  gap: 8px; /* gap-2 */
+  margin-left: 16px; /* ml-4 */
+}
+
+.pam-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* gap-2 */
+  padding: 8px 16px; /* px-4 py-2 */
+  border-radius: 0.5rem; /* rounded-lg */
+  border: 0;
+  cursor: pointer;
+  color: #ffffff;
+  transition: filter 150ms ease, opacity 150ms ease;
+}
+
+.pam-btn:disabled {
+  opacity: 0.5; /* disabled:opacity-50 */
+  cursor: not-allowed; /* disabled:cursor-not-allowed */
+}
+
+.pam-btn-approve {
+  background: #16a34a; /* green-600 */
+}
+
+.pam-btn-approve:hover {
+  filter: brightness(0.95); /* hover:bg-green-700 feel */
+}
+
+.pam-btn-reject {
+  background: #dc2626; /* red-600 */
+}
+
+.pam-btn-reject:hover {
+  filter: brightness(0.95); /* hover:bg-red-700 feel */
+}
+
+/* ---------- Loading spinner ---------- */
+.pam-spinner {
+  width: 48px; /* h-12 w-12 */
+  height: 48px;
+  border-radius: 9999px;
+  border-bottom: 2px solid #2563eb; /* border-blue-600 */
+  animation: pam-spin 1s linear infinite; /* animate-spin */
+  margin: 0 auto;
+}
+
+@keyframes pam-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pam-loading-text {
+  margin-top: 16px; /* mt-4 */
+  color: #4b5563; /* gray-600 */
+}
+
+/* ---------- No projects card ---------- */
+.pam-noprojects {
+  padding: 48px; /* p-12 */
+  text-align: center;
+}
+
+.pam-noprojects-icon {
+  display: block;
+  margin: 0 auto 16px; /* mx-auto mb-4 */
+  color: #9ca3af; /* gray-400 */
+}
+
+.pam-noprojects-title {
+  margin: 0 0 8px; /* mb-2 */
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.75rem;
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* gray-900 */
+}
+
+.pam-noprojects-text {
+  margin: 0;
+  color: #4b5563; /* gray-600 */
+}
+.pam-skills {
+  margin: 10px 0 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 6px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  /* color: #4b5563; gray-600 */
+}
+
+.pam-skill-chip {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}

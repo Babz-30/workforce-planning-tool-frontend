@@ -7,3 +7,10 @@ export async function GetAllApplication() {
   );
   return response.data;
 }
+
+export async function GetAllAplliedApplication() {
+  const response = await axios.get(
+    localStorage.getItem("Base_URL") + ApiEndPoints.Get_Applied_Projects_by_User
+  );
+  return response.data;
+}

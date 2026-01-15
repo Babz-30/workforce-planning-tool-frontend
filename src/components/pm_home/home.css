@@ -1,0 +1,20 @@
+.pm-home {
+  width: 100%;
+}
+
+/* Header area inside the tab content */
+.pm-home-header {
+  margin-bottom: 1rem;
+}
+
+/* Search row spacing */
+.pm-home-search {
+  margin-bottom: 1rem;
+}
+
+/* Empty state */
+.pm-home-empty {
+  padding: 2rem 1rem;
+  color: #6b7280;
+  text-align: center;
+}

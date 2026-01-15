@@ -6,7 +6,7 @@ function mapToPayload(projectId, projectRole, employeeId) {
     projectRole: projectRole,
     employeeId: employeeId,
     plannerUserId: String(
-      JSON.parse(localStorage.getItem("loginResponse")).username || "admin"
+      JSON.parse(localStorage.getItem("loginResponse")).employeeId || "admin"
     ),
   };
 }
