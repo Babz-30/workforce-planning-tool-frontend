@@ -326,7 +326,8 @@ export const approveProjectRequest = async (applicationId, comments = "Approved"
 
         if (!response.ok) {
             if (response.status === 400) {
-                toast.error(`Project already filled for this role! Please reject! ${response.message} `);
+                var data = await response.json();
+                toast.error(`Project already filled for this role! Please reject request! \n${data.message} `);
                 throw new Error(`HTTP error! status: ${response.status} : ${response.message}`);
             }
             else {
