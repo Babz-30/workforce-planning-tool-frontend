@@ -293,6 +293,7 @@ const ProjectApprovalsManager = ({
 
                                   {app.initiatedBy && (
                                     <div className="pam-info-line">
+                                      <User size={16} />
                                       <strong>Initiated by:</strong>{" "}
                                       {app.initiatedBy.role}
                                       {app.initiatedBy.userName &&

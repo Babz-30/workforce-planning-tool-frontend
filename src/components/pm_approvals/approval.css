@@ -237,6 +237,7 @@
 
 /* ---------- Details grid ---------- */
 .pam-details {
+  padding: 10px 0 0; /* pt-2 */
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* grid-cols-2 */
   gap: 16px; /* gap-4 */
@@ -258,10 +259,13 @@
 
 /* ---------- Optional initiated/suggested blocks ---------- */
 .pam-info-line {
+  display: inline-flex;
+  align-items: center;
   font-size: 0.875rem; /* text-sm */
   line-height: 1.25rem;
-  color: #4b5563; /* gray-600 */
+  /* color: #4b5563; gray-600 */
   margin-bottom: 8px; /* mb-2 */
+  gap: 8px; /* gap-2 */
 }
 
 /* ---------- Rejection reason ---------- */
@@ -366,10 +370,15 @@
   color: #4b5563; /* gray-600 */
 }
 .pam-skills {
-  display: flex;
+  margin: 10px 0 0;
   flex-wrap: wrap;
   gap: 8px;
   margin: 10px 0 6px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  /* color: #4b5563; gray-600 */
 }
 
 .pam-skill-chip {
