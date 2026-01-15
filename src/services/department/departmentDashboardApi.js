@@ -342,7 +342,6 @@ export const approveProjectRequest = async (applicationId, comments = "Approved"
         }
 
     } catch (error) {
-        console.error("Approve Project Request API Error:", error);
         throw error;
     }
 };
