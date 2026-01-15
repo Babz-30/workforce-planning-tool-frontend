@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import "./ProjectRequests.css"
 import { Calendar, User, Briefcase, Check, X, Clock } from "lucide-react"
@@ -35,10 +33,10 @@ export default function ProjectRequests() {
 
   const handleApprove = async (applicationId) => {
     try {
-      await approveProjectRequest(applicationId, "Approved by Department Head")
 
+      await approveProjectRequest(applicationId, "Approved by Department Head")
       // Update local state
-      setRequests(requests.map((req) => 
+      setRequests(requests.map((req) =>
         req.id === applicationId ? { ...req, status: "approved" } : req
       ))
 
@@ -47,15 +45,8 @@ export default function ProjectRequests() {
         autoClose: 3000,
       })
 
-      // Optionally refresh the data
-      // await fetchRequests()
-
     } catch (error) {
       console.error("Error approving request:", error)
-      toast.error("Failed to approve request. Please try again.", {
-        position: "top-right",
-        autoClose: 3000,
-      })
     }
   }
 
@@ -64,7 +55,7 @@ export default function ProjectRequests() {
       await rejectProjectRequest(applicationId, "Rejected by Department Head")
 
       // Update local state
-      setRequests(requests.map((req) => 
+      setRequests(requests.map((req) =>
         req.id === applicationId ? { ...req, status: "rejected" } : req
       ))
 
@@ -223,7 +214,7 @@ export default function ProjectRequests() {
                     <span className="detail-value">{formatDate(request.requestedDate)}</span>
                   </div>
                 </div>
-                
+
                 <div className="request-skills">
                   <span className="detail-label">Required Skills</span>
                   <div className="skills-chips">

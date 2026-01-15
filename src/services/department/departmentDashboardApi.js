@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify"
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getItem("Base_URL");
 
@@ -6,7 +7,7 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || localStorage.getI
 const transformEmployeeToFrontend = (backendEmployee) => {
     // Determine the role/position to display
     let displayRole = backendEmployee.position;
-    
+
     // If position is empty, use the most recent work experience role
     if (!displayRole && backendEmployee.workExperience && backendEmployee.workExperience.length > 0) {
         // Sort by start date descending to get most recent
@@ -36,7 +37,7 @@ export const getDepartmentEmployees = async () => {
     try {
         // Get logged in user's department from localStorage
         const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
-        
+
         if (!loginResponse || !loginResponse.department) {
             throw new Error("Department information not found in login response");
         }
@@ -45,11 +46,11 @@ export const getDepartmentEmployees = async () => {
 
         // Fetch all employees
         const employeesResponse = await axios.get(`${API_BASE_URL}/api/employees`);
-        
+
         // Fetch all published projects to check which project IDs exist
         const projectsResponse = await axios.get(`${API_BASE_URL}/api/projects/published/true`);
         const projects = projectsResponse.data.data || projectsResponse.data;
-        
+
         // Create a set of valid project IDs for quick lookup
         const validProjectIds = new Set(projects.map(project => project.projectId));
 
@@ -59,17 +60,17 @@ export const getDepartmentEmployees = async () => {
             if (employee.department !== userDepartment) {
                 return false;
             }
-            
+
             // Must have role EMPLOYEE
             if (employee.role !== "EMPLOYEE") {
                 return false;
             }
-            
+
             // Include if no assigned project
             if (!employee.assignedProjectId || employee.assignedProjectId.trim() === "") {
                 return true;
             }
-            
+
             // Include only if assigned project ID is NOT in the published projects list
             return validProjectIds.has(employee.assignedProjectId);
         });
@@ -101,7 +102,7 @@ export const getEmployeeDetails = async (employeeId) => {
 const transformResourceToFrontend = (employee, project) => {
     // Extract required roles from project
     const requiredRoles = project.roles?.map(role => role.requiredRole) || [];
-    
+
     return {
         id: employee.employeeId,
         employeeName: `${employee.firstName} ${employee.lastName}`,
@@ -128,7 +129,7 @@ export const getDepartmentResources = async () => {
     try {
         // Get logged in user's department from localStorage
         const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
-        
+
         if (!loginResponse || !loginResponse.department) {
             throw new Error("Department information not found in login response");
         }
@@ -137,20 +138,20 @@ export const getDepartmentResources = async () => {
 
         // Fetch all employees
         const employeesResponse = await axios.get(`${API_BASE_URL}/api/employees`);
-        
+
         // Filter employees who:
         // 1. Belong to the same department
         // 2. Have role EMPLOYEE
         // 3. Have an assigned project (assignedProjectId is not null/empty)
         // 4. Are NOT_AVAILABLE or PARTIALLY_AVAILABLE (actively working on projects)
         const assignedEmployees = employeesResponse.data.filter(
-            employee => 
+            employee =>
                 employee.department === userDepartment &&
                 employee.role === "EMPLOYEE" &&
                 employee.assignedProjectId &&
                 employee.assignedProjectId.trim() !== "" &&
-                (employee.availabilityStatus === "NOT_AVAILABLE" || 
-                 employee.availabilityStatus === "PARTIALLY_AVAILABLE")
+                (employee.availabilityStatus === "NOT_AVAILABLE" ||
+                    employee.availabilityStatus === "PARTIALLY_AVAILABLE")
         );
 
         // Fetch all published projects
@@ -167,7 +168,7 @@ export const getDepartmentResources = async () => {
         const resources = assignedEmployees
             .map(employee => {
                 const project = projectsMap[employee.assignedProjectId];
-                
+
                 // Only include if we found the project details
                 if (project) {
                     return transformResourceToFrontend(employee, project);
@@ -188,7 +189,7 @@ export const getDepartmentResources = async () => {
 const transformApplicationToFrontend = (application, employee, project) => {
     // Get the role details from project that matches the application's projectRole
     const matchingRole = project.roles?.find(role => role.requiredRole === application.projectRole);
-    
+
     // Combine employee skills and interests
     const employeeSkills = [
         ...(employee.skills || []),
@@ -200,7 +201,7 @@ const transformApplicationToFrontend = (application, employee, project) => {
         ...(project.selectedSkills || []),
         ...(matchingRole?.requiredCompetencies || [])
     ];
-    
+
     // Remove duplicates
     const uniqueRequiredSkills = [...new Set(allRequiredSkills)];
 
@@ -208,7 +209,7 @@ const transformApplicationToFrontend = (application, employee, project) => {
     const requestedBy = application.approvedByProjectManager?.userName || "N/A";
 
     const requestedByRole = application.approvedByProjectManager?.role || "N/A";
-    
+
     // Get requested date from timestamps.approvedAt
     const requestedDate = application.timestamps?.approvedAt || application.timestamps?.suggestedAt || new Date().toISOString();
 
@@ -231,7 +232,7 @@ const transformApplicationToFrontend = (application, employee, project) => {
         requiredRoles: project.roles?.map(role => role.requiredRole) || [],
         estimatedWorkload: matchingRole?.capacity ? parseInt(matchingRole.capacity) : employee.capacity || 0,
         status: application.currentStatus === "REQUEST_DH_APPROVAL" ? "pending" :
-                application.currentStatus === "REJECTED_BY_DH" ? "rejected" :
+            application.currentStatus === "REJECTED_BY_DH" ? "rejected" :
                 application.currentStatus === "COMPLETED" ? "approved" : "pending",
         applicationId: application.applicationId,
         employeeId: employee.employeeId
@@ -243,7 +244,7 @@ export const getDepartmentProjectRequests = async () => {
     try {
         // Get logged in user's department from localStorage
         const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
-        
+
         if (!loginResponse || !loginResponse.department) {
             throw new Error("Department information not found in login response");
         }
@@ -252,12 +253,12 @@ export const getDepartmentProjectRequests = async () => {
 
         // Fetch all applications
         const applicationsResponse = await axios.get(`${API_BASE_URL}/api/applications/all`);
-        
+
         // Filter applications by status: REQUEST_DH_APPROVAL, REJECTED_BY_DH, COMPLETED
         const relevantApplications = applicationsResponse.data.filter(
             app => app.currentStatus === "REQUEST_DH_APPROVAL" ||
-                   app.currentStatus === "REJECTED_BY_DH" ||
-                   app.currentStatus === "COMPLETED"
+                app.currentStatus === "REJECTED_BY_DH" ||
+                app.currentStatus === "COMPLETED"
         );
 
         // Fetch all employees
@@ -305,27 +306,39 @@ export const getDepartmentProjectRequests = async () => {
 export const approveProjectRequest = async (applicationId, comments = "Approved") => {
     try {
         const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
-        
+
         if (!loginResponse || !loginResponse.employeeId) {
             throw new Error("Department Head information not found in login response");
         }
 
         const departmentHeadId = loginResponse.employeeId;
 
-        const response = await axios.put(
-            `${API_BASE_URL}/api/department-head/applications/${applicationId}/approve`,
-            {
-                departmentHeadId: departmentHeadId,
-                comments: comments
+        const response = await fetch(`${API_BASE_URL}/api/department-head/applications/${applicationId}/approve`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
             },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
+            body: JSON.stringify({
+                departmentHeadId: departmentHeadId,
+                comments: comments,
+            }),
+        });
 
-        return { data: response.data };
+        if (!response.ok) {
+            if (response.status === 400) {
+                toast.error(`Project already filled for this role! Please reject! ${response.message} `);
+                throw new Error(`HTTP error! status: ${response.status} : ${response.message}`);
+            }
+            else {
+                toast.error("Failed to approve request. Please try again.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                })
+                throw new Error(`HTTP error! status: ${response.status} : ${response.message}`);
+            }
+        } else {
+            return await response.json();
+        }
 
     } catch (error) {
         console.error("Approve Project Request API Error:", error);
@@ -337,7 +350,7 @@ export const approveProjectRequest = async (applicationId, comments = "Approved"
 export const rejectProjectRequest = async (applicationId, rejectionReason = "Rejected by Department Head") => {
     try {
         const loginResponse = JSON.parse(localStorage.getItem("loginResponse"));
-        
+
         if (!loginResponse || !loginResponse.employeeId) {
             throw new Error("Department Head information not found in login response");
         }
