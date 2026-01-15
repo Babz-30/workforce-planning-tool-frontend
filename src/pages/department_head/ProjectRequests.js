@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import "./ProjectRequests.css"
 import { Calendar, User, Briefcase, Check, X, Clock } from "lucide-react"
 import { toast } from "react-toastify"
-// import axios from 'axios';
+import { getDepartmentProjectRequests, approveProjectRequest, rejectProjectRequest } from "../../services/department/departmentDashboardApi"
 
 export default function ProjectRequests() {
   const [requests, setRequests] = useState([])
@@ -19,148 +19,66 @@ export default function ProjectRequests() {
     try {
       setLoading(true)
 
-      // TODO: Replace with actual API call
-      // const response = await axios.get('/api/department/project-requests');
-      // setRequests(response.data);
+      const response = await getDepartmentProjectRequests()
+      setRequests(response.data)
 
-      // Mock data
-      const mockRequests = [
-        {
-          id: 1,
-          employeeName: "John Smith",
-          employeeRole: "Senior Developer",
-          employeeSkills: ["React", "Node.js", "Python", "AWS", "Docker"],
-          projectName: "Mobile Banking App",
-          projectDescription: "Develop a mobile banking application with biometric authentication",
-          requestedBy: "Alice Martinez",
-          requestedDate: "2024-12-20",
-          projectStartDate: "2025-01-05",
-          projectEndDate: "2025-04-30",
-          requiredSkills: ["React Native", "Node.js", "Security"],
-          location: "San Francisco, CA",
-          teamSize: 5,
-          requiredRoles: ["Frontend Developer", "Backend Developer", "Security Specialist"],
-          estimatedWorkload: 40,
-          status: "pending",
-        },
-        {
-          id: 2,
-          employeeName: "Sarah Johnson",
-          employeeRole: "UI/UX Designer",
-          employeeSkills: ["Figma", "Adobe XD", "Sketch", "User Research"],
-          projectName: "E-Commerce Platform Redesign",
-          projectDescription: "Complete UI/UX overhaul of existing e-commerce platform",
-          requestedBy: "Bob Thompson",
-          requestedDate: "2024-12-19",
-          projectStartDate: "2025-01-10",
-          projectEndDate: "2025-03-15",
-          requiredSkills: ["Figma", "User Research", "Prototyping"],
-          location: "New York, NY",
-          teamSize: 3,
-          requiredRoles: ["UI Designer", "UX Researcher"],
-          estimatedWorkload: 35,
-          status: "pending",
-        },
-        {
-          id: 3,
-          employeeName: "Mike Chen",
-          employeeRole: "Backend Developer",
-          employeeSkills: ["Java", "Spring Boot", "PostgreSQL", "Kubernetes"],
-          projectName: "Microservices Migration",
-          projectDescription: "Migrate monolithic application to microservices architecture",
-          requestedBy: "Carol Davis",
-          requestedDate: "2024-12-18",
-          projectStartDate: "2025-01-15",
-          projectEndDate: "2025-06-30",
-          requiredSkills: ["Java", "Spring Boot", "Kubernetes", "Docker"],
-          location: "Austin, TX",
-          teamSize: 8,
-          requiredRoles: ["Backend Developer", "DevOps Engineer", "Solution Architect"],
-          estimatedWorkload: 45,
-          status: "approved",
-        },
-        {
-          id: 4,
-          employeeName: "Emma Davis",
-          employeeRole: "Full Stack Developer",
-          employeeSkills: ["React", "Python", "Django", "PostgreSQL"],
-          projectName: "Customer Portal Development",
-          projectDescription: "Build a new customer self-service portal",
-          requestedBy: "David Wilson",
-          requestedDate: "2024-12-17",
-          projectStartDate: "2025-02-01",
-          projectEndDate: "2025-05-20",
-          requiredSkills: ["React", "Python", "Django"],
-          location: "Remote",
-          teamSize: 4,
-          requiredRoles: ["Full Stack Developer", "QA Engineer"],
-          estimatedWorkload: 38,
-          status: "rejected",
-        },
-        {
-          id: 5,
-          employeeName: "David Wilson",
-          employeeRole: "DevOps Engineer",
-          employeeSkills: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins"],
-          projectName: "CI/CD Pipeline Setup",
-          projectDescription: "Implement automated CI/CD pipeline for deployment",
-          requestedBy: "Emma Rodriguez",
-          requestedDate: "2024-12-21",
-          projectStartDate: "2025-01-08",
-          projectEndDate: "2025-03-30",
-          requiredSkills: ["Jenkins", "Docker", "AWS", "Terraform"],
-          location: "Seattle, WA",
-          teamSize: 2,
-          requiredRoles: ["DevOps Engineer"],
-          estimatedWorkload: 30,
-          status: "pending",
-        },
-      ]
-
-      setTimeout(() => {
-        setRequests(mockRequests)
-        setLoading(false)
-      }, 500)
     } catch (error) {
       console.error("Error fetching requests:", error)
+      toast.error("Failed to load project requests. Please try again.", {
+        autoClose: 3000,
+        position: "top-right",
+      })
+    } finally {
       setLoading(false)
     }
   }
 
-  const handleApprove = async (requestId) => {
+  const handleApprove = async (applicationId) => {
     try {
-      // TODO: Replace with actual API call
-      // await axios.post(`/api/department/project-requests/${requestId}/approve`);
+      await approveProjectRequest(applicationId, "Approved by Department Head")
 
-      setRequests(requests.map((req) => (req.id === requestId ? { ...req, status: "approved" } : req)))
+      // Update local state
+      setRequests(requests.map((req) => 
+        req.id === applicationId ? { ...req, status: "approved" } : req
+      ))
 
       toast.success("Request approved successfully!", {
         position: "top-right",
         autoClose: 3000,
       })
+
+      // Optionally refresh the data
+      // await fetchRequests()
+
     } catch (error) {
       console.error("Error approving request:", error)
-      toast.error("Failed to approve request", {
+      toast.error("Failed to approve request. Please try again.", {
         position: "top-right",
         autoClose: 3000,
       })
     }
   }
 
-  const handleReject = async (requestId) => {
+  const handleReject = async (applicationId) => {
     try {
-      // TODO: Replace with actual API call
-      // await axios.post(`/api/department/project-requests/${requestId}/reject`);
+      await rejectProjectRequest(applicationId, "Rejected by Department Head")
 
-      setRequests(requests.map((req) => (req.id === requestId ? { ...req, status: "rejected" } : req)))
+      // Update local state
+      setRequests(requests.map((req) => 
+        req.id === applicationId ? { ...req, status: "rejected" } : req
+      ))
 
       toast.success("Request rejected", {
         position: "top-right",
         autoClose: 3000,
       })
+
+      // Optionally refresh the data
+      // await fetchRequests()
+
     } catch (error) {
       console.error("Error rejecting request:", error)
-      toast.error("Failed to reject request", {
+      toast.error("Failed to reject request. Please try again.", {
         position: "top-right",
         autoClose: 3000,
       })
@@ -168,6 +86,7 @@ export default function ProjectRequests() {
   }
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A"
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
   }
@@ -182,7 +101,7 @@ export default function ProjectRequests() {
   }
 
   const filteredRequests = (filter === "all" ? requests : requests.filter((req) => req.status === filter)).sort(
-    (a, b) => new Date(a.requestedDate) - new Date(b.requestedDate),
+    (a, b) => new Date(b.requestedDate) - new Date(a.requestedDate),
   )
 
   if (loading) {
@@ -233,7 +152,7 @@ export default function ProjectRequests() {
                     <User size={20} color="#3b82f6" />
                   </div>
                   <div>
-                    <h3 className="request-employee-name">{request.employeeName}</h3>
+                    <h3 className="request-employee-name">{request.employeeName} (EmpId: {request.employeeId})</h3>
                     <p className="request-employee-role">{request.employeeRole}</p>
                   </div>
                 </div>
@@ -245,8 +164,12 @@ export default function ProjectRequests() {
 
               <div className="request-body">
                 <div className="request-project-info">
-                  <h4 className="request-project-name">{request.projectName}</h4>
-                  <p className="request-project-desc">{request.projectDescription}</p>
+                  <h4 className="request-project-name">{request.projectDescription} (ProjId: {request.projectName})</h4>
+                  {request.taskDescription && (
+                    <p className="request-project-desc" style={{ marginTop: "8px", fontStyle: "italic" }}>
+                      Task: {request.taskDescription}
+                    </p>
+                  )}
                 </div>
 
                 <div className="request-details-grid">
@@ -289,7 +212,7 @@ export default function ProjectRequests() {
                       <User size={14} />
                       REQUESTED BY
                     </span>
-                    <span className="detail-value">{request.requestedBy}</span>
+                    <span className="detail-value">{request.requestedBy} ({request.requestedByRole})</span>
                   </div>
 
                   <div className="request-detail-item">
@@ -304,33 +227,42 @@ export default function ProjectRequests() {
                 <div className="request-skills">
                   <span className="detail-label">Required Skills</span>
                   <div className="skills-chips">
-                    {request.requiredSkills.map((skill, index) => (
+                    {request.requiredSkills.slice(0, 6).map((skill, index) => (
                       <span key={index} className="skill-chip">
                         {skill}
                       </span>
                     ))}
+                    {request.requiredSkills.length > 6 && (
+                      <span className="skill-chip-more">+{request.requiredSkills.length - 6}</span>
+                    )}
                   </div>
                 </div>
 
                 <div className="request-skills">
                   <span className="detail-label">Required Roles</span>
                   <div className="skills-chips">
-                    {request.requiredRoles.map((role, index) => (
+                    {request.requiredRoles.slice(0, 4).map((role, index) => (
                       <span key={index} className="skill-chip">
                         {role}
                       </span>
                     ))}
+                    {request.requiredRoles.length > 4 && (
+                      <span className="skill-chip-more">+{request.requiredRoles.length - 4}</span>
+                    )}
                   </div>
                 </div>
 
                 <div className="request-skills">
-                  <span className="detail-label">Employee Skills</span>
+                  <span className="detail-label">Employee Skills & Interests</span>
                   <div className="skills-chips">
-                    {request.employeeSkills.map((skill, index) => (
+                    {request.employeeSkills.slice(0, 6).map((skill, index) => (
                       <span key={index} className="skill-chip employee-skill-chip">
                         {skill}
                       </span>
                     ))}
+                    {request.employeeSkills.length > 6 && (
+                      <span className="skill-chip-more">+{request.employeeSkills.length - 6}</span>
+                    )}
                   </div>
                 </div>
 
