@@ -78,8 +78,8 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Workforce Management Tool </h2>
-      <h2>Log In</h2>
+      <h2>Workforce Planning Tool </h2>
+      <h3>Log In</h3>
 
       <form onSubmit={handleLogin} className="login-form">
         <InputField
@@ -116,6 +116,16 @@ const Login = () => {
         Please ensure that the backend service is started before attempting to
         log in. For further assistance, kindly contact our team.
       </p>
+      <a 
+          href="/team-contact" 
+          className="contact-link"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/team-contact");
+          }}
+        >
+          Contact Us
+        </a>
     </div>
   );
 };
