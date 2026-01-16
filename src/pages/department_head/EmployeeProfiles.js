@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './EmployeeProfiles.css';
 import { User, Mail, Briefcase, CheckCircle, XCircle, X, MapPin, Clock } from 'lucide-react';
-// import axios from 'axios';
+import { getDepartmentEmployees } from '../../services/department/departmentDashboardApi';
+import { toast } from 'react-toastify';
 
 export default function EmployeeProfiles() {
   const [employees, setEmployees] = useState([]);
@@ -17,108 +18,16 @@ export default function EmployeeProfiles() {
     try {
       setLoading(true);
       
-      // TODO: Replace with actual API call
-      // const response = await axios.get('/api/department/employees');
-      // setEmployees(response.data);
-
-      // Mock data
-      const mockEmployees = [
-        {
-          id: 1,
-          name: 'John Smith',
-          email: 'john.smith@company.com',
-          role: 'Senior Developer',
-          location: 'New York, NY',
-          capacity: 40,
-          skills: ['React', 'Node.js', 'Python', 'AWS', 'Docker'],
-          currentProject: 'PRJ-ECM901',
-          availability: 'NOT AVAILABLE'
-        },
-        {
-          id: 2,
-          name: 'Sarah Johnson',
-          email: 'sarah.j@company.com',
-          role: 'UI/UX Designer',
-          location: 'Remote',
-          capacity: 35,
-          skills: ['Figma', 'Adobe XD', 'Sketch', 'User Research'],
-          currentProject: null,
-          availability: 'AVAILABLE'
-        },
-        {
-          id: 3,
-          name: 'Mike Chen',
-          email: 'mike.chen@company.com',
-          role: 'Backend Developer',
-          location: 'San Francisco, CA',
-          capacity: 45,
-          skills: ['Java', 'Spring Boot', 'PostgreSQL', 'Kubernetes'],
-          currentProject: 'PRJ-APG234',
-          availability: 'NOT AVAILABLE'
-        },
-        {
-          id: 4,
-          name: 'Emma Davis',
-          email: 'emma.davis@company.com',
-          role: 'Full Stack Developer',
-          location: 'Austin, TX',
-          capacity: 40,
-          skills: ['React', 'Python', 'Django', 'PostgreSQL'],
-          currentProject: null,
-          availability: 'AVAILABLE'
-        },
-        {
-          id: 5,
-          name: 'David Wilson',
-          email: 'david.w@company.com',
-          role: 'DevOps Engineer',
-          location: 'Seattle, WA',
-          capacity: 38,
-          skills: ['AWS', 'Docker', 'Kubernetes', 'Terraform', 'Jenkins'],
-          currentProject: 'PRJ-INF567',
-          availability: 'NOT AVAILABLE'
-        },
-        {
-          id: 6,
-          name: 'Rachel Green',
-          email: 'rachel.g@company.com',
-          role: 'Frontend Developer',
-          location: 'Remote',
-          capacity: 40,
-          skills: ['React', 'TypeScript', 'CSS', 'Redux'],
-          currentProject: null,
-          availability: 'AVAILABLE'
-        },
-        {
-          id: 7,
-          name: 'Tom Anderson',
-          email: 'tom.a@company.com',
-          role: 'Mobile Developer',
-          location: 'Boston, MA',
-          capacity: 42,
-          skills: ['React Native', 'Swift', 'Kotlin', 'Firebase'],
-          currentProject: 'PRJ-MBA782',
-          availability: 'NOT AVAILABLE'
-        },
-        {
-          id: 8,
-          name: 'Lisa Martinez',
-          email: 'lisa.m@company.com',
-          role: 'QA Engineer',
-          location: 'Remote',
-          capacity: 35,
-          skills: ['Selenium', 'Jest', 'Cypress', 'API Testing'],
-          currentProject: null,
-          availability: 'AVAILABLE'
-        }
-      ];
-
-      setTimeout(() => {
-        setEmployees(mockEmployees);
-        setLoading(false);
-      }, 500);
+      const response = await getDepartmentEmployees();
+      setEmployees(response.data);
+      
     } catch (error) {
       console.error('Error fetching employees:', error);
+      toast.error('Failed to load employees. Please try again.', {
+        autoClose: 3000,
+        position: 'top-right',
+      });
+    } finally {
       setLoading(false);
     }
   };
@@ -134,7 +43,7 @@ export default function EmployeeProfiles() {
     
     if (filterStatus === 'all') return matchesSearch;
     if (filterStatus === 'available') return matchesSearch && emp.availability === 'AVAILABLE';
-    if (filterStatus === 'not-available') return matchesSearch && emp.availability === 'NOT AVAILABLE';
+    if (filterStatus === 'not-available') return matchesSearch && (emp.availability === 'NOT_AVAILABLE' || emp.availability === 'PARTIALLY_AVAILABLE');
     
     return matchesSearch;
   });
@@ -198,7 +107,7 @@ export default function EmployeeProfiles() {
             className={`filter-status-btn ${filterStatus === 'not-available' ? 'active' : ''}`}
             onClick={() => setFilterStatus('not-available')}
           >
-            Not Available ({employees.filter(e => e.availability === 'NOT AVAILABLE').length})
+            Not Available ({employees.filter(e => e.availability === 'NOT_AVAILABLE' || e.availability === 'PARTIALLY_AVAILABLE').length})
           </button>
         </div>
       </div>
@@ -213,12 +122,12 @@ export default function EmployeeProfiles() {
               </div>
               <span className={`availability-badge ${getAvailabilityClass(employee.availability)}`}>
                 {employee.availability === 'AVAILABLE' ? <CheckCircle size={14} /> : <XCircle size={14} />}
-                {employee.availability}
+                {employee.availability.replace('_', ' ')}
               </span>
             </div>
 
             <div className="employee-info">
-              <h3 className="employee-name">{employee.name}</h3>
+              <h3 className="employee-name">{employee.name} (EmpId: {employee.id})</h3>
               <div className="employee-detail">
                 <Mail size={14} />
                 <span>{employee.email}</span>
