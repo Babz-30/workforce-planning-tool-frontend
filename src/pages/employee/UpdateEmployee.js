@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-//import InputField from "../../components/inputfield/InputField";
-//import Button from "../../components/button/Button";
 import "./UpdateEmployee.css";
 import {
     SKILL_OPTIONS,
@@ -271,8 +269,17 @@ const UpdateEmployee = () => {
     const handleCancel = () => {
         if (location.state.from === "employee") {
             navigate("/employee_dashboard");
+        } 
+        else if (location.state.from === "manager") {
+            navigate("/project_manager");
+        }
+        else if (location.state.from === "departmenthead") {
+            navigate("/department_head");
+        } 
+        else if (location.state.from === "resourceplanner") {
+            navigate("/resource-planner");
         } else {
-            navigate(-1);
+            navigate("/");
         }
     };
 

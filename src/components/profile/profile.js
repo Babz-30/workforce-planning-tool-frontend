@@ -72,6 +72,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Settings, User, ChevronDown } from "lucide-react";
+import { toast } from "react-toastify";
 import "./profile.css";
 
 const getInitials = (name) => {
@@ -109,15 +110,35 @@ export default function UserProfile() {
     if (window.confirm("Are you sure you want to log out?")) {
       console.log("Logging out and navigating to /");
       navigate("/");
-      window.location.reload();
       localStorage.clear();
+      toast.success("You've been logged out", {
+        autoClose: 2000,
+        position: "top-right"
+      });
     }
   };
-
+ 
   const handleSettingsClick = () => {
-    setIsOpen(false);
-    console.log("Navigating to /settings");
-    navigate("/settings");
+
+    if (employeeData) {
+      if (employeeData.role === "EMPLOYEE") {
+        navigate("/update-employee", { state: { employeeData, from: "employee" }, replace: true });
+      }
+      else if (employeeData.role === "DEPARTMENT_HEAD") {
+        navigate("/update-employee", { state: { employeeData, from: "departmenthead" }, replace: true });
+      } 
+      else if (employeeData.role === "PROJECT_MANAGER") {
+        navigate("/update-employee", { state: { employeeData, from: "manager" }, replace: true });
+      }
+      else if (employeeData.role === "RESOURCE_PLANNER") {
+        navigate("/update-employee", { state: { employeeData, from: "resourceplanner" }, replace: true });
+      }
+      else {
+        navigate("/");
+      }
+    } else {
+      console.error("No employee data in localStorage");
+    }
   };
 
   const handleProfileClick = () => {

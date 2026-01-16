@@ -40,7 +40,7 @@ export const getSuggestedProjects = async (employeeId) => {
 export const acceptSuggestion = async (applicationId, employeeId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/applications/apply/suggestedProjects`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

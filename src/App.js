@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UpdateEmployee from "./pages/employee/UpdateEmployee";
 import PrivateRoute from "./helper/PrivateRoute";
+import TeamContact from "./pages/team_contact/TeamContact";
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
 import ResourcePlanner from "./pages/resource_planner/resourcePlanner";
 import DepartmentHeadDashboard from "./pages/department_head/DepartmentHeadDashboard"
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/team-contact" element={<TeamContact />} />
         <Route path="/project_manager" element={<ProjectTable />} />
         <Route
           path="/project_manager/create-project"

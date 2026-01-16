@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import './EmployeeDashboard.css';
-import { Settings, LogOut } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import UserProfile from "../../components/profile/profile";
 import PublishedProjects from './PublishedProjects';
 import Suggestions from './Suggestions';
 import AssignedProjects from './AssignedProjects';
 
 export default function EmployeeDashboard() {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('published');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,23 +74,13 @@ export default function EmployeeDashboard() {
     }
   ]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    navigate("/", { replace: true });
-    toast.success("You've been logged out", {
-      autoClose: 2000,
-      position: "top-right"
-    });
-  };
-
   return (
     <div className="employee-dashboard-page">
       {/* Header with Welcome Message and Logout */}
       <div className="dashboard-header">
         <div className="dashboard-header-content">
           <div className="welcome-section">
-            <h1 style={{ color: "#1e3a8a", fontSize: "32px"}} className="dashboard-main-title">Employee Dashboard</h1>
+            <h1 style={{ color: "#1e3a8a", fontSize: "32px" }} className="dashboard-main-title">Employee Dashboard</h1>
             <p className="welcome-text">Welcome back, <strong>{profileData.firstName}</strong></p>
 
             {/* Breadcrumb Navigation */}
@@ -120,21 +107,8 @@ export default function EmployeeDashboard() {
               </button>
             </nav>
           </div>
-          <div className="header-actions">
-            <button className="icon-btn" title="Settings" onClick={() => {
-              const employeeData = JSON.parse(localStorage.getItem("loginResponse"));
-              if (employeeData) {
-                navigate("/update-employee", { state: { employeeData, from: "employee"}, replace: true });
-              } else {
-                console.error("No employee data in localStorage");
-              }
-            }}>
-              <Settings size={20} />
-            </button>
-            <button className="logout-btn" onClick={handleLogout}>
-              <LogOut size={18} />
-              Logout
-            </button>
+          <div className="app-header-actions">
+            <UserProfile />
           </div>
         </div>
       </div>
