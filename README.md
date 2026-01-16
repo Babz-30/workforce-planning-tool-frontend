@@ -8,7 +8,7 @@
 
 **A modern, React-based workforce management solution for streamlining employee assignments and resource planning.**
 
-Frontend App [Url](https://workforce-planning-tool-frontend.onrender.com/) • Swagger [Url](https://workforcemangementtool.onrender.com/swagger-ui/index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [Documentation](#-documentation)
+[Frontend App Url](https://workforce-planning-tool-frontend.onrender.com/) • [Swagger Url](https://workforcemangementtool.onrender.com/swagger-ui/index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [Documentation](#-documentation)
 
 </div>
 
