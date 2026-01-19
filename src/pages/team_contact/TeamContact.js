@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import babitha from '../../assets/images/babitha.jpeg';
 import senthil from '../../assets/images/senthil.png';
 import Sushmita from '../../assets/images/Sushmita.jpg';
+import saranya from '../../assets/images/saranya.jpg'
+import pavithran from '../../assets/images/pavithran.jpg'
+
 import "./TeamContact.css";
 
 const TeamContact = () => {
@@ -14,18 +17,19 @@ const TeamContact = () => {
       id: 1,
       name: "Saranya Elumalai",
       role: "Scrum Master",
-      image: `${process.env.PUBLIC_URL}/images/member1.jpg`, 
+      image: saranya, 
       email: "saranya.elumalai@stud.fra-uas.de",
-      description: "Coordinates team efforts and ensures project alignment with agile methodologies.",
+      description: "Application support and SharePoint development specialist with experience in Java based applications and enterprise databases.",
       expertise: ["Team Coordination", "Testing", "Documentation"]
     },
     {
       id: 2,
       name: "Pavithran Padmanaban",
       role: "Frontend Developer",
-      image: `${process.env.PUBLIC_URL}/images/member1.jpg`,
-      description: "Specialized in React and UI/UX development. Passionate about creating intuitive user interfaces.",
-      expertise: ["React", "Node.js", "CSS/Tailwind"]
+      image: pavithran,
+      email: "pavithran.padmanaban@stud.fra-uas.de",
+      description: "Software Engineer specializing in backend development and quality assurance.",
+      expertise: ["JavaScript", "Java", "mongodb","MsSql", "Azure"]
     },
     {
       id: 3,
