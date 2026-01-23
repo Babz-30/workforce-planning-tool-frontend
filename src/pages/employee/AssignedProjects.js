@@ -65,17 +65,16 @@ export default function AssignedProjects() {
     let assignedByUsername = "System"
     switch (application.currentStatus) {
       case "SUGGESTED":
-        assignedByUsername = application.suggestedBy?.username || "System"
+        assignedByUsername =  application.suggestedBy?.username || "System"
         break
       case "ASSIGNED":
-      case "DRAFT":
-        assignedByUsername = application.initiatedBy?.username || "System"
+        assignedByUsername = `${application.initiatedBy.username} (${application.initiatedBy.role})` || "System"
         break
-      case "APPROVED":
-        assignedByUsername = application.approvedBy?.username || "System"
+      case "REQUEST_DH_APPROVAL":
+        assignedByUsername = `${application.approvedByProjectManager.username} (${application.approvedByProjectManager.role})` || "System"
         break
-      case "CONFIRMED":
-        assignedByUsername = application.confirmedBy?.username || "System"
+      case "COMPLETED":
+        assignedByUsername = `${application.approvedByDepartmentHead.username} (${application.approvedByDepartmentHead.role})` || "System"
         break
       case "REJECTED":
         assignedByUsername = application.rejectedBy?.username || "System"
