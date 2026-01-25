@@ -1,0 +1,278 @@
+{
+  "PRJ-TIL021": [
+    {
+      "id": "6960327c64ed86006f5d81ba",
+      "applicationId": "App_PRJ-TIL021_9efd2894",
+      "projectRole": "Frontend Developer",
+      "projectId": "PRJ-TIL021",
+      "employeeId": 46,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "46",
+        "userName": null,
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": {
+        "userId": "31",
+        "userName": "re_john",
+        "role": "RESOURCE_PLANNER"
+      },
+      "approvedByProjectManager": {
+        "userId": "8",
+        "userName": null,
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": "dh_anita",
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "string",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-08T22:46:54.036+00:00",
+        "suggestedAt": "2026-01-08T22:41:00.167+00:00",
+        "approvedAt": "2026-01-08T22:52:35.143+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": "2025-12-04",
+      "employeeProjectEndDate": "2026-05-20"
+    }
+  ],
+  "PRJ-AVQ572": [
+    {
+      "id": "69735585ba58083fd6c1900f",
+      "applicationId": "App_PRJ-AVQ572_fd2efae3",
+      "projectRole": "Frontend Developer",
+      "projectId": "PRJ-AVQ572",
+      "employeeId": 44,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "44",
+        "userName": "Nina Hoffmann",
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": {
+        "userId": "31",
+        "userName": "John Doe",
+        "role": "RESOURCE_PLANNER"
+      },
+      "approvedByProjectManager": {
+        "userId": "35",
+        "userName": "Vikram Singh",
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": "Anita Sharma",
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "Approved by Department Head",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-23T11:19:05.343+00:00",
+        "suggestedAt": "2026-01-23T11:03:33.571+00:00",
+        "approvedAt": "2026-01-23T21:29:28.901+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": "2026-02-15",
+      "employeeProjectEndDate": "2027-12-25"
+    }
+  ],
+  "PRJ-ZEO743": [
+    {
+      "id": "695d60a264019923809508a3",
+      "applicationId": "App_PRJ-ZEO743_21",
+      "projectRole": "Data engineer",
+      "projectId": "PRJ-ZEO743",
+      "employeeId": 39,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "39",
+        "userName": null,
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": {
+        "userId": "6",
+        "userName": null,
+        "role": "RESOURCE_PLANNER"
+      },
+      "approvedByProjectManager": null,
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": null,
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "string",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-06T19:50:18.264+00:00",
+        "suggestedAt": "2026-01-06T19:21:06.091+00:00",
+        "approvedAt": "2026-01-06T20:22:11.070+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": null,
+      "employeeProjectEndDate": null
+    }
+  ],
+  "PRJ-CJS023": [
+    {
+      "id": "69692fd96ceb6854ede606d8",
+      "applicationId": "App_PRJ-CJS023_52c75fcc",
+      "projectRole": "Cloud Operations Engineer",
+      "projectId": "PRJ-CJS023",
+      "employeeId": 38,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "38",
+        "userName": null,
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": null,
+      "approvedByProjectManager": {
+        "userId": "34",
+        "userName": "Neha Verma",
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": "Anita Sharma",
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "Approved by Department Head",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-15T18:20:09.210+00:00",
+        "suggestedAt": null,
+        "approvedAt": "2026-01-15T18:56:41.836+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": "2026-01-15",
+      "employeeProjectEndDate": "2027-06-07"
+    }
+  ],
+  "PRJ-MZZ034": [
+    {
+      "id": "697357bbba58083fd6c19011",
+      "applicationId": "App_PRJ-MZZ034_4a33b33d",
+      "projectRole": "Blockchain Developer",
+      "projectId": "PRJ-MZZ034",
+      "employeeId": 11,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "11",
+        "userName": "David Martinez",
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": {
+        "userId": "31",
+        "userName": "John Doe",
+        "role": "RESOURCE_PLANNER"
+      },
+      "approvedByProjectManager": {
+        "userId": "2",
+        "userName": "John Doe",
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": null,
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": null,
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-25T16:01:22.619+00:00",
+        "suggestedAt": "2026-01-23T11:12:59.424+00:00",
+        "approvedAt": "2026-01-25T16:02:38.815+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": null,
+      "employeeProjectEndDate": null
+    }
+  ],
+  "PRJ-HPE341": [
+    {
+      "id": "697341778688ad48e80d1eee",
+      "applicationId": "App_PRJ-HPE341_d7894eb2",
+      "projectRole": "Full Stack Developer",
+      "projectId": "PRJ-HPE341",
+      "employeeId": 41,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "41",
+        "userName": "Leena Schmidt",
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": {
+        "userId": "31",
+        "userName": "John Doe",
+        "role": "RESOURCE_PLANNER"
+      },
+      "approvedByProjectManager": {
+        "userId": "35",
+        "userName": "Vikram Singh",
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": "Anita Sharma",
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "Approved by Department Head",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-23T09:56:34.666+00:00",
+        "suggestedAt": "2026-01-23T09:37:59.171+00:00",
+        "approvedAt": "2026-01-23T10:27:11.185+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": "2026-01-15",
+      "employeeProjectEndDate": "2027-11-25"
+    },
+    {
+      "id": "69734b778688ad48e80d1ef2",
+      "applicationId": "App_PRJ-HPE341_be4b8b7a",
+      "projectRole": "Reporting & BI Engineer",
+      "projectId": "PRJ-HPE341",
+      "employeeId": 42,
+      "currentStatus": "COMPLETED",
+      "initiatedBy": {
+        "userId": "42",
+        "userName": null,
+        "role": "EMPLOYEE"
+      },
+      "suggestedBy": null,
+      "approvedByProjectManager": {
+        "userId": "35",
+        "userName": "Vikram Singh",
+        "role": "PROJECT_MANAGER"
+      },
+      "approvedByDepartmentHead": {
+        "userId": "32",
+        "userName": "Anita Sharma",
+        "role": "DEPARTMENT_HEAD"
+      },
+      "rejectedBy": null,
+      "appliedAt": null,
+      "approvalComments": "Approved by Department Head",
+      "rejectionReason": null,
+      "timestamps": {
+        "appliedAt": "2026-01-23T10:20:39.562+00:00",
+        "suggestedAt": null,
+        "approvedAt": "2026-01-23T12:04:04.070+00:00",
+        "assignedAt": null
+      },
+      "employeeProjectStartDate": "2026-01-15",
+      "employeeProjectEndDate": "2027-11-25"
+    }
+  ]
+}

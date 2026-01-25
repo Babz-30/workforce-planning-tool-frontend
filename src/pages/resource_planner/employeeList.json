@@ -1,0 +1,1180 @@
+[
+  {
+    "id": "69336109799a5830ded00a56",
+    "employeeId": 1,
+    "userId": "ceaf4d91-9d7a-47e9-84c8-5ed4853c7bf7",
+    "remoteWorking": false,
+    "username": "admin",
+    "firstName": "System",
+    "lastName": "Admin",
+    "email": "admin@workforce.com",
+    "department": "IT",
+    "position": "System Administrator",
+    "role": "SYSTEM_ADMIN",
+    "message": "msg",
+    "skills": ["System Administration", "Network Management", "Security"],
+    "interests": ["Cybersecurity", "Cloud Computing", "Automation"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt", "Berlin"],
+    "emergencyContact": "+49-123-4567890",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "Senior System Admin",
+        "company": "Tech Corp",
+        "startDate": "2017-12-31",
+        "endDate": "2023-12-30",
+        "description": "Managed enterprise IT infrastructure"
+      },
+      {
+        "role": "IT Administrator",
+        "company": "StartUp GmbH",
+        "startDate": "2015-05-31",
+        "endDate": "2017-12-30",
+        "description": "Handled network and security operations"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "69336109799a5830ded00a57",
+    "employeeId": 2,
+    "userId": "9e027830-e3dc-4b75-9f29-6daa436a036c",
+    "remoteWorking": false,
+    "username": "pm_john",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@workforce.com",
+    "department": "IT",
+    "position": "Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "msg",
+    "skills": ["Project Management", "Agile", "Scrum", "Leadership"],
+    "interests": ["Team Building", "Innovation", "Technology Trends"],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Munich", "Hamburg"],
+    "emergencyContact": "+49-234-5678901",
+    "availabilityStatus": "PARTIALLY_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 80,
+    "workExperience": [
+      {
+        "role": "Project Manager",
+        "company": "Digital Solutions AG",
+        "startDate": "2020-02-29",
+        "endDate": null,
+        "description": "Leading multiple software development projects"
+      },
+      {
+        "role": "Scrum Master",
+        "company": "Innovation Labs",
+        "startDate": "2017-08-31",
+        "endDate": "2020-02-27",
+        "description": "Facilitated agile teams"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "69336109799a5830ded00a58",
+    "employeeId": 3,
+    "userId": "83e080b8-9a66-4577-827f-5e2c9dab6752",
+    "remoteWorking": false,
+    "username": "pm_sarah",
+    "firstName": "Sarah",
+    "lastName": "Connor",
+    "email": "sarah.connor@workforce.com",
+    "department": "Engineering",
+    "position": "Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "msg",
+    "skills": [
+      "Project Management",
+      "Risk Management",
+      "Stakeholder Management",
+      "Python"
+    ],
+    "interests": ["Process Improvement", "Mentoring", "Strategic Planning"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Frankfurt"],
+    "emergencyContact": "+49-345-6789012",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "Senior Project Manager",
+        "company": "Engineering Firm",
+        "startDate": "2018-12-31",
+        "endDate": null,
+        "description": "Managing large-scale engineering projects"
+      },
+      {
+        "role": "Team Lead",
+        "company": "Tech Innovations",
+        "startDate": "2016-03-31",
+        "endDate": "2018-12-30",
+        "description": "Led cross-functional teams"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610a799a5830ded00a59",
+    "employeeId": 4,
+    "userId": "8c48fce5-978f-4d3f-9ecc-ae8e767eddf7",
+    "remoteWorking": false,
+    "username": "dh_jane",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@workforce.com",
+    "department": "HR",
+    "position": "Department Head",
+    "role": "DEPARTMENT_HEAD",
+    "message": "msg",
+    "skills": [
+      "HR Management",
+      "Recruitment",
+      "Employee Relations",
+      "Performance Management"
+    ],
+    "interests": [
+      "Organizational Development",
+      "Coaching",
+      "Diversity & Inclusion"
+    ],
+    "baseLocation": "Hamburg",
+    "preferredLocations": ["Hamburg", "Berlin"],
+    "emergencyContact": "+49-456-7890123",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 39,
+    "workExperience": [
+      {
+        "role": "HR Department Head",
+        "company": "Global Enterprise",
+        "startDate": "2020-12-31",
+        "endDate": null,
+        "description": "Leading HR strategy and operations"
+      },
+      {
+        "role": "HR Manager",
+        "company": "Corporate Solutions",
+        "startDate": "2018-02-28",
+        "endDate": "2020-12-30",
+        "description": "Managed recruitment and employee development"
+      }
+    ],
+    "supervisor": "",
+    "supervisorId": null,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "6933610a799a5830ded00a5a",
+    "employeeId": 5,
+    "userId": "1ffb5874-9a44-4389-92dd-8a594dedc3b0",
+    "remoteWorking": false,
+    "username": "dh_michael",
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.brown@workforce.com",
+    "department": "Finance",
+    "position": "Department Head",
+    "role": "DEPARTMENT_HEAD",
+    "message": "msg",
+    "skills": [
+      "Financial Planning",
+      "Budgeting",
+      "Financial Analysis",
+      "Strategic Planning"
+    ],
+    "interests": ["Investment Strategies", "Business Analytics", "Leadership"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt", "Munich"],
+    "emergencyContact": "+49-567-8901234",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "Finance Department Head",
+        "company": "Financial Services Inc",
+        "startDate": "2020-05-31",
+        "endDate": null,
+        "description": "Overseeing financial planning and analysis"
+      },
+      {
+        "role": "Senior Financial Analyst",
+        "company": "Investment Bank",
+        "startDate": "2015-12-31",
+        "endDate": "2020-05-30",
+        "description": "Financial modeling and forecasting"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610a799a5830ded00a5b",
+    "employeeId": 6,
+    "userId": "de19771d-93eb-46d6-ad8b-81849aff533b",
+    "remoteWorking": false,
+    "username": "rp_bob",
+    "firstName": "Bob",
+    "lastName": "Johnson",
+    "email": "bob.johnson@workforce.com",
+    "department": "Operations",
+    "position": "Resource Planner",
+    "role": "RESOURCE_PLANNER",
+    "message": "msg",
+    "skills": [
+      "Resource Planning",
+      "Capacity Management",
+      "Scheduling",
+      "Forecasting"
+    ],
+    "interests": [
+      "Operations Optimization",
+      "Data Visualization",
+      "Problem Solving"
+    ],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Hamburg", "Frankfurt"],
+    "emergencyContact": "+49-678-9012345",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "Resource Planner",
+        "company": "Operations Hub",
+        "startDate": "2019-06-30",
+        "endDate": null,
+        "description": "Managing resource allocation and capacity planning"
+      },
+      {
+        "role": "Operations Coordinator",
+        "company": "Logistics Pro",
+        "startDate": "2017-01-31",
+        "endDate": "2019-06-29",
+        "description": "Coordinated scheduling and resources"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610a799a5830ded00a5c",
+    "employeeId": 7,
+    "userId": "67ec9228-44c7-4b30-acd8-4373f63736a4",
+    "remoteWorking": false,
+    "username": "rp_lisa",
+    "firstName": "Lisa",
+    "lastName": "Davis",
+    "email": "lisa.davis@workforce.com",
+    "department": "HR",
+    "position": "Resource Planner",
+    "role": "RESOURCE_PLANNER",
+    "message": "msg",
+    "skills": ["Workforce Planning", "Resource Allocation", "Data Analysis"],
+    "interests": [
+      "HR Technology",
+      "Predictive Analytics",
+      "Continuous Improvement"
+    ],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Berlin"],
+    "emergencyContact": "+49-789-0123456",
+    "availabilityStatus": "PARTIALLY_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 75,
+    "workExperience": [
+      {
+        "role": "HR Resource Planner",
+        "company": "Tech Company",
+        "startDate": "2020-08-31",
+        "endDate": null,
+        "description": "Workforce planning and analytics"
+      },
+      {
+        "role": "HR Analyst",
+        "company": "Consulting Firm",
+        "startDate": "2018-04-30",
+        "endDate": "2020-08-30",
+        "description": "Analyzed workforce trends and capacity"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610b799a5830ded00a5d",
+    "employeeId": 8,
+    "userId": "071de1d6-ed1a-4e1a-a7bb-ad6d0f2cd161",
+    "remoteWorking": false,
+    "username": null,
+    "firstName": "Alice",
+    "lastName": "Williams",
+    "email": "alice.williams@workforce.com",
+    "department": "IT",
+    "position": "Software Engineer",
+    "role": "PROJECT_MANAGER",
+    "message": "",
+    "skills": ["Java", "Spring Boot test update", "React", "Microservices"],
+    "interests": ["Open Source", "AI/ML", "Gaming", "Hiking"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Chennai", "Banglore"],
+    "emergencyContact": "+49-890-1234567",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "Software Engineer",
+        "company": "Tech Solutions GmbH",
+        "startDate": "2021-03-31",
+        "endDate": "2025-12-17",
+        "description": "Developing microservices and web applications"
+      },
+      {
+        "role": "Junior Developer",
+        "company": "Code Factory",
+        "startDate": "2019-07-31",
+        "endDate": "2021-03-30",
+        "description": "Full-stack development with React and Java"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610b799a5830ded00a5e",
+    "employeeId": 9,
+    "userId": "232fc623-2e2b-4877-91ae-f476e2a9db4a",
+    "remoteWorking": false,
+    "username": "emp_tom",
+    "firstName": "Tom",
+    "lastName": "Anderson",
+    "email": "tom.anderson@workforce.com",
+    "department": "IT",
+    "position": "Backend Developer",
+    "role": "EMPLOYEE",
+    "message": "msg",
+    "skills": ["Python", "Django", "REST API", "PostgreSQL"],
+    "interests": ["DevOps", "Cloud Architecture", "Photography", "Cycling"],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Remote"],
+    "emergencyContact": "+49-901-2345678",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 0,
+    "workExperience": [
+      {
+        "role": "Backend Developer",
+        "company": "Digital Platform AG",
+        "startDate": "2020-09-30",
+        "endDate": null,
+        "description": "Building scalable backend systems with Python"
+      },
+      {
+        "role": "Python Developer",
+        "company": "Startup Inc",
+        "startDate": "2018-05-31",
+        "endDate": "2020-09-29",
+        "description": "API development and database design"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6933610b799a5830ded00a5f",
+    "employeeId": 10,
+    "userId": "4bc49faa-573d-45fb-a4c1-725a952ddbf5",
+    "remoteWorking": false,
+    "username": "emp_emma",
+    "firstName": "Emma",
+    "lastName": "Wilson",
+    "email": "emma.wilson@workforce.com",
+    "department": "Marketing",
+    "position": "Marketing Specialist",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": [
+      "Digital Marketing",
+      "Content Strategy",
+      "Social Media",
+      "Figma"
+    ],
+    "interests": [
+      "Content Creation",
+      "Brand Strategy",
+      "Travel",
+      "Blogging",
+      "UI/UX Design"
+    ],
+    "baseLocation": "Munich",
+    "preferredLocations": [],
+    "emergencyContact": "+49-012-3456788",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "PART_TIME",
+    "capacity": 20,
+    "workExperience": [
+      {
+        "role": "Marketing Specialist",
+        "company": "Brand Agency",
+        "startDate": "2021-12-31",
+        "endDate": "2025-12-11",
+        "description": "Digital marketing campaigns and SEO optimization"
+      },
+      {
+        "role": "Content Manager",
+        "company": "Media House",
+        "startDate": "2020-02-29",
+        "endDate": "2021-12-30",
+        "description": "Content strategy and social media management"
+      }
+    ],
+    "supervisor": "",
+    "supervisorId": null,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "6933610c799a5830ded00a60",
+    "employeeId": 11,
+    "userId": "b59be54a-a28e-478a-ab2f-cc824fee5a6d",
+    "remoteWorking": false,
+    "username": "emp_david",
+    "firstName": "David",
+    "lastName": "Martinez",
+    "email": "david.martinez@workforce.com",
+    "department": "Finance",
+    "position": "Financial Analyst",
+    "role": "EMPLOYEE",
+    "message": "msg",
+    "skills": [
+      "Financial Modeling",
+      "Excel",
+      "Data Analysis",
+      "Forecasting",
+      "Python",
+      "Smart Contracts"
+    ],
+    "interests": ["Economics", "Stock Market", "Chess", "Reading"],
+    "baseLocation": "Hamburg",
+    "preferredLocations": ["Hamburg", "Frankfurt"],
+    "emergencyContact": "+49-123-4567890",
+    "availabilityStatus": "PARTIALLY_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Financial Analyst",
+        "company": "Finance Corp",
+        "startDate": "2021-10-31",
+        "endDate": "2024-12-30",
+        "description": "Financial modeling and forecasting for projects"
+      },
+      {
+        "role": "Junior Analyst",
+        "company": "Investment Firm",
+        "startDate": "2020-01-31",
+        "endDate": "2021-10-30",
+        "description": "Data analysis and reporting"
+      }
+    ],
+    "supervisor": "John Doe",
+    "supervisorId": 2,
+    "assignedProjectId": "PRJ-CMK843"
+  },
+  {
+    "id": "6933610c799a5830ded00a61",
+    "employeeId": 12,
+    "userId": "8ac36c74-356d-4393-bf24-bbfd5698fe3a",
+    "remoteWorking": false,
+    "username": "emp_sophia",
+    "firstName": "Sophia",
+    "lastName": "Garcia",
+    "email": "sophia.garcia@workforce.com",
+    "department": "HR",
+    "position": "HR Specialist",
+    "role": "EMPLOYEE",
+    "message": "msg",
+    "skills": [
+      "Recruitment",
+      "Onboarding",
+      "Employee Engagement",
+      "HR Analytics"
+    ],
+    "interests": ["Psychology", "Team Dynamics", "Yoga", "Volunteering"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt", "Berlin"],
+    "emergencyContact": "+49-234-5678901",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "WORKING_STUDENT",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "HR Specialist - Working Student",
+        "company": "Corporate HR",
+        "startDate": "2023-08-31",
+        "endDate": null,
+        "description": "Supporting recruitment and onboarding processes"
+      },
+      {
+        "role": "HR Intern",
+        "company": "Business Services",
+        "startDate": "2023-02-28",
+        "endDate": "2023-08-30",
+        "description": "Assisted with employee engagement initiatives"
+      }
+    ],
+    "supervisor": "pm_john",
+    "supervisorId": null,
+    "assignedProjectId": "PRJ-RYC942"
+  },
+  {
+    "id": "69336536464a9b23cfae5150",
+    "employeeId": 13,
+    "userId": "c164f2e9-6839-4ee9-8a89-eb2251ba418c",
+    "remoteWorking": false,
+    "username": "emp_anna",
+    "firstName": "Anna",
+    "lastName": "Mueller",
+    "email": "anna.mueller@workforce.com",
+    "department": "Marketing",
+    "position": "Content Writer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["Content Writing", "SEO", "Copywriting"],
+    "interests": ["Writing", "Travel", "Photography"],
+    "baseLocation": "Hamburg",
+    "preferredLocations": ["Hamburg"],
+    "emergencyContact": "+49-777-8901234",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "PART_TIME",
+    "capacity": 50,
+    "workExperience": [
+      {
+        "role": "Content Writer",
+        "company": "Media House",
+        "startDate": "2023-01-14",
+        "endDate": null,
+        "description": "Creating engaging content for web and social media"
+      }
+    ],
+    "supervisor": "2",
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "693b2a4f6e5a5b162d6106bc",
+    "employeeId": 31,
+    "userId": "0245fa75-255d-41a2-8da9-6b319b03c35e",
+    "remoteWorking": false,
+    "username": "re_john",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doeres@workforce.com",
+    "department": "IT",
+    "position": "Resource Planner",
+    "role": "RESOURCE_PLANNER",
+    "message": "msg",
+    "skills": ["Project Management", "Agile", "Scrum", "Leadership"],
+    "interests": ["Team Building", "Innovation", "Technology Trends"],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Munich", "Hamburg"],
+    "emergencyContact": "+49-234-5678901",
+    "availabilityStatus": "PARTIALLY_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 80,
+    "workExperience": [
+      {
+        "role": "Project Manager",
+        "company": "Digital Solutions AG",
+        "startDate": "2020-02-29",
+        "endDate": null,
+        "description": "Leading multiple software development projects"
+      },
+      {
+        "role": "Scrum Master",
+        "company": "Innovation Labs",
+        "startDate": "2017-08-31",
+        "endDate": "2020-02-27",
+        "description": "Facilitated agile teams"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "6952e4c8a5b4d041e22aaf32",
+    "employeeId": 32,
+    "userId": "1517977f-c782-4b2d-bc00-1f495028779c",
+    "remoteWorking": true,
+    "username": "dh_anita",
+    "firstName": "Anita",
+    "lastName": "Sharma",
+    "email": "anita.sharma@workforce.com",
+    "department": "IT",
+    "position": "Department Head",
+    "role": "DEPARTMENT_HEAD",
+    "message": null,
+    "skills": [
+      "IT Strategy",
+      "Cloud Architecture",
+      "Financial Analysis",
+      "Strategic Planning"
+    ],
+    "interests": [
+      "Investment Strategies",
+      "Cloud Computing",
+      "Team Leadership"
+    ],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Hamburg"],
+    "emergencyContact": "+49-678-7238567",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "IT Department Head",
+        "company": "Digital Solutions GmbH",
+        "startDate": "2019-03-31",
+        "endDate": null,
+        "description": "Leading IT operations, cloud migration, and enterprise architecture"
+      },
+      {
+        "role": "Senior Software Manager",
+        "company": "Tech Innovators AG",
+        "startDate": "2013-12-31",
+        "endDate": "2019-03-30",
+        "description": "Managed large scale software platforms and development teams"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "695bb4156bc6ad4f8355be82",
+    "employeeId": 33,
+    "userId": "bb539205-06e4-4fb2-a5a5-13c4cc383410",
+    "remoteWorking": true,
+    "username": "pm_suresh",
+    "firstName": "Suresh",
+    "lastName": "Kumar",
+    "email": "suresh.kumar@workforce.com",
+    "department": "IT",
+    "position": "Senior Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "",
+    "skills": [
+      "Agile Project Management",
+      "Enterprise Applications",
+      "IT Governance",
+      "Stakeholder Management"
+    ],
+    "interests": [
+      "Digital Transformation",
+      "Process Optimization",
+      "Team Leadership"
+    ],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt", "Berlin"],
+    "emergencyContact": "+49-400-1112222",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "IT Project Manager",
+        "company": "Enterprise IT Solutions GmbH",
+        "startDate": "2018-12-31",
+        "endDate": "2024-12-30",
+        "description": "Managed enterprise application and digital transformation projects"
+      }
+    ],
+    "supervisor": "Anita Sharma",
+    "supervisorId": 32,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "695bb53c6bc6ad4f8355be83",
+    "employeeId": 34,
+    "userId": "e53b9e64-d9a7-4790-845b-1041561ae658",
+    "remoteWorking": false,
+    "username": "pm_neha",
+    "firstName": "Neha",
+    "lastName": "Verma",
+    "email": "neha.verma@workforce.com",
+    "department": "IT",
+    "position": "Cloud Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "",
+    "skills": [
+      "Cloud Project Delivery",
+      "Azure Infrastructure",
+      "IT Strategy",
+      "Risk Management"
+    ],
+    "interests": [
+      "Cloud Transformation",
+      "Automation",
+      "Infrastructure Modernization"
+    ],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Hamburg"],
+    "emergencyContact": "+49-400-2223333",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Cloud Project Manager",
+        "company": "Digital Cloud Services AG",
+        "startDate": "2020-05-31",
+        "endDate": "2024-12-30",
+        "description": "Led Azure migration and infrastructure modernization programs"
+      }
+    ],
+    "supervisor": "Anita Sharma",
+    "supervisorId": 32,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "695bb5d66bc6ad4f8355be84",
+    "employeeId": 35,
+    "userId": "219bc943-ca53-48b9-b81d-53b0335e177f",
+    "remoteWorking": true,
+    "username": "pm_vikram",
+    "firstName": "Vikram",
+    "lastName": "Singh",
+    "email": "vikram.singh@workforce.com",
+    "department": "IT",
+    "position": "IT Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "",
+    "skills": [
+      "IT Governance",
+      "Vendor Management",
+      "Project Coordination",
+      "Budget Management"
+    ],
+    "interests": ["Enterprise Systems", "Process Improvement", "Leadership"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Frankfurt"],
+    "emergencyContact": "+49-400-3334444",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 100,
+    "workExperience": [
+      {
+        "role": "IT Project Coordinator",
+        "company": "Corporate IT Services GmbH",
+        "startDate": "2018-02-28",
+        "endDate": "2024-12-30",
+        "description": "Coordinated enterprise IT projects, budgets, and vendor activities"
+      }
+    ],
+    "supervisor": "Anita Sharma",
+    "supervisorId": 32,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "695bf5916bc6ad4f8355be85",
+    "employeeId": 36,
+    "userId": "3910af6f-399d-46df-9501-a90b575693d0",
+    "remoteWorking": false,
+    "username": "emp_arun",
+    "firstName": "Arun",
+    "lastName": "Malhotra",
+    "email": "arun.malhotra@workforce.com",
+    "department": "IT",
+    "position": "Backend Developer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["Java", "Spring Boot", "AWS", "REST API", "Java Script"],
+    "interests": ["System Integration", "Enterprise Platforms"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt"],
+    "emergencyContact": "+49-400-2111002",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Backend Engineer",
+        "company": "Enterprise Systems AG",
+        "startDate": "2019-02-28",
+        "endDate": "2025-12-30",
+        "description": "Worked on backend integrations and API development for IT service platforms"
+      }
+    ],
+    "supervisor": "Suresh Kumar",
+    "supervisorId": 33,
+    "assignedProjectId": "PRJ-IUV737"
+  },
+  {
+    "id": "695bfa536bc6ad4f8355be87",
+    "employeeId": 38,
+    "userId": "270d3791-c635-405a-b216-4d1642983dd4",
+    "remoteWorking": false,
+    "username": "emp_noah",
+    "firstName": "Noah",
+    "lastName": "Schneider",
+    "email": "noah.schneider@workforce.com",
+    "department": "IT",
+    "position": "Cloud Operations Engineer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["Azure DevOps", "CI/CD", "Terraform", "Python", "Docker"],
+    "interests": ["Automation", "Cloud-Native Applications"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Berlin"],
+    "emergencyContact": "+49-500-3101003",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Cloud Backend Developer",
+        "company": "InfraTech AG",
+        "startDate": "2018-08-31",
+        "endDate": "2025-10-30",
+        "description": "Developed cloud-native backend services on Microsoft Azure"
+      }
+    ],
+    "supervisor": "pm_neha",
+    "supervisorId": 34,
+    "assignedProjectId": "PRJ-CJS023"
+  },
+  {
+    "id": "695bff856bc6ad4f8355be89",
+    "employeeId": 39,
+    "userId": "8423f8bf-4fb3-4b0d-b8ca-840aff928c1a",
+    "remoteWorking": false,
+    "username": "emp_ananya",
+    "firstName": "Ananya",
+    "lastName": "Gupta",
+    "email": "ananya.gupta@workforce.com",
+    "department": "IT",
+    "position": "Frontend Developer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["Java", "Azure", "AWS", "Angular", "Python"],
+    "interests": ["Application Development", "User Experience"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt"],
+    "emergencyContact": "+49-400-2111222",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Frontend Developer",
+        "company": "Digital UI Solutions GmbH",
+        "startDate": "2019-02-28",
+        "endDate": "2025-10-30",
+        "description": "Developed responsive user interfaces for enterprise IT applications"
+      }
+    ],
+    "supervisor": "Suresh Kumar",
+    "supervisorId": 33,
+    "assignedProjectId": ""
+  },
+  {
+    "id": "695c03f96bc6ad4f8355be8b",
+    "employeeId": 40,
+    "userId": "2b9301ce-5b0d-4e6c-b1d9-0e3e12550e3e",
+    "remoteWorking": true,
+    "username": "emp_klein",
+    "firstName": "Klein",
+    "lastName": "Sophia",
+    "email": "klein.sophia@workforce.com",
+    "department": "IT",
+    "position": "Cloud Platform Engineer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["AWS", "CI/CD", "Kubernetes", "PostgreSQL", "Docker"],
+    "interests": ["System Reliability", "Cloud Operations"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Berlin"],
+    "emergencyContact": "+49-500-3101045",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Cloud Operations Engineer",
+        "company": "Enterprise Cloud Services",
+        "startDate": "2018-08-31",
+        "endDate": "2025-10-30",
+        "description": "Monitored and optimized Azure environments for performance and cost efficiency"
+      }
+    ],
+    "supervisor": "pm_neha",
+    "supervisorId": 34,
+    "assignedProjectId": "PRJ-CJS023"
+  },
+  {
+    "id": "695c088a6bc6ad4f8355be8c",
+    "employeeId": 41,
+    "userId": "4a7d8141-cdf5-40ee-ab5e-e3fb61fe05d6",
+    "remoteWorking": true,
+    "username": "emp_leena",
+    "firstName": "Leena",
+    "lastName": "Schmidt",
+    "email": "leena.schmidt@workforce.com",
+    "department": "IT",
+    "position": "Full Stack Developer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["AWS", "CI/CD", "Kubernetes", "Spring Boot", "Docker"],
+    "interests": ["Dashboard Design", "User Experience"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Berlin"],
+    "emergencyContact": "+49-600-4102123",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Web Developer",
+        "company": "Digital UI Labs",
+        "startDate": "2018-08-31",
+        "endDate": "2025-12-30",
+        "description": "Developed interactive dashboards and reporting UIs for enterprise applications"
+      }
+    ],
+    "supervisor": "pm_vikram",
+    "supervisorId": 35,
+    "assignedProjectId": "PRJ-HPE341"
+  },
+  {
+    "id": "695c0a6e6bc6ad4f8355be8d",
+    "employeeId": 42,
+    "userId": "850e2387-9dc0-4250-a937-428cba05287f",
+    "remoteWorking": false,
+    "username": "emp_brunssen",
+    "firstName": "Brunssen",
+    "lastName": "Malte",
+    "email": "brunssen.malte@workforce.com",
+    "department": "IT",
+    "position": "Reporting & BI Engineer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["AWS", "MongoDB", "Kubernetes", "Power BI", "Docker"],
+    "interests": ["Dashboard Analytics", "User Experience"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Hybrid"],
+    "emergencyContact": "+49-600-4802143",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Frontend Engineer",
+        "company": "Web Analytics Solutions",
+        "startDate": "2018-08-31",
+        "endDate": "2025-12-30",
+        "description": "Developed reporting dashboards and data visualization components"
+      }
+    ],
+    "supervisor": "pm_vikram",
+    "supervisorId": 35,
+    "assignedProjectId": "PRJ-HPE341"
+  },
+  {
+    "id": "695c0d406bc6ad4f8355be8e",
+    "employeeId": 43,
+    "userId": "5d55a87a-4c6e-4ddd-8d68-f473701c8ea3",
+    "remoteWorking": true,
+    "username": "emp_tobias",
+    "firstName": "Tobias",
+    "lastName": "Keller",
+    "email": "tobias.keller@workforce.com",
+    "department": "IT",
+    "position": "Backend Developer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["Java", "Spring Boot", "REST APIs", "SQL", "Reporting Services"],
+    "interests": ["Backend Systems", "Enterprise Reporting"],
+    "baseLocation": "Frankfurt",
+    "preferredLocations": ["Frankfurt", "Remote"],
+    "emergencyContact": "+49-600-4102201",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Backend Developer",
+        "company": "Enterprise Software GmbH",
+        "startDate": "2018-12-31",
+        "endDate": "2025-06-29",
+        "description": "Developed backend services and APIs for enterprise reporting and financial systems"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  },
+  {
+    "id": "695c0dc26bc6ad4f8355be8f",
+    "employeeId": 44,
+    "userId": "e92bd9a4-35aa-4070-b1d1-62575de30679",
+    "remoteWorking": true,
+    "username": "emp_nina",
+    "firstName": "Nina",
+    "lastName": "Hoffmann",
+    "email": "nina.hoffmann@workforce.com",
+    "department": "IT",
+    "position": "Frontend Developer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["React", "Angular", "JavaScript", "HTML", "CSS"],
+    "interests": ["Frontend Development", "User Experience"],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Remote"],
+    "emergencyContact": "+49-600-4102301",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Frontend Developer",
+        "company": "Creative Web Solutions GmbH",
+        "startDate": "2020-04-30",
+        "endDate": "2025-06-29",
+        "description": "Developed modern frontend interfaces and reusable UI components for enterprise applications"
+      }
+    ],
+    "supervisor": "pm_vikram",
+    "supervisorId": null,
+    "assignedProjectId": "PRJ-AVQ572"
+  },
+  {
+    "id": "69602cd5fa71a74a519150dd",
+    "employeeId": 45,
+    "userId": "40c51364-e477-4c92-b9e5-d34922cb6272",
+    "remoteWorking": false,
+    "username": "emp_test1",
+    "firstName": "Brunssentest1",
+    "lastName": "Maltetest1",
+    "email": "brunssentest1.malte@workforce.com",
+    "department": "IT",
+    "position": "Reporting & BI Engineer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["AWS", "MongoDB", "Kubernetes", "Power BI", "Docker"],
+    "interests": ["Dashboard Analytics", "User Experience"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Hybrid"],
+    "emergencyContact": "+49-600-4802143",
+    "availabilityStatus": "AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Frontend Engineer",
+        "company": "Web Analytics Solutions",
+        "startDate": "2018-08-30",
+        "endDate": "2025-12-29",
+        "description": "Developed reporting dashboards and data visualization components"
+      }
+    ],
+    "supervisor": "Vikram Singh",
+    "supervisorId": 35,
+    "assignedProjectId": "PRJ-HPE341"
+  },
+  {
+    "id": "696031d864ed86006f5d81b9",
+    "employeeId": 46,
+    "userId": "40f510e6-ea89-4d57-82d9-20eb0b62694b",
+    "remoteWorking": false,
+    "username": "emp_test2",
+    "firstName": "Brunssentest2",
+    "lastName": "Maltetest2",
+    "email": "brunssentest2.malte@workforce.com",
+    "department": "IT",
+    "position": "Reporting & BI Engineer",
+    "role": "EMPLOYEE",
+    "message": "",
+    "skills": ["AWS", "MongoDB", "Kubernetes", "Power BI", "Docker"],
+    "interests": ["Dashboard Analytics", "User Experience"],
+    "baseLocation": "Munich",
+    "preferredLocations": ["Munich", "Hybrid"],
+    "emergencyContact": "+49-600-4802143",
+    "availabilityStatus": "NOT_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 40,
+    "workExperience": [
+      {
+        "role": "Frontend Engineer",
+        "company": "Web Analytics Solutions",
+        "startDate": "2018-08-30",
+        "endDate": "2025-12-29",
+        "description": "Developed reporting dashboards and data visualization components"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": "PRJ-TIL021"
+  },
+  {
+    "id": "69766c8147c47e2373005169",
+    "employeeId": 75,
+    "userId": "9e027830-e3dc-4b75-9f29-6daa436a036d",
+    "remoteWorking": false,
+    "username": "pm_sen",
+    "firstName": "Sen",
+    "lastName": "Doe",
+    "email": "jsohn.doe@workforce.com",
+    "department": "IT",
+    "position": "Project Manager",
+    "role": "PROJECT_MANAGER",
+    "message": "msg",
+    "skills": ["Project Management", "Agile", "Scrum", "Leadership"],
+    "interests": ["Team Building", "Innovation", "Technology Trends"],
+    "baseLocation": "Berlin",
+    "preferredLocations": ["Berlin", "Munich", "Hamburg"],
+    "emergencyContact": "+49-234-5678901",
+    "availabilityStatus": "PARTIALLY_AVAILABLE",
+    "contractType": "FULL_TIME",
+    "capacity": 80,
+    "workExperience": [
+      {
+        "role": "Project Manager",
+        "company": "Digital Solutions AG",
+        "startDate": "2020-02-29",
+        "endDate": null,
+        "description": "Leading multiple software development projects"
+      },
+      {
+        "role": "Scrum Master",
+        "company": "Innovation Labs",
+        "startDate": "2017-08-31",
+        "endDate": "2020-02-27",
+        "description": "Facilitated agile teams"
+      }
+    ],
+    "supervisor": null,
+    "supervisorId": null,
+    "assignedProjectId": null
+  }
+]
