@@ -26,19 +26,49 @@ const CreateProject = () => {
     "AWS",
     "Azure",
     "MongoDB",
+    "Ethers.js",
+    "Hardhat",
+    "OpenZeppelin",
+    "IPFS",
+    "GraphQL",
+    "Next.js",
+    "Tailwind CSS",
+    "Redux",
+    "Go",
+    "Rust",
+    "Terraform",
+    "GitHub Actions",
+    "Redis",
+    "Firebase",
+    "Google Cloud Platform",
+    "Microservices",
+    "OAuth 2.0",
+    "JWT",
+    "Unit Testing",
+    "CI/CD",
   ]);
 
   const [roleOptions, setRoleOptions] = useState([
-    "Blockchain Developer",
-    "Smart Contract Engineer",
-    "Backend Developer",
-    "Frontend Developer",
-    "Full Stack Developer",
-    "Security Specialist",
+    "Blockchain Engineer",
+    "Smart Contract Developer",
+    "Full-Stack Web3 Developer",
     "DevOps Engineer",
-    "UI/UX Designer",
-    "Project Manager",
-    "QA Engineer",
+    "Site Reliability Engineer",
+    "Cloud Architect",
+    "Security Engineer",
+    "Smart Contract Auditor",
+    "Backend Engineer",
+    "Frontend Engineer",
+    "Platform Engineer",
+    "Data Engineer",
+    "Solutions Architect",
+    "Information Security Officer",
+    "Technical Product Manager",
+    "Blockchain Architect",
+    "Web3 Integration Engineer",
+    "Systems Administrator",
+    "QA Automation Engineer",
+    "Infrastructure Engineer",
   ]);
 
   const [competencyOptions, setCompetencyOptions] = useState([
@@ -53,6 +83,26 @@ const CreateProject = () => {
     "Testing",
     "Project Management",
     "UI/UX Design",
+    "Ethers.js",
+    "Hardhat",
+    "OpenZeppelin",
+    "IPFS",
+    "GraphQL",
+    "Next.js",
+    "Tailwind CSS",
+    "Redux",
+    "Go",
+    "Rust",
+    "Terraform",
+    "GitHub Actions",
+    "Redis",
+    "Firebase",
+    "Google Cloud Platform",
+    "Microservices",
+    "OAuth 2.0",
+    "JWT",
+    "Unit Testing",
+    "CI/CD",
   ]);
 
   const [locationOptions, setLocationOptions] = useState([
@@ -102,7 +152,7 @@ const CreateProject = () => {
   const handleRoleChange = useCallback((index, field, value) => {
     setFormData((prev) => {
       const updatedRoles = prev.roles.map((role, i) =>
-        i === index ? { ...role, [field]: value } : role
+        i === index ? { ...role, [field]: value } : role,
       );
       return {
         ...prev,
@@ -186,7 +236,7 @@ const CreateProject = () => {
     // Keep dropdown open for multiple selections and refocus
     setTimeout(() => {
       const input = document.querySelector(
-        ".skills-section .autocomplete-input"
+        ".skills-section .autocomplete-input",
       );
       if (input) input.focus();
     }, 0);
@@ -206,7 +256,7 @@ const CreateProject = () => {
     setFormData((prev) => ({
       ...prev,
       selectedSkills: prev.selectedSkills.filter(
-        (skill) => skill !== skillToRemove
+        (skill) => skill !== skillToRemove,
       ),
     }));
   };
@@ -216,7 +266,7 @@ const CreateProject = () => {
     return skillOptions.filter(
       (skill) =>
         skill.toLowerCase().includes(skillInput.toLowerCase()) &&
-        !formData.selectedSkills.includes(skill)
+        !formData.selectedSkills.includes(skill),
     );
   };
 
@@ -243,7 +293,7 @@ const CreateProject = () => {
     // Keep dropdown open for multiple selections
     setTimeout(() => {
       const input = document.querySelector(
-        ".location-section .autocomplete-input"
+        ".location-section .autocomplete-input",
       );
       if (input) input.focus();
     }, 0);
@@ -262,7 +312,7 @@ const CreateProject = () => {
     setFormData((prev) => ({
       ...prev,
       selectedLocations: prev.selectedLocations.filter(
-        (loc) => loc !== locationToRemove
+        (loc) => loc !== locationToRemove,
       ),
     }));
   };
@@ -272,7 +322,7 @@ const CreateProject = () => {
     return locationOptions.filter(
       (location) =>
         location.toLowerCase().includes(locationInput.toLowerCase()) &&
-        !formData.selectedLocations.includes(location)
+        !formData.selectedLocations.includes(location),
     );
   };
 
@@ -287,7 +337,7 @@ const CreateProject = () => {
               roleInput: "",
               showRoleDropdown: false,
             }
-          : role
+          : role,
       );
       return {
         ...prev,
@@ -313,7 +363,7 @@ const CreateProject = () => {
                 requiredCompetencies: [...r.requiredCompetencies, competency],
                 competencyInput: "",
               }
-            : r
+            : r,
         );
         return {
           ...prev,
@@ -330,7 +380,7 @@ const CreateProject = () => {
     // Keep dropdown open and refocus for multiple selections
     setTimeout(() => {
       const inputs = document.querySelectorAll(
-        ".role-card .autocomplete-input"
+        ".role-card .autocomplete-input",
       );
       if (inputs[index * 2 + 1]) inputs[index * 2 + 1].focus();
     }, 0);
@@ -344,10 +394,10 @@ const CreateProject = () => {
           ? {
               ...role,
               requiredCompetencies: role.requiredCompetencies.filter(
-                (c) => c !== competency
+                (c) => c !== competency,
               ),
             }
-          : role
+          : role,
       );
       return {
         ...prev,
@@ -602,7 +652,7 @@ const CreateProject = () => {
                 setTimeout(() => {
                   if (
                     !locationDropdownRef.current?.contains(
-                      document.activeElement
+                      document.activeElement,
                     )
                   ) {
                     setShowLocationDropdown(false);
@@ -748,7 +798,7 @@ const CreateProject = () => {
                               handleRoleChange(
                                 index,
                                 "roleInput",
-                                e.target.value
+                                e.target.value,
                               )
                             }
                             onFocus={() =>
@@ -762,7 +812,7 @@ const CreateProject = () => {
                                 .filter((r) =>
                                   r
                                     .toLowerCase()
-                                    .includes(role.roleInput.toLowerCase())
+                                    .includes(role.roleInput.toLowerCase()),
                                 )
                                 .map((r, idx) => (
                                   <div
@@ -804,7 +854,7 @@ const CreateProject = () => {
                           handleRoleChange(
                             index,
                             "numberOfEmployees",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                         placeholder="e.g. 2"
@@ -828,14 +878,14 @@ const CreateProject = () => {
                           handleRoleChange(
                             index,
                             "competencyInput",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                         onFocus={() =>
                           handleRoleChange(
                             index,
                             "showCompetencyDropdown",
-                            true
+                            true,
                           )
                         }
                         onBlur={() => {
@@ -845,7 +895,7 @@ const CreateProject = () => {
                               handleRoleChange(
                                 index,
                                 "showCompetencyDropdown",
-                                false
+                                false,
                               );
                             }
                           }, 150);
@@ -868,8 +918,8 @@ const CreateProject = () => {
                                 c
                                   .toLowerCase()
                                   .includes(
-                                    role.competencyInput.toLowerCase()
-                                  ) && !role.requiredCompetencies.includes(c)
+                                    role.competencyInput.toLowerCase(),
+                                  ) && !role.requiredCompetencies.includes(c),
                             )
                             .map((c, idx) => (
                               <div

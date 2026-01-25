@@ -40,6 +40,25 @@
   height: 22px;
   animation: spin 1s linear infinite;
 }
+.team-footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 2px solid #e0e0e0;
+  color: #777;
+}
+
+.team-footer p {
+  margin: 8px 0;
+  font-size: 1.25rem;
+}
+/* Footer container */
+.login-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #6b7280; /* soft gray */
+}
 
 @keyframes spin {
   0% {

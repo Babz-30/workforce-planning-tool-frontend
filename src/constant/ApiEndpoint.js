@@ -12,5 +12,9 @@ const ApiEndPoints = Object.freeze({
   Get_Applied_Projects_by_User:
     "/api/applications/grouped-by-project?status=APPLIED",
   Deparment_Header_Approval_And_Reject: "/api/project-manager/applications/",
+  trigger_External_Search:
+    "/api/project-manager/projects/{projectId}/trigger-external-search",
+  Get_Completed_Projects_by_User:
+    "/api/applications/grouped-by-project?status=COMPLETED",
 });
 export default ApiEndPoints;

@@ -6,10 +6,11 @@ import Pagination from "../pagination/Pagination";
 import Search from "../../components/pm_search/search"; // ✅ change this path to your existing Search component
 // import { GetProjectByCreator } from "../../services/project/getprojects";
 import { publishProject } from "../../services/project/patchprojects";
+import { triggerExternalSearch } from "../../services/project/externalsearch";
 
 export default function HomeTab({ allProjects }) {
   const navigate = useNavigate();
-
+  const [externalTriggeringId, setExternalTriggeringId] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -28,6 +29,28 @@ export default function HomeTab({ allProjects }) {
     setCurrentPage(1);
   }, [searchTerm]);
 
+  const handleExternalSearch = async (projectId) => {
+    setExternalTriggeringId(projectId);
+    try {
+      const status = await triggerExternalSearch(projectId); // your API
+
+      if (status === 200) {
+        setProjects((prev) =>
+          prev.map((p) =>
+            p.id === projectId ? { ...p, isExternalSearch: true } : p,
+          ),
+        );
+      } else {
+        alert("Failed to trigger external search");
+      }
+    } catch (e) {
+      console.error("Error triggering external search:", e);
+      alert("Error triggering external search: " + e.message);
+    } finally {
+      setExternalTriggeringId(null);
+    }
+  };
+
   const handlePublish = async (projectId) => {
     setPublishingId(projectId);
     try {
@@ -35,8 +58,8 @@ export default function HomeTab({ allProjects }) {
       if (response === 200) {
         setProjects((prev) =>
           prev.map((p) =>
-            p.id === projectId ? { ...p, isPublished: true } : p
-          )
+            p.id === projectId ? { ...p, isPublished: true } : p,
+          ),
         );
       } else {
         alert("Failed to publish project");
@@ -268,7 +291,7 @@ export default function HomeTab({ allProjects }) {
                           className="btn btn-warning"
                           onClick={() =>
                             navigate(
-                              `/project_manager/edit-project/${project.id}`
+                              `/project_manager/edit-project/${project.id}`,
                             )
                           }
                         >
@@ -289,9 +312,28 @@ export default function HomeTab({ allProjects }) {
                         {project.isPublished
                           ? "Published ✓"
                           : publishingId === project.id
-                          ? "Publishing..."
-                          : "Publish"}
+                            ? "Publishing..."
+                            : "Publish"}
                       </button>
+                      {/* ✅ External Trigger button (only after Published) */}
+                      {project.isPublished && (
+                        <button
+                          type="button"
+                          className={`btn ${
+                            project.isExternalSearch
+                              ? "btn-external-done"
+                              : "btn-external-trigger"
+                          }`}
+                          onClick={() => handleExternalSearch(project.id)}
+                          disabled={project.isExternalSearch}
+                        >
+                          {project.isExternalSearch
+                            ? "Externally Triggered ✓"
+                            : externalTriggeringId === project.id
+                              ? "Triggering..."
+                              : "Trigger External Search"}
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

@@ -1,0 +1,136 @@
+/* Staffing Records */
+.staffing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.staffing-card {
+  /* Neutral card with a teal accent for 'Staffing' */
+  background: white;
+  border: 1px solid #99f6e4;
+  border-left: 4px solid #14b8a6;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.staffing-project-name {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.staffing-dates {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.date-item {
+  background: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.date-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.date-value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.team-section {
+  margin-top: 1rem;
+}
+
+.team-label {
+  font-size: 0.875rem;
+  color: #4b5563;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.team-member-badge {
+  padding: 0.5rem 1rem;
+  background: #bfdbfe;
+  color: #1e40af;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #93c5fd;
+}
+
+/* External Search */
+.external-search-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  /* Light blue card with a subtle border */
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.external-search-icon-wrapper {
+  background: #e5e7eb;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.external-search-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #3b82f6;
+}
+
+.external-search-content {
+  flex: 1;
+}
+
+.external-search-title {
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.external-search-description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+.external-search-btn {
+  padding: 0.5rem 1.25rem;
+  /* Dark color for an "external" action */
+  background: #1f2937;
+  color: white;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+}
+
+.external-search-btn:hover {
+  background: #374151;
+}

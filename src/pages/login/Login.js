@@ -110,14 +110,10 @@ const Login = () => {
       </form>
       {/* <p className="note">Demo users: sarah_pm/SecurePass123!</p> */}
 
-      <p className="note">version: {process.env.REACT_APP_VERSION}</p>
-
-      <p className="note">
-        Please ensure that the backend service is started before attempting to
-        log in. For further assistance, kindly contact our team.
-      </p>
-      <a 
-          href="/team-contact" 
+      {/* <p className="note">version: {process.env.REACT_APP_VERSION}</p> */}
+      <div className="login-footer">
+        <a
+          href="/team-contact"
           className="contact-link"
           onClick={(e) => {
             e.preventDefault();
@@ -126,6 +122,11 @@ const Login = () => {
         >
           Contact Us
         </a>
+      </div>
+      <footer className="team-footer">
+        <p>Frankfurt University of Applied Sciences | WS 2025/2026</p>
+        <p>Agile Development in Cloud Computing Environments</p>
+      </footer>
     </div>
   );
 };

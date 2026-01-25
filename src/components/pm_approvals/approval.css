@@ -300,7 +300,9 @@
   border: 0;
   cursor: pointer;
   color: #ffffff;
-  transition: filter 150ms ease, opacity 150ms ease;
+  transition:
+    filter 150ms ease,
+    opacity 150ms ease;
 }
 
 .pam-btn:disabled {
@@ -388,4 +390,41 @@
   background: #eef2ff;
   color: #3730a3;
   border: 1px solid #c7d2fe;
+}
+
+.pam-status.completed {
+  /* choose your desired look */
+  border-color: #16a34a;
+  color: #16a34a;
+}
+.pam-section {
+  margin-top: 14px;
+}
+.pam-section-title {
+  font-weight: 600;
+  margin: 8px 0 10px;
+}
+.pam-members {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.pam-members-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pam-members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pam-member-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-size: 13px;
 }
