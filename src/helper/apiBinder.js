@@ -44,6 +44,7 @@ export function convertProjectsList(projectsList) {
       location,
       links: project.links,
       isPublished: project.isPublished || false,
+      isExternalSearch: project.isExternalSearch || false,
     };
   });
 }
