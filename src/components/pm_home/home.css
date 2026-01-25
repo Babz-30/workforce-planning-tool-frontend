@@ -18,3 +18,17 @@
   color: #6b7280;
   text-align: center;
 }
+.btn-external-trigger {
+  background-color: #0056b3;
+  color: #fff;
+}
+.btn-external-done {
+  background-color: #28a745;
+  color: #fff;
+}
+.btn-external-trigger:hover {
+  background-color: #004494;
+}
+.btn-external-done:hover {
+  background-color: #218838;
+}

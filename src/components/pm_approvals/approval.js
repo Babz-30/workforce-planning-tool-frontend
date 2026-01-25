@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   CheckCircle,
   XCircle,
@@ -19,6 +19,67 @@ import {
   requestDhApproval,
   rejectApplication,
 } from "../../services/application/pm_applicationAPI";
+const FilterSortControls = ({
+  searchTerm,
+  setSearchTerm,
+  sortBy,
+  setSortBy,
+}) => {
+  return (
+    <div
+      className="filter-sort-controls"
+      style={{
+        display: "flex",
+        gap: "1rem",
+        marginBottom: "1.5rem",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <div className="search-box" style={{ flex: "1", minWidth: "250px" }}>
+        <input
+          type="text"
+          placeholder="Search by project name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem 1rem",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+            fontSize: "0.95rem",
+          }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <label style={{ fontWeight: "500", fontSize: "0.9rem" }}>
+          Sort by:
+        </label>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          style={{
+            padding: "0.5rem 1rem",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+            fontSize: "0.95rem",
+            cursor: "pointer",
+          }}
+        >
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="date-asc">Start Date (Earliest)</option>
+          <option value="date-desc">Start Date (Latest)</option>
+          <option value="apps-desc">Most Applications</option>
+          <option value="apps-asc">Least Applications</option>
+          <option value="pending-desc">Most Pending</option>
+          <option value="pending-asc">Least Pending</option>
+        </select>
+      </div>
+    </div>
+  );
+};
 
 const ProjectApprovalsManager = ({
   allProjectsData,
@@ -31,6 +92,8 @@ const ProjectApprovalsManager = ({
   const [loading, setLoading] = useState(true);
   const [expandedProjects, setExpandedProjects] = useState({});
   const [processingApp, setProcessingApp] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("name-asc");
 
   useEffect(() => {
     const loadData = () => {
@@ -40,7 +103,7 @@ const ProjectApprovalsManager = ({
         const projectsData = keepPublishedProjects(allProjectsData);
         const applicationsData = keepOnlyExistingProjects(
           allApplicationData,
-          projectsData
+          projectsData,
         );
 
         setProjects(projectsData);
@@ -55,6 +118,65 @@ const ProjectApprovalsManager = ({
 
     loadData();
   }, [allProjectsData, allApplicationData]);
+  const filteredAndSortedProjects = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+
+    // Filter by project.description (your UI uses project.description)
+    const filtered = projects.filter((p) =>
+      (p?.description || "").toLowerCase().includes(term),
+    );
+
+    // Add derived counts for sorting
+    const enriched = filtered.map((p) => {
+      const projectApps = applications[p.id] || [];
+      const reviewApps = projectApps.filter(
+        (a) => a.currentStatus !== "COMPLETED",
+      );
+      const pendingCount = reviewApps.filter(
+        (a) => a.currentStatus === "APPLIED",
+      ).length;
+
+      // start/end field names depend on your project object (keep safe)
+      const start =
+        p.projectStart || p.start || p.startDate || p.projectStartDate || null;
+
+      return {
+        ...p,
+        _appsCount: projectApps.length,
+        _pendingCount: pendingCount,
+        _startDate: start,
+      };
+    });
+
+    return [...enriched].sort((a, b) => {
+      switch (sortBy) {
+        case "name-asc":
+          return (a.description || "").localeCompare(b.description || "");
+        case "name-desc":
+          return (b.description || "").localeCompare(a.description || "");
+        case "date-asc":
+          return (
+            new Date(a._startDate || "2100-01-01") -
+            new Date(b._startDate || "2100-01-01")
+          );
+        case "date-desc":
+          return (
+            new Date(b._startDate || "1900-01-01") -
+            new Date(a._startDate || "1900-01-01")
+          );
+        case "apps-desc":
+          return (b._appsCount || 0) - (a._appsCount || 0);
+        case "apps-asc":
+          return (a._appsCount || 0) - (b._appsCount || 0);
+        case "pending-desc":
+          return (b._pendingCount || 0) - (a._pendingCount || 0);
+        case "pending-asc":
+          return (a._pendingCount || 0) - (b._pendingCount || 0);
+        default:
+          return 0;
+      }
+    });
+  }, [projects, applications, searchTerm, sortBy]);
 
   const employeeById = employees.reduce((acc, emp) => {
     acc[emp.employeeId] = emp;
@@ -73,7 +195,7 @@ const ProjectApprovalsManager = ({
         [projectId]: prev[projectId].map((app) =>
           app.applicationId === applicationId
             ? { ...app, currentStatus: "APPROVED" }
-            : app
+            : app,
         ),
       }));
     } catch (error) {
@@ -99,7 +221,7 @@ const ProjectApprovalsManager = ({
         [projectId]: prev[projectId].map((app) =>
           app.applicationId === applicationId
             ? { ...app, currentStatus: "REJECTED", rejectionReason: reason }
-            : app
+            : app,
         ),
       }));
     } catch (error) {
@@ -126,13 +248,14 @@ const ProjectApprovalsManager = ({
       minute: "2-digit",
     });
   };
-
   const statusClass = (status) => {
     switch (status) {
       case "APPLIED":
         return "applied";
       case "APPROVED":
         return "approved";
+      case "COMPLETED":
+        return "completed";
       case "REJECTED":
         return "rejected";
       default:
@@ -161,14 +284,32 @@ const ProjectApprovalsManager = ({
             Review and manage employee applications for published projects
           </p>
         </div>
+        <FilterSortControls
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
 
         {/* Projects List */}
         <div className="pam-projects">
-          {projects.map((project) => {
+          {filteredAndSortedProjects.map((project) => {
             const projectApps = applications[project.id] || [];
-            const pendingCount = projectApps.filter(
-              (app) => app.currentStatus === "APPLIED"
+
+            // ✅ members = COMPLETED
+            const memberApps = projectApps.filter(
+              (app) => app.currentStatus === "COMPLETED",
+            );
+
+            // ✅ keep the approvals list clean (everything except COMPLETED)
+            const reviewApps = projectApps.filter(
+              (app) => app.currentStatus !== "COMPLETED",
+            );
+
+            const pendingCount = reviewApps.filter(
+              (app) => app.currentStatus === "APPLIED",
             ).length;
+            // const memberCount = memberApps.length;
             const isExpanded = expandedProjects[project.id];
             console.log("Rendering project:", project);
             return (
@@ -201,6 +342,10 @@ const ProjectApprovalsManager = ({
                         <Briefcase size={16} />
                         {projectApps.length} applications
                       </span>
+                      {/* <span className="pam-meta-item">
+                        <User size={16} />
+                        {memberCount} members in project
+                      </span> */}
                     </div>
                   </div>
 
@@ -210,6 +355,27 @@ const ProjectApprovalsManager = ({
                     <ChevronDown size={24} />
                   )}
                 </button>
+                {/* ✅ Project Members (COMPLETED applications) */}
+                {memberApps.length > 0 && (
+                  <div className="pam-members">
+                    <div className="pam-members-title">Project Members</div>
+
+                    <div className="pam-members-list">
+                      {memberApps.map((app) => {
+                        const employee = employeeById[app.employeeId];
+                        const fullName = employee
+                          ? `${employee.firstName ?? ""} ${employee.lastName ?? ""}`.trim()
+                          : `Employee #${app.employeeId}`;
+
+                        return (
+                          <span key={app.id} className="pam-member-chip">
+                            {fullName}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {/* Applications List */}
                 {isExpanded && (
@@ -221,7 +387,7 @@ const ProjectApprovalsManager = ({
                       </div>
                     ) : (
                       <div className="pam-apps">
-                        {projectApps.map((app) => {
+                        {reviewApps.map((app) => {
                           const employee = employeeById[app.employeeId];
                           const fullName = employee
                             ? `${employee.firstName ?? ""} ${
@@ -253,7 +419,7 @@ const ProjectApprovalsManager = ({
 
                                     <span
                                       className={`pam-status ${statusClass(
-                                        app.currentStatus
+                                        app.currentStatus,
                                       )}`}
                                     >
                                       {app.currentStatus}
@@ -327,7 +493,7 @@ const ProjectApprovalsManager = ({
                                       onClick={() =>
                                         handleApprove(
                                           app.applicationId,
-                                          project.id
+                                          project.id,
                                         )
                                       }
                                       disabled={
@@ -346,7 +512,7 @@ const ProjectApprovalsManager = ({
                                       onClick={() =>
                                         handleReject(
                                           app.applicationId,
-                                          project.id
+                                          project.id,
                                         )
                                       }
                                       disabled={

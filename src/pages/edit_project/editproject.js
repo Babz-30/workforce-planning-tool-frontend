@@ -57,19 +57,49 @@ const EditProject = () => {
     "Figma",
     "REST API",
     "Payment Integration",
+    "Ethers.js",
+    "Hardhat",
+    "OpenZeppelin",
+    "IPFS",
+    "GraphQL",
+    "Next.js",
+    "Tailwind CSS",
+    "Redux",
+    "Go",
+    "Rust",
+    "Terraform",
+    "GitHub Actions",
+    "Redis",
+    "Firebase",
+    "Google Cloud Platform",
+    "Microservices",
+    "OAuth 2.0",
+    "JWT",
+    "Unit Testing",
+    "CI/CD",
   ]);
 
   const [roleOptions, setRoleOptions] = useState([
-    "Blockchain Developer",
-    "Smart Contract Engineer",
-    "Backend Developer",
-    "Frontend Developer",
-    "Full Stack Developer",
-    "Security Specialist",
+    "Blockchain Engineer",
+    "Smart Contract Developer",
+    "Full-Stack Web3 Developer",
     "DevOps Engineer",
-    "UI/UX Designer",
-    "Project Manager",
-    "QA Engineer",
+    "Site Reliability Engineer",
+    "Cloud Architect",
+    "Security Engineer",
+    "Smart Contract Auditor",
+    "Backend Engineer",
+    "Frontend Engineer",
+    "Platform Engineer",
+    "Data Engineer",
+    "Solutions Architect",
+    "Information Security Officer",
+    "Technical Product Manager",
+    "Blockchain Architect",
+    "Web3 Integration Engineer",
+    "Systems Administrator",
+    "QA Automation Engineer",
+    "Infrastructure Engineer",
   ]);
 
   const [competencyOptions, setCompetencyOptions] = useState([
@@ -90,6 +120,26 @@ const EditProject = () => {
     "Figma",
     "REST API",
     "Payment Integration",
+    "Ethers.js",
+    "Hardhat",
+    "OpenZeppelin",
+    "IPFS",
+    "GraphQL",
+    "Next.js",
+    "Tailwind CSS",
+    "Redux",
+    "Go",
+    "Rust",
+    "Terraform",
+    "GitHub Actions",
+    "Redis",
+    "Firebase",
+    "Google Cloud Platform",
+    "Microservices",
+    "OAuth 2.0",
+    "JWT",
+    "Unit Testing",
+    "CI/CD",
   ]);
 
   const [locationOptions, setLocationOptions] = useState([
@@ -147,7 +197,7 @@ const EditProject = () => {
         console.log("Fetched project data:", projectData);
 
         const locations = projectData.selectedLocations.map((loc) =>
-          loc.trim()
+          loc.trim(),
         );
 
         const transformedRoles = projectData.roles.map((role) => ({
@@ -187,7 +237,7 @@ const EditProject = () => {
   const handleRoleChange = useCallback((index, field, value) => {
     setFormData((prev) => {
       const updatedRoles = prev.roles.map((role, i) =>
-        i === index ? { ...role, [field]: value } : role
+        i === index ? { ...role, [field]: value } : role,
       );
       return {
         ...prev,
@@ -271,7 +321,7 @@ const EditProject = () => {
     // Keep dropdown open for multiple selections and refocus
     setTimeout(() => {
       const input = document.querySelector(
-        ".skills-section .autocomplete-input"
+        ".skills-section .autocomplete-input",
       );
       if (input) input.focus();
     }, 0);
@@ -291,7 +341,7 @@ const EditProject = () => {
     setFormData((prev) => ({
       ...prev,
       selectedSkills: prev.selectedSkills.filter(
-        (skill) => skill !== skillToRemove
+        (skill) => skill !== skillToRemove,
       ),
     }));
   };
@@ -301,7 +351,7 @@ const EditProject = () => {
     return skillOptions.filter(
       (skill) =>
         skill.toLowerCase().includes(skillInput.toLowerCase()) &&
-        !formData.selectedSkills.includes(skill)
+        !formData.selectedSkills.includes(skill),
     );
   };
 
@@ -328,7 +378,7 @@ const EditProject = () => {
     // Keep dropdown open for multiple selections
     setTimeout(() => {
       const input = document.querySelector(
-        ".location-section .autocomplete-input"
+        ".location-section .autocomplete-input",
       );
       if (input) input.focus();
     }, 0);
@@ -347,7 +397,7 @@ const EditProject = () => {
     setFormData((prev) => ({
       ...prev,
       selectedLocations: prev.selectedLocations.filter(
-        (loc) => loc !== locationToRemove
+        (loc) => loc !== locationToRemove,
       ),
     }));
   };
@@ -357,7 +407,7 @@ const EditProject = () => {
     return locationOptions.filter(
       (location) =>
         location.toLowerCase().includes(locationInput.toLowerCase()) &&
-        !formData.selectedLocations.includes(location)
+        !formData.selectedLocations.includes(location),
     );
   };
 
@@ -372,7 +422,7 @@ const EditProject = () => {
               roleInput: "",
               showRoleDropdown: false,
             }
-          : role
+          : role,
       );
       return {
         ...prev,
@@ -398,7 +448,7 @@ const EditProject = () => {
                 requiredCompetencies: [...r.requiredCompetencies, competency],
                 competencyInput: "",
               }
-            : r
+            : r,
         );
         return {
           ...prev,
@@ -415,7 +465,7 @@ const EditProject = () => {
     // Keep dropdown open and refocus for multiple selections
     setTimeout(() => {
       const inputs = document.querySelectorAll(
-        ".role-card .autocomplete-input"
+        ".role-card .autocomplete-input",
       );
       if (inputs[index * 2 + 1]) inputs[index * 2 + 1].focus();
     }, 0);
@@ -429,10 +479,10 @@ const EditProject = () => {
           ? {
               ...role,
               requiredCompetencies: role.requiredCompetencies.filter(
-                (c) => c !== competency
+                (c) => c !== competency,
               ),
             }
-          : role
+          : role,
       );
       return {
         ...prev,
@@ -508,7 +558,7 @@ const EditProject = () => {
       let responseStatus = await EditProjectData(formData, projectData);
       if (responseStatus === 200) {
         toast.success(
-          "Project " + projectData.projectId + " updated successfully!"
+          "Project " + projectData.projectId + " updated successfully!",
         );
         navigate("/project_manager");
       }
@@ -679,7 +729,7 @@ const EditProject = () => {
                 setTimeout(() => {
                   if (
                     !locationDropdownRef.current?.contains(
-                      document.activeElement
+                      document.activeElement,
                     )
                   ) {
                     setShowLocationDropdown(false);
@@ -818,7 +868,7 @@ const EditProject = () => {
                               handleRoleChange(
                                 index,
                                 "roleInput",
-                                e.target.value
+                                e.target.value,
                               )
                             }
                             onFocus={() =>
@@ -832,7 +882,7 @@ const EditProject = () => {
                                 .filter((r) =>
                                   r
                                     .toLowerCase()
-                                    .includes(role.roleInput.toLowerCase())
+                                    .includes(role.roleInput.toLowerCase()),
                                 )
                                 .map((r, idx) => (
                                   <div
@@ -874,7 +924,7 @@ const EditProject = () => {
                           handleRoleChange(
                             index,
                             "numberOfEmployees",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                         placeholder="e.g. 2"
@@ -898,14 +948,14 @@ const EditProject = () => {
                           handleRoleChange(
                             index,
                             "competencyInput",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                         onFocus={() =>
                           handleRoleChange(
                             index,
                             "showCompetencyDropdown",
-                            true
+                            true,
                           )
                         }
                         onBlur={() => {
@@ -915,7 +965,7 @@ const EditProject = () => {
                               handleRoleChange(
                                 index,
                                 "showCompetencyDropdown",
-                                false
+                                false,
                               );
                             }
                           }, 150);
@@ -938,8 +988,8 @@ const EditProject = () => {
                                 c
                                   .toLowerCase()
                                   .includes(
-                                    role.competencyInput.toLowerCase()
-                                  ) && !role.requiredCompetencies.includes(c)
+                                    role.competencyInput.toLowerCase(),
+                                  ) && !role.requiredCompetencies.includes(c),
                             )
                             .map((c, idx) => (
                               <div

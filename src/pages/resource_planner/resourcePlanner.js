@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   // Users,
@@ -6,7 +6,6 @@ import {
   // CheckCircle,
   UserPlus,
   FileText,
-  ExternalLink,
 } from "lucide-react";
 import "./ResourcePlanner.css";
 import { getAllEmployee } from "../../services/employee/employeeApi";
@@ -18,9 +17,13 @@ import UserProfile from "../../components/profile/profile";
 import ProposeTabContent from "../../components/rp_propose/proposeTab";
 import SkillGapAnalysis from "../../components/rp_skill_gap_analysis/skillGapAnalysisTab";
 import { calculateSkillGaps } from "../../helper/skillGap";
-import { GetAllApplication } from "../../services/application/GetApplicationAPI";
+import {
+  GetAllApplication,
+  GetAllCompletedApplication,
+} from "../../services/application/GetApplicationAPI";
 import getAppliedEmployees from "../../helper/DuplicateEmployeeBinder";
 import EmployeeSearch from "../../components/rp_skill_search/searchskillTab";
+import StaffingTab from "../../components/re_staffing/staffingTab";
 
 const ResourcePlanner = () => {
   const [activeTab, setActiveTab] = useState("search");
@@ -32,12 +35,15 @@ const ResourcePlanner = () => {
   const [projects, setProjects] = useState([]);
   const [appliedEmployees, setAppliedEmployees] = useState({});
 
+  const [UnTransformedemployees, setUnTransformedemployees] = useState([]);
+  const [UnTransformedprojects, setUnTransformedprojects] = useState([]);
+  const [UnTransformedCompletedEmployees, setTransformedCompletedEmployees] =
+    useState({});
+
   // Pagination states for different tabs
   // const [availablePage, setAvailablePage] = useState(1);
   const [, setSearchPage] = useState(1);
   const [proposePage, setProposePage] = useState(1);
-
-  const [staffingPage, setStaffingPage] = useState(1);
 
   const ITEMS_PER_PAGE = 10;
 
@@ -48,14 +54,21 @@ const ResourcePlanner = () => {
         setLoading(true);
         await getAllEmployee().then((response) => {
           setEmployees(transformEmployeesForResourcePlanner(response.data));
+          setUnTransformedemployees(response.data);
         });
 
         await GetAllPublishedProject().then((response2) => {
           setProjects(transformProjectDetails(response2));
+          setUnTransformedprojects(response2);
         });
 
         await GetAllApplication().then((response3) => {
           setAppliedEmployees(getAppliedEmployees(response3));
+          setTransformedCompletedEmployees(response3);
+        });
+
+        await GetAllCompletedApplication().then((response3) => {
+          setTransformedCompletedEmployees(response3);
         });
         setError(null);
       } catch (err) {
@@ -150,53 +163,6 @@ const ResourcePlanner = () => {
           </div>
         </div>
 
-        {/* Available Employees
-        {activeTab === "available" && (
-          <div className="content-card">
-            <h2 className="section-title">Available Employees</h2>
-            <div className="employee-list">
-              {paginateItems(availableEmployees, availablePage).map((emp) => (
-                <div
-                  key={emp.id}
-                  className="employee-card employee-card-available"
-                >
-                  <div className="employee-card-content">
-                    <div className="employee-info">
-                      <h3 className="employee-name">{emp.name}</h3>
-                      <p className="employee-role">{emp.role}</p>
-                      <div className="skills-container">
-                        {emp.skills.map((skill) => (
-                          <span
-                            key={skill}
-                            className="skill-badge skill-badge-blue"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="capacity-display">
-                      <div className="capacity-number">{emp.capacity}%</div>
-                      <div className="capacity-label">Free Capacity</div>
-                    </div>
-                  </div>
-                  {emp.projects.length > 0 && (
-                    <div className="employee-projects">
-                      Current: {emp.projects.join(", ")}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <Pagination
-              currentPage={availablePage}
-              totalItems={availableEmployees.length}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setAvailablePage}
-            />
-          </div>
-        )} */}
-
         {/* Search by Skills */}
         {activeTab === "search" && (
           <EmployeeSearch
@@ -232,84 +198,11 @@ const ResourcePlanner = () => {
 
         {/* Staffing Records */}
         {activeTab === "staffing" && (
-          <div className="content-card">
-            <h2 className="section-title">Project Staffing Records</h2>
-            <p className="section-description">Track who is assigned where</p>
-
-            <div className="staffing-list">
-              {paginateItems(
-                [
-                  {
-                    project: "Project Alpha",
-                    team: ["Sarah Chen", "Emma Thompson"],
-                    start: "2025-10-01",
-                    end: "2025-12-31",
-                  },
-                  {
-                    project: "Project Beta",
-                    team: ["Maria Garcia"],
-                    start: "2025-11-01",
-                    end: "2026-01-31",
-                  },
-                  {
-                    project: "Project Gamma",
-                    team: ["Emma Thompson"],
-                    start: "2025-11-15",
-                    end: "2026-02-15",
-                  },
-                ],
-                staffingPage
-              ).map((record, idx) => (
-                <div key={idx} className="staffing-card">
-                  <h3 className="staffing-project-name">{record.project}</h3>
-                  <div className="staffing-dates">
-                    <div className="date-item">
-                      <span className="date-label">Start Date</span>
-                      <p className="date-value">{record.start}</p>
-                    </div>
-                    <div className="date-item">
-                      <span className="date-label">End Date</span>
-                      <p className="date-value">{record.end}</p>
-                    </div>
-                  </div>
-                  <div className="team-section">
-                    <span className="team-label">Team Members</span>
-                    <div className="team-members">
-                      {record.team.map((member) => (
-                        <span key={member} className="team-member-badge">
-                          {member}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Pagination
-              currentPage={staffingPage}
-              totalItems={3}
-              itemsPerPage={ITEMS_PER_PAGE}
-              onPageChange={setStaffingPage}
-            />
-
-            <div className="external-search-card">
-              <div className="external-search-icon-wrapper">
-                <ExternalLink className="external-search-icon" />
-              </div>
-              <div className="external-search-content">
-                <h4 className="external-search-title">
-                  Accept External Search
-                </h4>
-                <p className="external-search-description">
-                  Enable integration with external recruitment platforms to
-                  source candidates beyond your organization.
-                </p>
-                <button className="external-search-btn">
-                  Configure External Sources
-                </button>
-              </div>
-            </div>
-          </div>
+          <StaffingTab
+            projectJson={UnTransformedprojects}
+            applicationByProjectId={UnTransformedCompletedEmployees}
+            employeeList={UnTransformedemployees}
+          />
         )}
       </div>
     </div>
