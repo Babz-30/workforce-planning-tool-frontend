@@ -1,77 +1,6 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import "./profile.css";
-
-// export default function UserProfile() {
-//   const navigate = useNavigate();
-//   const handleLogout = () => {
-//     alert("Are you sure to Logg out");
-//     navigate("/");
-//   };
-
-//   return (
-//     <div className="d-flex align-items-center gap-3">
-//       <div className="dropdown">
-//         <button
-//           className="profile-btn"
-//           type="button"
-//           id="profileDropdownMenuButton"
-//           data-bs-toggle="dropdown"
-//           aria-expanded="false"
-//         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             width="20"
-//             height="20"
-//             viewBox="0 0 24 24"
-//             fill="none"
-//             stroke="currentColor"
-//             strokeWidth="2"
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//           >
-//             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-//             <circle cx="12" cy="7" r="4"></circle>
-//           </svg>
-//         </button>
-
-//         <ul
-//           className="dropdown-menu dropdown-menu-end"
-//           aria-labelledby="profileDropdownMenuButton"
-//         >
-//           <li>
-//             <button
-//               className="dropdown-item"
-//               onClick={handleLogout}
-//               style={{ color: "red" }}
-//             >
-//               <svg
-//                 xmlns="http://www.w3.org/2000/svg"
-//                 width="16"
-//                 height="16"
-//                 viewBox="0 0 24 24"
-//                 fill="none"
-//                 stroke="currentColor"
-//                 strokeWidth="2"
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//               >
-//                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-//                 <polyline points="16 17 21 12 16 7"></polyline>
-//                 <line x1="21" y1="12" x2="9" y2="12"></line>
-//               </svg>
-//               Logout
-//             </button>
-//           </li>
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// }
-
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Settings, User, ChevronDown } from "lucide-react";
+import { LogOut, Settings, ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 import "./profile.css";
 
@@ -113,38 +42,39 @@ export default function UserProfile() {
       localStorage.clear();
       toast.success("You've been logged out", {
         autoClose: 2000,
-        position: "top-right"
+        position: "top-right",
       });
     }
   };
- 
-  const handleSettingsClick = () => {
 
+  const handleSettingsClick = () => {
     if (employeeData) {
       if (employeeData.role === "EMPLOYEE") {
-        navigate("/update-employee", { state: { employeeData, from: "employee" }, replace: true });
-      }
-      else if (employeeData.role === "DEPARTMENT_HEAD") {
-        navigate("/update-employee", { state: { employeeData, from: "departmenthead" }, replace: true });
-      } 
-      else if (employeeData.role === "PROJECT_MANAGER") {
-        navigate("/update-employee", { state: { employeeData, from: "manager" }, replace: true });
-      }
-      else if (employeeData.role === "RESOURCE_PLANNER") {
-        navigate("/update-employee", { state: { employeeData, from: "resourceplanner" }, replace: true });
-      }
-      else {
+        navigate("/update-employee", {
+          state: { employeeData, from: "employee" },
+          replace: true,
+        });
+      } else if (employeeData.role === "DEPARTMENT_HEAD") {
+        navigate("/update-employee", {
+          state: { employeeData, from: "departmenthead" },
+          replace: true,
+        });
+      } else if (employeeData.role === "PROJECT_MANAGER") {
+        navigate("/update-employee", {
+          state: { employeeData, from: "manager" },
+          replace: true,
+        });
+      } else if (employeeData.role === "RESOURCE_PLANNER") {
+        navigate("/update-employee", {
+          state: { employeeData, from: "resourceplanner" },
+          replace: true,
+        });
+      } else {
         navigate("/");
       }
     } else {
       console.error("No employee data in localStorage");
     }
-  };
-
-  const handleProfileClick = () => {
-    setIsOpen(false);
-    console.log("Navigating to /profile");
-    navigate("/profile");
   };
 
   return (
@@ -176,10 +106,10 @@ export default function UserProfile() {
             <div className="dropdown-user-info">
               <p className="dropdown-user-name">{userName}</p>
               <p className="dropdown-user-email">{userEmail}</p>
-              <button className="dropdown-item" onClick={handleProfileClick}>
+              {/* <button className="dropdown-item" onClick={handleProfileClick}>
                 <User size={20} />
                 <span>My Profile</span>
-              </button>
+              </button> */}
               <button className="dropdown-item" onClick={handleSettingsClick}>
                 <Settings size={20} />
                 <span>Settings</span>
