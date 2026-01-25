@@ -40,7 +40,7 @@ const ProjectApprovalsManager = ({
         const projectsData = keepPublishedProjects(allProjectsData);
         const applicationsData = keepOnlyExistingProjects(
           allApplicationData,
-          projectsData
+          projectsData,
         );
 
         setProjects(projectsData);
@@ -73,7 +73,7 @@ const ProjectApprovalsManager = ({
         [projectId]: prev[projectId].map((app) =>
           app.applicationId === applicationId
             ? { ...app, currentStatus: "APPROVED" }
-            : app
+            : app,
         ),
       }));
     } catch (error) {
@@ -99,7 +99,7 @@ const ProjectApprovalsManager = ({
         [projectId]: prev[projectId].map((app) =>
           app.applicationId === applicationId
             ? { ...app, currentStatus: "REJECTED", rejectionReason: reason }
-            : app
+            : app,
         ),
       }));
     } catch (error) {
@@ -126,13 +126,14 @@ const ProjectApprovalsManager = ({
       minute: "2-digit",
     });
   };
-
   const statusClass = (status) => {
     switch (status) {
       case "APPLIED":
         return "applied";
       case "APPROVED":
         return "approved";
+      case "COMPLETED":
+        return "completed";
       case "REJECTED":
         return "rejected";
       default:
@@ -166,9 +167,21 @@ const ProjectApprovalsManager = ({
         <div className="pam-projects">
           {projects.map((project) => {
             const projectApps = applications[project.id] || [];
-            const pendingCount = projectApps.filter(
-              (app) => app.currentStatus === "APPLIED"
+
+            // ✅ members = COMPLETED
+            const memberApps = projectApps.filter(
+              (app) => app.currentStatus === "COMPLETED",
+            );
+
+            // ✅ keep the approvals list clean (everything except COMPLETED)
+            const reviewApps = projectApps.filter(
+              (app) => app.currentStatus !== "COMPLETED",
+            );
+
+            const pendingCount = reviewApps.filter(
+              (app) => app.currentStatus === "APPLIED",
             ).length;
+            // const memberCount = memberApps.length;
             const isExpanded = expandedProjects[project.id];
             console.log("Rendering project:", project);
             return (
@@ -201,6 +214,10 @@ const ProjectApprovalsManager = ({
                         <Briefcase size={16} />
                         {projectApps.length} applications
                       </span>
+                      {/* <span className="pam-meta-item">
+                        <User size={16} />
+                        {memberCount} members in project
+                      </span> */}
                     </div>
                   </div>
 
@@ -210,6 +227,27 @@ const ProjectApprovalsManager = ({
                     <ChevronDown size={24} />
                   )}
                 </button>
+                {/* ✅ Project Members (COMPLETED applications) */}
+                {memberApps.length > 0 && (
+                  <div className="pam-members">
+                    <div className="pam-members-title">Project Members</div>
+
+                    <div className="pam-members-list">
+                      {memberApps.map((app) => {
+                        const employee = employeeById[app.employeeId];
+                        const fullName = employee
+                          ? `${employee.firstName ?? ""} ${employee.lastName ?? ""}`.trim()
+                          : `Employee #${app.employeeId}`;
+
+                        return (
+                          <span key={app.id} className="pam-member-chip">
+                            {fullName}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {/* Applications List */}
                 {isExpanded && (
@@ -221,7 +259,7 @@ const ProjectApprovalsManager = ({
                       </div>
                     ) : (
                       <div className="pam-apps">
-                        {projectApps.map((app) => {
+                        {reviewApps.map((app) => {
                           const employee = employeeById[app.employeeId];
                           const fullName = employee
                             ? `${employee.firstName ?? ""} ${
@@ -253,7 +291,7 @@ const ProjectApprovalsManager = ({
 
                                     <span
                                       className={`pam-status ${statusClass(
-                                        app.currentStatus
+                                        app.currentStatus,
                                       )}`}
                                     >
                                       {app.currentStatus}
@@ -327,7 +365,7 @@ const ProjectApprovalsManager = ({
                                       onClick={() =>
                                         handleApprove(
                                           app.applicationId,
-                                          project.id
+                                          project.id,
                                         )
                                       }
                                       disabled={
@@ -346,7 +384,7 @@ const ProjectApprovalsManager = ({
                                       onClick={() =>
                                         handleReject(
                                           app.applicationId,
-                                          project.id
+                                          project.id,
                                         )
                                       }
                                       disabled={
