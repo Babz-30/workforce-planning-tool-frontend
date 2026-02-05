@@ -8,7 +8,7 @@
 
 **A modern, React-based workforce management solution for streamlining employee assignments and resource planning.**
 
-[Frontend App Url](https://workforce-planning-tool-frontend.onrender.com/) • [Swagger Url](https://workforcemangementtool.onrender.com/swagger-ui/index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [Documentation](#-documentation)
+[Frontend App Url](https://workforce-planning-tool-frontend.onrender.com/) • [Swagger Url](https://workforcemangementtool.onrender.com/swagger-ui/index.html) • [Features](#-features) • [Getting Started](#-getting-started) • [Documentation](https://github.com/Babz-30/workforce-planning-tool-frontend/blob/master/src/assets/Group%201a%20Workforce%20Planning%20Tool%20(Individual).pdf)
 
 </div>
 
